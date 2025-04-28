@@ -1,0 +1,12 @@
+using Microsoft.EntityFrameworkCore;
+using ValuationBackend.Models;
+
+namespace ValuationBackend.Data
+{
+    public class AppDbContext : DbContext
+    {
+        public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
+
+        public DbSet<RatingRequest> RatingRequests { get; set; }
+    }
+}
