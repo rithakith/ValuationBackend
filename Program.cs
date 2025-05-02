@@ -10,7 +10,7 @@ builder.Services.AddSwaggerGen();
 
 // Configure PostgreSQL
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql("Host=ep-divine-river-a42pz6bc-pooler.us-east-1.aws.neon.tech;Database=neondb;Username=neondb_owner;Password=npg_pe4YFinvx5cB;Ssl Mode=Require"));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Build app
 var app = builder.Build();
