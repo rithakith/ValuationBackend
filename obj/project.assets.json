@@ -3338,19 +3338,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\User\\.nuget\\packages\\": {}
+    "C:\\Users\\Jayasankha\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Projects\\vd\\vd backend\\ValuationBackend\\ValuationBackend.csproj",
+      "projectUniqueName": "C:\\Users\\Jayasankha\\Desktop\\UOM\\Year 2\\Software Project\\ValuationBackend\\ValuationBackend.csproj",
       "projectName": "ValuationBackend",
-      "projectPath": "D:\\Projects\\vd\\vd backend\\ValuationBackend\\ValuationBackend.csproj",
-      "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
-      "outputPath": "D:\\Projects\\vd\\vd backend\\ValuationBackend\\obj\\",
+      "projectPath": "C:\\Users\\Jayasankha\\Desktop\\UOM\\Year 2\\Software Project\\ValuationBackend\\ValuationBackend.csproj",
+      "packagesPath": "C:\\Users\\Jayasankha\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Jayasankha\\Desktop\\UOM\\Year 2\\Software Project\\ValuationBackend\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Jayasankha\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
