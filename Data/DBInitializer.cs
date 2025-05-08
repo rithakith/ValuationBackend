@@ -1,3 +1,5 @@
+using System.Security.Cryptography;
+using System.Text;
 using ValuationBackend.Models;
 
 namespace ValuationBackend.Data
@@ -14,6 +16,8 @@ namespace ValuationBackend.Data
 
             // Initialize Land Miscellaneous Master Files
             InitializeLandMiscellaneousMasterFiles(context);
+
+            SeedUsers(context);
         }
 
         private static void InitializeRatingRequests(AppDbContext context)
@@ -114,6 +118,34 @@ namespace ValuationBackend.Data
 
             context.LandMiscellaneousMasterFiles.AddRange(masterFiles);
             context.SaveChanges();
+        }
+
+        private static void SeedUsers(AppDbContext context)
+        {
+            if (context.Users.Any()) return;
+
+            var users = new List<User>
+            {
+                CreateUser("jalinahirushan2002@gmail.com", "Jalina123"),
+                CreateUser("akith.chandinu@gmail.com", "Akith123"),
+                CreateUser("samikshaabeyweera@gmail.com", "Dulmini123"),
+                CreateUser("vishwajayasankha@gmail.com", "Vishwa123"),
+                CreateUser("ritharaedirisinghe@gmail.com", "Rithara123")
+            };
+
+            context.Users.AddRange(users);
+            context.SaveChanges();
+        }
+
+        private static User CreateUser(string username, string password)
+        {
+            using var hmac = new HMACSHA512();
+            return new User
+            {
+                Username = username,
+                PasswordSalt = hmac.Key,
+                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password))
+            };
         }
     }
 }

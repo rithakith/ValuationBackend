@@ -1,11 +1,1 @@
-{
-  "Version": 1,
-  "Hash": "yai8h9Wbwad35NuaY0aq/KDDapunh7BRjdhyyiyPj1w=",
-  "Source": "ValuationBackend",
-  "BasePath": "_content/ValuationBackend",
-  "Mode": "Default",
-  "ManifestType": "Build",
-  "ReferencedProjectsConfiguration": [],
-  "DiscoveryPatterns": [],
-  "Assets": []
-}
+{"Version":1,"Hash":"KzHG/RI/7umg/UnKxj/mT9BZIA05HgfonWTbtS5r0w0=","Source":"ValuationBackend","BasePath":"_content/ValuationBackend","Mode":"Default","ManifestType":"Build","ReferencedProjectsConfiguration":[],"DiscoveryPatterns":[],"Assets":[],"Endpoints":[]}

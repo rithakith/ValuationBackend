@@ -393,11 +393,6 @@ C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Deb
 C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\ValuationBackend.sourcelink.json
 C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\staticwebassets.build.json
 C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\staticwebassets.development.json
-C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\staticwebassets\msbuild.ValuationBackend.Microsoft.AspNetCore.StaticWebAssets.props
-C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\staticwebassets\msbuild.build.ValuationBackend.props
-C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\staticwebassets\msbuild.buildMultiTargeting.ValuationBackend.props
-C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\staticwebassets\msbuild.buildTransitive.ValuationBackend.props
-C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\staticwebassets.pack.json
 C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\scopedcss\bundle\ValuationBackend.styles.css
 C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\Valuatio.909AC69E.Up2Date
 C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\ValuationBackend.dll
@@ -405,3 +400,6 @@ C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Deb
 C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\ValuationBackend.pdb
 C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\ValuationBackend.genruntimeconfig.cache
 C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\ref\ValuationBackend.dll
+C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\bin\Debug\net8.0\ValuationBackend.staticwebassets.endpoints.json
+C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\staticwebassets.build.json.cache
+C:\Users\Jayasankha\Desktop\UOM\Year 2\Software Project\ValuationBackend\obj\Debug\net8.0\staticwebassets.build.endpoints.json
