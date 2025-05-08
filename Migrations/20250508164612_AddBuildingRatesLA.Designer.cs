@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250508164612_AddBuildingRatesLA")]
+    partial class AddBuildingRatesLA
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -279,77 +282,6 @@ namespace ValuationBackend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LandMiscellaneousMasterFiles");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.PastValuationsLA", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DateOfValuation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Extent")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FileNoGNDivision")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLatitude")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLongitude")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileRefNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PlanOfParticulars")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PurposeOfValuation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Rate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RateType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Situation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PastValuationsLA", (string)null);
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.RatingRequest", b =>

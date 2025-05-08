@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250508161821_AddRentalEvidence")]
+    partial class AddRentalEvidence
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,73 +24,6 @@ namespace ValuationBackend.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
-
-            modelBuilder.Entity("ValuationBackend.Models.BuildingRatesLA", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AssessmentNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConstructedBy")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Cost")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DescriptionOfProperty")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FloorAreaSQFT")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLatitude")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLongitude")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RatePerSQFT")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("YearOfConstruction")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("BuildingRatesLA", (string)null);
-                });
 
             modelBuilder.Entity("ValuationBackend.Models.ConditionReport", b =>
                 {
@@ -281,77 +217,6 @@ namespace ValuationBackend.Migrations
                     b.ToTable("LandMiscellaneousMasterFiles");
                 });
 
-            modelBuilder.Entity("ValuationBackend.Models.PastValuationsLA", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DateOfValuation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Extent")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FileNoGNDivision")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLatitude")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLongitude")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileRefNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PlanOfParticulars")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PurposeOfValuation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Rate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RateType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Situation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("PastValuationsLA", (string)null);
-                });
-
             modelBuilder.Entity("ValuationBackend.Models.RatingRequest", b =>
                 {
                     b.Property<int>("Id")
@@ -384,7 +249,7 @@ namespace ValuationBackend.Migrations
                     b.ToTable("RatingRequests");
                 });
 
-            modelBuilder.Entity("ValuationBackend.Models.RentalEvidenceLA", b =>
+            modelBuilder.Entity("ValuationBackend.Models.RentalEvidence", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -456,130 +321,7 @@ namespace ValuationBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("RentalEvidencesLA", (string)null);
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.SalesEvidenceLA", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AssetNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Consideration")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("DeedAttestedNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("DeedNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("DescriptionOfProperty")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Extent")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FloorRate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LandRegistryReferences")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLatitude")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLongitude")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("LotNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileRefNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("NotaryName")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Occupier")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PlanDate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PlanNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Rate")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("RateType")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Remarks")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Road")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Situation")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<DateTime?>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Vendor")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Village")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("SalesEvidencesLA", (string)null);
+                    b.ToTable("RentalEvidences");
                 });
 #pragma warning restore 612, 618
         }
