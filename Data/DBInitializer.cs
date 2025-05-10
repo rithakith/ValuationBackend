@@ -17,7 +17,8 @@ namespace ValuationBackend.Data
             // Initialize Land Miscellaneous Master Files
             InitializeLandMiscellaneousMasterFiles(context);
 
-            SeedUsers(context);
+            // Initialize Users
+            InitializeUsers(context);
         }
 
         private static void InitializeRatingRequests(AppDbContext context)
@@ -120,32 +121,40 @@ namespace ValuationBackend.Data
             context.SaveChanges();
         }
 
-        private static void SeedUsers(AppDbContext context)
+        private static void InitializeUsers(AppDbContext context)
+{
+    //if (context.Users.Any()) return;
+    
+    Console.WriteLine("Seeding users...");
+
+    var users = new List<User>();
+
+    void AddUser(string username, string password, string name, string email, string id, string position, string division)
+    {
+        using var hmac = new System.Security.Cryptography.HMACSHA512();
+        users.Add(new User
         {
-            if (context.Users.Any()) return;
+            Username = username,
+            PasswordSalt = hmac.Key,
+            PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password)),
+            EmpName = name,
+            EmpEmail = email,
+            EmpId = id,
+            Position = position,
+            AssignedDivision = division
+        });
+    }
 
-            var users = new List<User>
-            {
-                CreateUser("jalinahirushan2002@gmail.com", "Jalina123"),
-                CreateUser("akith.chandinu@gmail.com", "Akith123"),
-                CreateUser("samikshaabeyweera@gmail.com", "Dulmini123"),
-                CreateUser("vishwajayasankha@gmail.com", "Vishwa123"),
-                CreateUser("ritharaedirisinghe@gmail.com", "Rithara123")
-            };
+    // Add dummy users
+    AddUser("Jalina", "Jalina123", "Jalina Hirushan", "jalinahirushan@valdept.com", "1001V", "ADV", "Gampaha");
+    AddUser("Akith", "Akith123", "Akith Chandinu", "akithchandinu@valdept.com", "1002V", "SUP", "Kurunegala");
+    AddUser("Dulmini", "Dulmini123", "Samiksha Abeyweera", "samiksha@valdept.com", "1003V", "ADV", "Colombo");
+    AddUser("Vishwa", "Vishwa123", "Vishwa Jayasankha", "vishwa@valdept.com", "1004V", "SUP", "Matara");
+    AddUser("Rithara", "Rithara123", "Rithara Edirisinghe", "rithara@valdept.com", "1005V", "ADV", "Maradana");
 
-            context.Users.AddRange(users);
-            context.SaveChanges();
-        }
-
-        private static User CreateUser(string username, string password)
-        {
-            using var hmac = new HMACSHA512();
-            return new User
-            {
-                Username = username,
-                PasswordSalt = hmac.Key,
-                PasswordHash = hmac.ComputeHash(Encoding.UTF8.GetBytes(password))
-            };
-        }
+    context.Users.AddRange(users);
+    context.SaveChanges();
+    Console.WriteLine("User data seeded.");
+}
     }
 }

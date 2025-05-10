@@ -42,5 +42,17 @@ namespace ValuationBackend.Controllers
 
             return Ok(new { msg = "success" });
         }
+
+        [HttpPost("forgot-password")]
+        public IActionResult ForgotPassword([FromBody] ForgotPasswordRequest request)
+        {
+            var user = _context.Users.FirstOrDefault(u => u.Username == request.Username);
+            if (user == null)
+                return NotFound(new { msg = "User not found" });
+
+            // In real apps, you'd send an email or reset link here
+
+            return Ok(new { msg = "success" });
+        }
     }
 }

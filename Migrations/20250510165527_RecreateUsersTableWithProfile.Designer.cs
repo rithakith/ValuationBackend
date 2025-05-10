@@ -11,8 +11,8 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250508172836_AddUsersTable")]
-    partial class AddUsersTable
+    [Migration("20250510165527_RecreateUsersTableWithProfile")]
+    partial class RecreateUsersTableWithProfile
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -100,6 +100,22 @@ namespace ValuationBackend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("AssignedDivision")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmpEmail")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmpId")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("EmpName")
+                        .IsRequired()
+                        .HasColumnType("text");
+
                     b.Property<byte[]>("PasswordHash")
                         .IsRequired()
                         .HasColumnType("bytea");
@@ -107,6 +123,10 @@ namespace ValuationBackend.Migrations
                     b.Property<byte[]>("PasswordSalt")
                         .IsRequired()
                         .HasColumnType("bytea");
+
+                    b.Property<string>("Position")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Username")
                         .IsRequired()
