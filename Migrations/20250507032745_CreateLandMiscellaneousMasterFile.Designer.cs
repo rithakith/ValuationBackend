@@ -11,8 +11,8 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250502032217_AddLandMiscellaneousMasterFile")]
-    partial class AddLandMiscellaneousMasterFile
+    [Migration("20250507032745_CreateLandMiscellaneousMasterFile")]
+    partial class CreateLandMiscellaneousMasterFile
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -44,10 +44,6 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("RequestingAuthorityReferenceNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Source")
                         .IsRequired()
                         .HasColumnType("text");
 
