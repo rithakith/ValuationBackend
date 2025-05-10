@@ -10,6 +10,5 @@ namespace ValuationBackend.Models
         public string PlanNo { get; set; }
         public string RequestingAuthorityReferenceNo { get; set; }
         public string Status { get; set; }
-        public string Source { get; set; }
     }
 }

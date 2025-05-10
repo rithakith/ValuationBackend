@@ -68,48 +68,147 @@ namespace ValuationBackend.Data
                 new LandMiscellaneousMasterFile
                 {
                     MasterFileNo = 52412,
-                    PlanType = "Survey Plan",
-                    PlanNo = "SP-2023-001",
-                    RequestingAuthorityReferenceNo = "001",
+                    PlanType = "PP",
+                    PlanNo = "pp-2023-001",
+                    RequestingAuthorityReferenceNo = "12341234-A-01",
                     Status = "Success",
-                    Source = "https://example.com/plans/SP-2023-001"
                 },
                 new LandMiscellaneousMasterFile
                 {
                     MasterFileNo = 52413,
-                    PlanType = "Block Survey",
-                    PlanNo = "BS-2023-045",
-                    RequestingAuthorityReferenceNo = "002",
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-045",
+                    RequestingAuthorityReferenceNo = "12341234-A-02",
                     Status = "Pending",
-                    Source = "https://example.com/plans/BS-2023-045"
                 },
                 new LandMiscellaneousMasterFile
                 {
                     MasterFileNo = 52414,
-                    PlanType = "Preliminary Plan",
-                    PlanNo = "PP-2022-123",
-                    RequestingAuthorityReferenceNo = "003",
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2022-123",
+                    RequestingAuthorityReferenceNo = "12341234-A-03",
                     Status = "Success",
-                    Source = "https://example.com/plans/PP-2022-123"
                 },
                 new LandMiscellaneousMasterFile
                 {
                     MasterFileNo = 52415,
-                    PlanType = "Final Village Plan",
-                    PlanNo = "FVP-2021-078",
-                    RequestingAuthorityReferenceNo = "004",
-                    Status = "Rejected",
-                    Source = "https://example.com/plans/FVP-2021-078"
+                    PlanType = "PP",
+                    PlanNo = "PP-2021-078",
+                    RequestingAuthorityReferenceNo = "12341234-A-04",
+                    Status = "Pending",
                 },
                 new LandMiscellaneousMasterFile
                 {
                     MasterFileNo = 52416,
-                    PlanType = "Topographical Survey",
-                    PlanNo = "TS-2023-099",
-                    RequestingAuthorityReferenceNo = "005",
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-099",
+                    RequestingAuthorityReferenceNo = "12341234-A-05",
                     Status = "Success",
-                    Source = "https://example.com/plans/TS-2023-099"
-                }
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52417,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-102",
+                    RequestingAuthorityReferenceNo = "12341234-A-06",
+                    Status = "Pending",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52418,
+                    PlanType = "PP",
+                    PlanNo = "PP-2022-233",
+                    RequestingAuthorityReferenceNo = "12341234-A-07",
+                    Status = "Success",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52419,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-145",
+                    RequestingAuthorityReferenceNo = "12341234-A-08",
+                    Status = "Pending",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52420,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2022-323",
+                    RequestingAuthorityReferenceNo = "12341234-A-09",
+                    Status = "Success",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52421,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-178",
+                    RequestingAuthorityReferenceNo = "12341234-A-10",
+                    Status = "Pending",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52422,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2022-299",
+                    RequestingAuthorityReferenceNo = "12341234-A-11",
+                    Status = "Success",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52423,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-202",
+                    RequestingAuthorityReferenceNo = "12341234-A-12",
+                    Status = "Pending",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52424,
+                    PlanType = "PP",
+                    PlanNo = "PP-2022-333",
+                    RequestingAuthorityReferenceNo = "12341234-A-13",
+                    Status = "Success",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52425,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-245",
+                    RequestingAuthorityReferenceNo = "12341234-A-14",
+                    Status = "Pending",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52426,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2022-423",
+                    RequestingAuthorityReferenceNo = "12341234-A-15",
+                    Status = "Success",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52427,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-278",
+                    RequestingAuthorityReferenceNo = "12341234-A-16",
+                    Status = "Pending",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52428,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2022-399",
+                    RequestingAuthorityReferenceNo = "12341234-A-17",
+                    Status = "Success",
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52429,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-302",
+                    RequestingAuthorityReferenceNo = "12341234-A-18",
+                    Status = "Pending",
+                },
             };
 
             context.LandMiscellaneousMasterFiles.AddRange(masterFiles);
