@@ -10,5 +10,11 @@ namespace ValuationBackend.Data
         public DbSet<RatingRequest> RatingRequests { get; set; }
 
         public DbSet<LandMiscellaneousMasterFile> LandMiscellaneousMasterFiles { get; set; }
+        
+        public DbSet<Report> Reports { get; set; }
+        
+        public DbSet<InspectionReport> InspectionReports { get; set; }
+        
+        public DbSet<InspectionBuilding> InspectionBuildings { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250511082050_CreateInspectionReportTables")]
+    partial class CreateInspectionReportTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -31,110 +34,144 @@ namespace ValuationBackend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AgeYears")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("BathroomToilet")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("BathroomToiletDoorsFittings")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("BuildingCategory")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("BuildingClass")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("BuildingConditions")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("BuildingId")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("BuildingName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Ceiling")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Condition")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Conveniences")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Design")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DetailOfBuilding")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Door")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ExpectedLifePeriodYears")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FloorFinisher")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FloorStructure")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FoundationStructure")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HandRail")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("InspectionReportId")
                         .HasColumnType("integer");
 
                     b.Property<string>("NatureOfConstruction")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("NoOfFloorsAboveGround")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("NoOfFloorsAboveGround");
 
                     b.Property<string>("NoOfFloorsBelowGround")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("NoOfFloorsBelowGround");
 
                     b.Property<string>("OtherDoors")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PantryCupboard")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ParkingSpace")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RoofFinisher")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RoofFrame")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RoofMaterial")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Services")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Structure")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("WallFinisher")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("WallStructure")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Window")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("WindowProtection")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -153,19 +190,24 @@ namespace ValuationBackend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("InspectionReportId"));
 
                     b.Property<string>("DetailsOfAssestsInventoryItems")
+                        .IsRequired()
                         .HasColumnType("text")
                         .HasColumnName("DetailsOfAssestsInventoryItems");
 
                     b.Property<string>("DetailsOfBusiness")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("District")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DsDivision")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("GnDivision")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("InspectionDate")
@@ -180,21 +222,26 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("OtherConstructionDetails")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("OtherInformation")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Province")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Remark")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("ReportId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Village")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("InspectionReportId");
