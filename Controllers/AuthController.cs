@@ -38,7 +38,7 @@ namespace ValuationBackend.Controllers
         {
             var userExists = _context.Users.Any(u => u.Username == request.Username);
             if (!userExists)
-                return NotFound(new { msg = "User not founded" });
+                return NotFound(new { msg = "User not found" });
 
             return Ok(new { msg = "success" });
         }
