@@ -14,6 +14,9 @@ namespace ValuationBackend.Data
 
             // Initialize Land Miscellaneous Master Files
             InitializeLandMiscellaneousMasterFiles(context);
+            
+            // Initialize Reports
+            InitializeReports(context);
         }
 
         private static void InitializeRatingRequests(AppDbContext context)
@@ -209,9 +212,40 @@ namespace ValuationBackend.Data
                     RequestingAuthorityReferenceNo = "12341234-A-18",
                     Status = "Pending",
                 },
+            };            context.LandMiscellaneousMasterFiles.AddRange(masterFiles);
+            context.SaveChanges();
+        }
+
+        private static void InitializeReports(AppDbContext context)
+        {
+            // If there's any data, stop
+            if (context.Reports.Any())
+                return;
+
+            // Add some sample reports
+            var reports = new Report[]
+            {
+                new Report
+                {
+                    ReportType = "Valuation Report",
+                    Description = "Annual valuation summary report",
+                    Timestamp = DateTime.UtcNow.AddDays(-30)
+                },
+                new Report
+                {
+                    ReportType = "Rating Assessment",
+                    Description = "Quarterly rating assessment report",
+                    Timestamp = DateTime.UtcNow.AddDays(-15)
+                },
+                new Report
+                {
+                    ReportType = "Audit Report",
+                    Description = "System audit report",
+                    Timestamp = DateTime.UtcNow.AddDays(-7)
+                }
             };
 
-            context.LandMiscellaneousMasterFiles.AddRange(masterFiles);
+            context.Reports.AddRange(reports);
             context.SaveChanges();
         }
     }

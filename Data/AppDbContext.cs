@@ -11,6 +11,12 @@ namespace ValuationBackend.Data
 
         public DbSet<LandMiscellaneousMasterFile> LandMiscellaneousMasterFiles { get; set; }
         
+        public DbSet<Report> Reports { get; set; }
+        
+        public DbSet<InspectionReport> InspectionReports { get; set; }
+        
+        public DbSet<InspectionBuilding> InspectionBuildings { get; set; }
+
         public DbSet<ConditionReport> ConditionReports { get; set; }
         
         public DbSet<RentalEvidenceLA> RentalEvidencesLA { get; set; }
