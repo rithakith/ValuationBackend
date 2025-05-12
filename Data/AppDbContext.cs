@@ -10,5 +10,7 @@ namespace ValuationBackend.Data
         public DbSet<RatingRequest> RatingRequests { get; set; }
 
         public DbSet<LandMiscellaneousMasterFile> LandMiscellaneousMasterFiles { get; set; }
+
+       
     }
 }
