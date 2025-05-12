@@ -6,7 +6,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace ValuationBackend.Migrations
 {
     /// <inheritdoc />
-    public partial class AddLandMiscellaneousMasterFile : Migration
+    public partial class CreateLandMiscellaneousMasterFile : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -21,8 +21,7 @@ namespace ValuationBackend.Migrations
                     PlanType = table.Column<string>(type: "text", nullable: false),
                     PlanNo = table.Column<string>(type: "text", nullable: false),
                     RequestingAuthorityReferenceNo = table.Column<string>(type: "text", nullable: false),
-                    Status = table.Column<string>(type: "text", nullable: false),
-                    Source = table.Column<string>(type: "text", nullable: false)
+                    Status = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {

@@ -9,6 +9,7 @@ namespace ValuationBackend.Data
 
         public DbSet<RatingRequest> RatingRequests { get; set; }
         public DbSet<LandMiscellaneousMasterFile> LandMiscellaneousMasterFiles { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<UserTask> UserTasks { get; set; }
@@ -18,7 +19,32 @@ namespace ValuationBackend.Data
         public DbSet<ImageData> ImageData { get; set; }
 
         public DbSet<LandAquisitionMasterFile> LandAquisitionMasterFiles { get; set; }
+        
+        public DbSet<Report> Reports { get; set; }
+        
+        public DbSet<InspectionReport> InspectionReports { get; set; }
+        
+        public DbSet<InspectionBuilding> InspectionBuildings { get; set; }
 
-
+        public DbSet<ConditionReport> ConditionReports { get; set; }
+        
+        public DbSet<RentalEvidenceLA> RentalEvidencesLA { get; set; }
+        
+        public DbSet<SalesEvidenceLA> SalesEvidencesLA { get; set; }
+        
+        public DbSet<BuildingRatesLA> BuildingRatesLA { get; set; }
+        
+        public DbSet<PastValuationsLA> PastValuationsLA { get; set; }
+        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            
+            // Configure entity table names explicitly
+            modelBuilder.Entity<RentalEvidenceLA>().ToTable("RentalEvidencesLA");
+            modelBuilder.Entity<SalesEvidenceLA>().ToTable("SalesEvidencesLA");
+            modelBuilder.Entity<BuildingRatesLA>().ToTable("BuildingRatesLA");
+            modelBuilder.Entity<PastValuationsLA>().ToTable("PastValuationsLA");
+        }
     }
 }
