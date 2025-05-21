@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250520141342_RemoveLMRentalEvidence")]
+    partial class RemoveLMRentalEvidence
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -489,21 +492,27 @@ namespace ValuationBackend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AssessmentNo")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FloorRate")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HeadOfTerms")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLatitude")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLongitude")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("MasterFileRefNo")
@@ -511,31 +520,37 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Occupier")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Owner")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RatePer")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RatePerMonth")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Remarks")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("ReportId")
                         .HasColumnType("integer");
 
                     b.Property<string>("Situation")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
 
                     b.HasIndex("ReportId");
 
-                    b.ToTable("LMRentalEvidences");
+                    b.ToTable("LMRentalEvidences", (string)null);
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.LandMiscellaneousMasterFile", b =>
