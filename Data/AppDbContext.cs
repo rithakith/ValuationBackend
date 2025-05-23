@@ -38,6 +38,7 @@ namespace ValuationBackend.Data
 
         public DbSet<LMRentalEvidence> LMRentalEvidences { get; set; }
         public DbSet<LMSalesEvidence> LMSalesEvidences { get; set; }
+        public DbSet<LMPastValuation> LMPastValuations { get; set; } // Add this line
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
