@@ -17,11 +17,73 @@ namespace ValuationBackend.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "9.0.4")
+                .HasAnnotation("ProductVersion", "9.0.4") // Keeping the version from the files
                 .HasAnnotation("Relational:MaxIdentifierLength", 63);
 
             NpgsqlModelBuilderExtensions.UseIdentityByDefaultColumns(modelBuilder);
 
+            // --- Entities from dev-jayasankha ---
+            modelBuilder.Entity("LandAquisitionMasterFile", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                b.Property<int>("MasterFileNo")
+                    .HasColumnType("integer");
+
+                b.Property<string>("PlanNo")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("PlanType")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("RequestingAuthorityReferenceNo")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("Status")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.HasKey("Id");
+
+                b.ToTable("LandAquisitionMasterFiles");
+            });
+
+            modelBuilder.Entity("ValuationBackend.Models.ImageData", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                b.Property<string>("ImageBase64")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("ReportId") // Assuming this relates to Report.ReportId as string, adjust if it should be int
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.HasKey("Id");
+
+                // Potential Foreign Key - uncomment and adjust if ReportId refers to Report table's Id
+                // b.HasIndex("ReportId"); // Add index if frequently queried
+                // b.HasOne("ValuationBackend.Models.Report", "Report")
+                //     .WithMany() // Or .WithMany("Images") if Report has a collection
+                //     .HasForeignKey("ReportId") // Assuming ReportId is the FK property name
+                //     .HasPrincipalKey(r => r.ReportId); // Assuming ReportId is the PK in Report
+
+                b.ToTable("ImageData");
+            });
+
+            // --- Entities from main ---
             modelBuilder.Entity("ValuationBackend.Models.InspectionBuilding", b =>
             {
                 b.Property<int>("Id")
@@ -423,6 +485,7 @@ namespace ValuationBackend.Migrations
                 b.ToTable("ConditionReports");
             });
 
+            // --- Common Entities (present in both or base) ---
             modelBuilder.Entity("ValuationBackend.Models.LandMiscellaneousMasterFile", b =>
             {
                 b.Property<int>("Id")
@@ -524,6 +587,27 @@ namespace ValuationBackend.Migrations
                 b.HasKey("Id");
 
                 b.ToTable("PastValuationsLA", (string)null);
+            });
+
+            modelBuilder.Entity("ValuationBackend.Models.MasterDataItem", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                b.Property<string>("Category")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("Value")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.HasKey("Id");
+
+                b.ToTable("MasterDataItems");
             });
 
             modelBuilder.Entity("ValuationBackend.Models.RatingRequest", b =>
@@ -777,10 +861,91 @@ namespace ValuationBackend.Migrations
                 b.ToTable("SalesEvidencesLA", (string)null);
             });
 
+            // --- Entities from dev-jayasankha (User related) ---
+            modelBuilder.Entity("ValuationBackend.Models.User", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                b.Property<string>("AssignedDivision")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("EmpEmail")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("EmpId")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("EmpName")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<byte[]>("PasswordHash")
+                    .IsRequired()
+                    .HasColumnType("bytea");
+
+                b.Property<byte[]>("PasswordSalt")
+                    .IsRequired()
+                    .HasColumnType("bytea");
+
+                b.Property<string>("Position")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("Username")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.HasKey("Id");
+
+                b.ToTable("Users");
+            });
+
+            modelBuilder.Entity("ValuationBackend.Models.UserTask", b =>
+            {
+                b.Property<int>("Id")
+                    .ValueGeneratedOnAdd()
+                    .HasColumnType("integer");
+
+                NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                b.Property<DateTime>("AssignedDate")
+                    .HasColumnType("timestamp with time zone");
+
+                b.Property<bool>("IsCompleted")
+                    .HasColumnType("boolean");
+
+                b.Property<string>("TaskType")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.Property<string>("Username")
+                    .IsRequired()
+                    .HasColumnType("text");
+
+                b.HasKey("Id");
+
+                // Potential Foreign Key - uncomment and adjust if Username refers to User table's Username
+                // b.HasIndex("Username"); // Add index if frequently queried
+                // b.HasOne("ValuationBackend.Models.User", "User")
+                //     .WithMany("UserTasks") // Assuming User has a collection named UserTasks
+                //     .HasForeignKey("Username") // Assuming Username is the FK property name
+                //     .HasPrincipalKey(u => u.Username); // Assuming Username is the PK/Unique key in User
+
+                b.ToTable("UserTasks");
+            });
+
+            // --- Relationships defined in main ---
             modelBuilder.Entity("ValuationBackend.Models.InspectionBuilding", b =>
             {
                 b.HasOne("ValuationBackend.Models.InspectionReport", "InspectionReport")
-                    .WithMany("Buildings")
+                    .WithMany("Buildings") // Assuming InspectionReport has a collection named "Buildings"
                     .HasForeignKey("InspectionReportId")
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
@@ -791,16 +956,17 @@ namespace ValuationBackend.Migrations
             modelBuilder.Entity("ValuationBackend.Models.InspectionReport", b =>
             {
                 b.HasOne("ValuationBackend.Models.Report", "Report")
-                    .WithMany()
+                    .WithMany() // Assuming Report does not have a collection of InspectionReports
                     .HasForeignKey("ReportId")
                     .OnDelete(DeleteBehavior.Cascade)
                     .IsRequired();
 
                 b.Navigation("Report");
 
-                // This configures the navigation property on InspectionReport side
+                // This defines the navigation property on the InspectionReport side for the collection of Buildings
                 b.Navigation("Buildings");
             });
+
 #pragma warning restore 612, 618
         }
     }
