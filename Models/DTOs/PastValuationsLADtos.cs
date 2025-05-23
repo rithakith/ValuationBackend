@@ -20,6 +20,9 @@ namespace ValuationBackend.Models.DTOs
         public string? Remarks { get; set; }
         public string? LocationLongitude { get; set; }
         public string? LocationLatitude { get; set; }
+        
+        // Added for linking to report
+        public int ReportId { get; set; }
     }
 
     // Input DTO for updating an existing past valuation record
@@ -41,8 +44,8 @@ namespace ValuationBackend.Models.DTOs
         public string? LocationLatitude { get; set; }
     }
 
-    // Response DTO with past valuation ID information
-    public class PastValuationsLAResponseDto
+    // Read DTO for consistent naming with other services
+    public class PastValuationsLAReadDto
     {
         public int Id { get; set; }
         public int ReportId { get; set; }
