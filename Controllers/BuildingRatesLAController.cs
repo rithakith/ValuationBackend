@@ -1,9 +1,12 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using System.Linq;
 using ValuationBackend.Data;
 using ValuationBackend.Models;
-using System;
+using ValuationBackend.Models.DTOs;
 
 namespace ValuationBackend.Controllers
 {
@@ -18,66 +21,182 @@ namespace ValuationBackend.Controllers
             _context = context;
         }
 
-        [HttpPost("submit")]
-        public async Task<IActionResult> SubmitBuildingRatesLA([FromBody] BuildingRatesLA buildingRates)
+        // GET: api/BuildingRatesLA
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<BuildingRatesLAResponseDto>>> GetBuildingRatesLA()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            buildingRates.CreatedAt = DateTime.UtcNow;
-            _context.BuildingRatesLA.Add(buildingRates);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Building rates saved successfully", buildingRatesId = buildingRates.Id });
+            var buildingRates = await _context.BuildingRatesLA.ToListAsync();
+            return buildingRates.Select(MapToResponseDto).ToList();
         }
 
-        [HttpPut("edit/{id}")]
-        [HttpPatch("edit/{id}")]
-        public async Task<IActionResult> EditBuildingRatesLA(int id, [FromBody] BuildingRatesLA buildingRates)
+        // GET: api/BuildingRatesLA/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BuildingRatesLAResponseDto>> GetBuildingRateLA(int id)
         {
-            if (!ModelState.IsValid)
+            var buildingRate = await _context.BuildingRatesLA.FindAsync(id);
+
+            if (buildingRate == null)
             {
-                return BadRequest(ModelState);
+                return NotFound();
             }
 
-            // Find the existing building rates
-            var existingBuildingRates = await _context.BuildingRatesLA.FindAsync(id);
-            if (existingBuildingRates == null)
+            return MapToResponseDto(buildingRate);
+        }
+
+        // POST: api/BuildingRatesLA
+        [HttpPost]
+        public async Task<ActionResult<BuildingRatesLAResponseDto>> CreateBuildingRateLA(BuildingRatesLACreateDto dto)
+        {
+            // Create a new Report for this building rate
+            var report = new Report
             {
-                return NotFound($"Building rates with ID {id} not found");
+                ReportType = "LA_building_rate",
+                Timestamp = DateTime.UtcNow,
+                Description = $"Land Acquisition Building Rate for {dto.MasterFileId}"
+            };
+
+            // Add the report first
+            _context.Reports.Add(report);
+            await _context.SaveChangesAsync();
+
+            // Create the building rate entity from the DTO
+            var buildingRate = new BuildingRatesLA
+            {
+                ReportId = report.ReportId,
+                MasterFileId = dto.MasterFileId,
+                AssessmentNumber = dto.AssessmentNumber,
+                Owner = dto.Owner,
+                ConstructedBy = dto.ConstructedBy,
+                YearOfConstruction = dto.YearOfConstruction,
+                DescriptionOfProperty = dto.DescriptionOfProperty,
+                FloorAreaSQFT = dto.FloorAreaSQFT,
+                RatePerSQFT = dto.RatePerSQFT,
+                Cost = dto.Cost,
+                Remarks = dto.Remarks,
+                LocationLatitude = dto.LocationLatitude,
+                LocationLongitude = dto.LocationLongitude,
+                CreatedAt = DateTime.UtcNow
+            };
+            
+            _context.BuildingRatesLA.Add(buildingRate);
+            await _context.SaveChangesAsync();
+
+            return CreatedAtAction(nameof(GetBuildingRateLA), 
+                new { id = buildingRate.Id }, 
+                MapToResponseDto(buildingRate));
+        }
+
+        // PUT: api/BuildingRatesLA/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBuildingRateLA(int id, BuildingRatesLAUpdateDto dto)
+        {
+            // Verify building rate exists
+            var existingBuildingRate = await _context.BuildingRatesLA.FindAsync(id);
+
+            if (existingBuildingRate == null)
+            {
+                return NotFound();
             }
 
-            // Set the correct ID in the building rates object
-            buildingRates.Id = id;
-            buildingRates.CreatedAt = existingBuildingRates.CreatedAt;
-            buildingRates.UpdatedAt = DateTime.UtcNow;
-            
-            // Update the existing building rates with new values
-            _context.Entry(existingBuildingRates).CurrentValues.SetValues(buildingRates);
-            
+            // Update existing building rate with data from DTO
+            existingBuildingRate.MasterFileId = dto.MasterFileId;
+            existingBuildingRate.AssessmentNumber = dto.AssessmentNumber;
+            existingBuildingRate.Owner = dto.Owner;
+            existingBuildingRate.ConstructedBy = dto.ConstructedBy;
+            existingBuildingRate.YearOfConstruction = dto.YearOfConstruction;
+            existingBuildingRate.DescriptionOfProperty = dto.DescriptionOfProperty;
+            existingBuildingRate.FloorAreaSQFT = dto.FloorAreaSQFT;
+            existingBuildingRate.RatePerSQFT = dto.RatePerSQFT;
+            existingBuildingRate.Cost = dto.Cost;
+            existingBuildingRate.Remarks = dto.Remarks;
+            existingBuildingRate.LocationLatitude = dto.LocationLatitude;
+            existingBuildingRate.LocationLongitude = dto.LocationLongitude;
+            existingBuildingRate.UpdatedAt = DateTime.UtcNow;
+
             try
             {
                 await _context.SaveChangesAsync();
-                return Ok(new { message = "Building rates updated successfully", buildingRatesId = id });
             }
             catch (DbUpdateConcurrencyException)
             {
                 if (!BuildingRatesLAExists(id))
                 {
-                    return NotFound($"Building rates with ID {id} not found");
+                    return NotFound();
                 }
                 else
                 {
                     throw;
                 }
             }
+
+            return NoContent();
+        }
+
+        // DELETE: api/BuildingRatesLA/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBuildingRateLA(int id)
+        {
+            var buildingRate = await _context.BuildingRatesLA.FindAsync(id);
+
+            if (buildingRate == null)
+            {
+                return NotFound();
+            }
+
+            // Also delete the associated report
+            var report = await _context.Reports.FindAsync(buildingRate.ReportId);
+            if (report != null)
+            {
+                _context.Reports.Remove(report);
+            }
+
+            _context.BuildingRatesLA.Remove(buildingRate);
+            await _context.SaveChangesAsync();
+
+            return NoContent();
+        }
+
+        // GET: api/BuildingRatesLA/ByReport/{reportId}
+        [HttpGet("ByReport/{reportId}")]
+        public async Task<ActionResult<BuildingRatesLAResponseDto>> GetBuildingRateLAByReportId(int reportId)
+        {
+            var buildingRate = await _context.BuildingRatesLA
+                .FirstOrDefaultAsync(br => br.ReportId == reportId);
+
+            if (buildingRate == null)
+            {
+                return NotFound();
+            }
+
+            return MapToResponseDto(buildingRate);
         }
 
         private bool BuildingRatesLAExists(int id)
         {
             return _context.BuildingRatesLA.Any(e => e.Id == id);
+        }
+
+        private BuildingRatesLAResponseDto MapToResponseDto(BuildingRatesLA buildingRate)
+        {
+            return new BuildingRatesLAResponseDto
+            {
+                Id = buildingRate.Id,
+                ReportId = buildingRate.ReportId,
+                MasterFileId = buildingRate.MasterFileId,
+                AssessmentNumber = buildingRate.AssessmentNumber,
+                Owner = buildingRate.Owner,
+                ConstructedBy = buildingRate.ConstructedBy,
+                YearOfConstruction = buildingRate.YearOfConstruction,
+                DescriptionOfProperty = buildingRate.DescriptionOfProperty,
+                FloorAreaSQFT = buildingRate.FloorAreaSQFT,
+                RatePerSQFT = buildingRate.RatePerSQFT,
+                Cost = buildingRate.Cost,
+                Remarks = buildingRate.Remarks,
+                LocationLatitude = buildingRate.LocationLatitude,
+                LocationLongitude = buildingRate.LocationLongitude,
+                CreatedAt = buildingRate.CreatedAt,
+                UpdatedAt = buildingRate.UpdatedAt
+            };
         }
     }
 }
