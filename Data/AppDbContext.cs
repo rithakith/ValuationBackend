@@ -19,32 +19,35 @@ namespace ValuationBackend.Data
         public DbSet<ImageData> ImageData { get; set; }
 
         public DbSet<LandAquisitionMasterFile> LandAquisitionMasterFiles { get; set; }
-        
+
         public DbSet<Report> Reports { get; set; }
-        
+
         public DbSet<InspectionReport> InspectionReports { get; set; }
-        
+
         public DbSet<InspectionBuilding> InspectionBuildings { get; set; }
 
         public DbSet<ConditionReport> ConditionReports { get; set; }
-        
+
         public DbSet<RentalEvidenceLA> RentalEvidencesLA { get; set; }
-        
+
         public DbSet<SalesEvidenceLA> SalesEvidencesLA { get; set; }
-        
+
         public DbSet<BuildingRatesLA> BuildingRatesLA { get; set; }
-        
+
         public DbSet<PastValuationsLA> PastValuationsLA { get; set; }
-        
+
+        public DbSet<LMRentalEvidence> LMRentalEvidences { get; set; }
+        public DbSet<LMSalesEvidence> LMSalesEvidences { get; set; }
+        public DbSet<LMPastValuation> LMPastValuations { get; set; }
+        public DbSet<LMBuildingRates> LMBuildingRates { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);
-            
+
             // Configure entity table names explicitly
             modelBuilder.Entity<RentalEvidenceLA>().ToTable("RentalEvidencesLA");
             modelBuilder.Entity<SalesEvidenceLA>().ToTable("SalesEvidencesLA");
-            modelBuilder.Entity<BuildingRatesLA>().ToTable("BuildingRatesLA");
-            modelBuilder.Entity<PastValuationsLA>().ToTable("PastValuationsLA");
         }
     }
 }

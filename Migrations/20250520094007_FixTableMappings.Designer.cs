@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250520094007_FixTableMappings")]
+    partial class FixTableMappings
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -480,256 +483,6 @@ namespace ValuationBackend.Migrations
                     b.ToTable("InspectionReports");
                 });
 
-            modelBuilder.Entity("ValuationBackend.Models.LMBuildingRates", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AssessmentNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ConstructedBy")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Cost")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DescriptionOfProperty")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FloorArea")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLatitude")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLongitude")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileRefNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Owner")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RatePerSQFT")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ReportId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("YearOfConstruction")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReportId");
-
-                    b.ToTable("LMBuildingRates");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.LMPastValuation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("DateOfValuation")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Extent")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FileNo_GnDivision")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLatitude")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLongitude")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileRefNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PlanOfParticulars")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PurposeOfValuation")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Rate")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RateType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ReportId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Situation")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReportId");
-
-                    b.ToTable("LMPastValuations");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.LMRentalEvidence", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AssessmentNo")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Description")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FloorRate")
-                        .HasColumnType("text");
-
-                    b.Property<string>("HeadOfTerms")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLatitude")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLongitude")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileRefNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Occupier")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Owner")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RatePer")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RatePerMonth")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ReportId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Situation")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReportId");
-
-                    b.ToTable("LMRentalEvidences");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.LMSalesEvidence", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AssetNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Consideration")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DeedAttestedNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DeedNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("DescriptionOfProperty")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Extent")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LandRegistryReferences")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLatitude")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocationLongitude")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LotNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileRefNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("NotaryName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PlanDate")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PlanNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Rate")
-                        .HasColumnType("text");
-
-                    b.Property<string>("RateType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Remarks")
-                        .HasColumnType("text");
-
-                    b.Property<int>("ReportId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Road")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Situation")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Vendor")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Village")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ReportId");
-
-                    b.ToTable("LMSalesEvidences");
-                });
-
             modelBuilder.Entity("ValuationBackend.Models.LandMiscellaneousMasterFile", b =>
                 {
                     b.Property<int>("Id")
@@ -1193,50 +946,6 @@ namespace ValuationBackend.Migrations
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.InspectionReport", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Report", "Report")
-                        .WithMany()
-                        .HasForeignKey("ReportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Report");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.LMBuildingRates", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Report", "Report")
-                        .WithMany()
-                        .HasForeignKey("ReportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Report");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.LMPastValuation", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Report", "Report")
-                        .WithMany()
-                        .HasForeignKey("ReportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Report");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.LMRentalEvidence", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Report", "Report")
-                        .WithMany()
-                        .HasForeignKey("ReportId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Report");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.LMSalesEvidence", b =>
                 {
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()
