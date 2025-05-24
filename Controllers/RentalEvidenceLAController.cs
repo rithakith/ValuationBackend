@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using ValuationBackend.Data;
-using ValuationBackend.Models;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ValuationBackend.Models.DTOs;
+using ValuationBackend.Services;
 
 namespace ValuationBackend.Controllers
 {
@@ -11,73 +11,91 @@ namespace ValuationBackend.Controllers
     [Route("api/[controller]")]
     public class RentalEvidenceLAController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IRentalEvidenceLAService _rentalEvidenceService;
 
-        public RentalEvidenceLAController(AppDbContext context)
+        public RentalEvidenceLAController(IRentalEvidenceLAService rentalEvidenceService)
         {
-            _context = context;
+            _rentalEvidenceService = rentalEvidenceService;
         }
 
-        [HttpPost("submit")]
-        public async Task<IActionResult> SubmitRentalEvidenceLA([FromBody] RentalEvidenceLA evidence)
+        // GET: api/RentalEvidenceLA
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<RentalEvidenceLAResponseDto>>> GetRentalEvidencesLA()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            evidence.CreatedAt = DateTime.UtcNow;
-            _context.RentalEvidencesLA.Add(evidence);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Rental evidence saved successfully", evidenceId = evidence.Id });
+            var rentalEvidences = await _rentalEvidenceService.GetAllRentalEvidencesAsync();
+            return Ok(rentalEvidences);
         }
 
-        [HttpPut("edit/{id}")]
-        [HttpPatch("edit/{id}")]
-        public async Task<IActionResult> EditRentalEvidenceLA(int id, [FromBody] RentalEvidenceLA evidence)
+        // GET: api/RentalEvidenceLA/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<RentalEvidenceLAResponseDto>> GetRentalEvidenceLA(int id)
         {
-            if (!ModelState.IsValid)
+            var rentalEvidence = await _rentalEvidenceService.GetRentalEvidenceByIdAsync(id);
+
+            if (rentalEvidence == null)
             {
-                return BadRequest(ModelState);
+                return NotFound();
             }
 
-            // Find the existing evidence
-            var existingEvidence = await _context.RentalEvidencesLA.FindAsync(id);
-            if (existingEvidence == null)
-            {
-                return NotFound($"Rental evidence with ID {id} not found");
-            }
+            return Ok(rentalEvidence);
+        }
 
-            // Set the correct ID in the evidence object
-            evidence.Id = id;
-            evidence.CreatedAt = existingEvidence.CreatedAt;
-            evidence.UpdatedAt = DateTime.UtcNow;
+        // POST: api/RentalEvidenceLA
+        [HttpPost]
+        public async Task<ActionResult<RentalEvidenceLACreationResponseDto>> CreateRentalEvidenceLA(RentalEvidenceLACreateDto dto)
+        {
+            var createdRentalEvidence = await _rentalEvidenceService.CreateRentalEvidenceAsync(dto);
             
-            // Update the existing evidence with new values
-            _context.Entry(existingEvidence).CurrentValues.SetValues(evidence);
+            // Return the custom response format with msg and reportId
+            var response = new RentalEvidenceLACreationResponseDto
+            {
+                Msg = "success",
+                ReportId = createdRentalEvidence.ReportId // Using the common report table ID
+            };
             
-            try
-            {
-                await _context.SaveChangesAsync();
-                return Ok(new { message = "Rental evidence updated successfully", evidenceId = id });
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RentalEvidenceLAExists(id))
-                {
-                    return NotFound($"Rental evidence with ID {id} not found");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            return Ok(response);
         }
 
-        private bool RentalEvidenceLAExists(int id)
+        // PUT: api/RentalEvidenceLA/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateRentalEvidenceLA(int id, RentalEvidenceLAUpdateDto dto)
         {
-            return _context.RentalEvidencesLA.Any(e => e.Id == id);
+            var updatedRentalEvidence = await _rentalEvidenceService.UpdateRentalEvidenceAsync(id, dto);
+
+            if (updatedRentalEvidence == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/RentalEvidenceLA/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteRentalEvidenceLA(int id)
+        {
+            var result = await _rentalEvidenceService.DeleteRentalEvidenceAsync(id);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        // GET: api/RentalEvidenceLA/ByReport/{reportId}
+        [HttpGet("ByReport/{reportId}")]
+        public async Task<ActionResult<RentalEvidenceLAResponseDto>> GetRentalEvidenceLAByReportId(int reportId)
+        {
+            var rentalEvidence = await _rentalEvidenceService.GetRentalEvidenceByReportIdAsync(reportId);
+
+            if (rentalEvidence == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(rentalEvidence);
         }
     }
 }
