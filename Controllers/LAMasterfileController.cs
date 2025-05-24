@@ -29,6 +29,7 @@ namespace ValuationBackend.Controllers
             var query = request.Query.ToLower();
             var data = _context.LandAquisitionMasterFiles
                 .Where(f =>
+                    f.MasterFileNo.ToString().Contains(query) ||
                     f.PlanNo.ToLower().Contains(query) ||
                     f.PlanType.ToLower().Contains(query) ||
                     f.RequestingAuthorityReferenceNo.ToLower().Contains(query) ||
