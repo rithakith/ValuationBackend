@@ -8,10 +8,10 @@ namespace ValuationBackend.Services
     public interface IPastValuationsLAService
     {
         Task<IEnumerable<PastValuationsLAReadDto>> GetAllPastValuationsAsync();
-        Task<PastValuationsLAReadDto> GetPastValuationByIdAsync(int id);
-        Task<PastValuationsLAReadDto> GetPastValuationByReportIdAsync(int reportId);
+        Task<PastValuationsLAReadDto?> GetPastValuationByIdAsync(int id);
+        Task<PastValuationsLAReadDto?> GetPastValuationByReportIdAsync(int reportId);
         Task<PastValuationsLAReadDto> CreatePastValuationAsync(PastValuationsLACreateDto pastValuationDto);
-        Task<PastValuationsLAReadDto> UpdatePastValuationAsync(int id, PastValuationsLAUpdateDto pastValuationDto);
+        Task<PastValuationsLAReadDto?> UpdatePastValuationAsync(int id, PastValuationsLAUpdateDto pastValuationDto);
         Task<bool> DeletePastValuationAsync(int id);
         Task<bool> ExistsAsync(int id);
     }
