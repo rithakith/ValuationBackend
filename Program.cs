@@ -18,6 +18,7 @@ builder.Services.AddScoped<ValuationBackend.Repositories.IBuildingRatesLAReposit
 builder.Services.AddScoped<ValuationBackend.Repositories.IPastValuationsLARepository, ValuationBackend.Repositories.PastValuationsLARepository>();
 builder.Services.AddScoped<ValuationBackend.Repositories.IRentalEvidenceLARepository, ValuationBackend.Repositories.RentalEvidenceLARepository>();
 builder.Services.AddScoped<ValuationBackend.Repositories.ISalesEvidenceLARepository, ValuationBackend.Repositories.SalesEvidenceLARepository>();
+builder.Services.AddScoped<ValuationBackend.Repositories.ILAMasterfileRepository, ValuationBackend.Repositories.LAMasterfileRepository>();
 
 // Register services
 builder.Services.AddScoped<ValuationBackend.Services.IConditionReportService, ValuationBackend.Services.ConditionReportService>();
@@ -25,6 +26,7 @@ builder.Services.AddScoped<ValuationBackend.Services.IBuildingRatesLAService, Va
 builder.Services.AddScoped<ValuationBackend.Services.IPastValuationsLAService, ValuationBackend.Services.PastValuationsLAService>();
 builder.Services.AddScoped<ValuationBackend.Services.IRentalEvidenceLAService, ValuationBackend.Services.RentalEvidenceLAService>();
 builder.Services.AddScoped<ValuationBackend.Services.ISalesEvidenceLAService, ValuationBackend.Services.SalesEvidenceLAService>();
+builder.Services.AddScoped<ValuationBackend.Services.ILAMasterfileService, ValuationBackend.Services.LAMasterfileService>();
 
 // Configure PostgreSQL
 builder.Services.AddDbContext<AppDbContext>(options =>
