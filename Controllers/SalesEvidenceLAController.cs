@@ -42,14 +42,18 @@ namespace ValuationBackend.Controllers
 
         // POST: api/SalesEvidenceLA
         [HttpPost]
-        public async Task<ActionResult<SalesEvidenceLAResponseDto>> CreateSalesEvidenceLA(SalesEvidenceLACreateDto dto)
+        public async Task<ActionResult<SalesEvidenceLACreationResponseDto>> CreateSalesEvidenceLA(SalesEvidenceLACreateDto dto)
         {
             var createdSalesEvidence = await _salesEvidenceService.CreateSalesEvidenceAsync(dto);
             
-            return CreatedAtAction(
-                nameof(GetSalesEvidenceLA),
-                new { id = createdSalesEvidence.Id },
-                createdSalesEvidence);
+            // Return the custom response format with msg and reportId
+            var response = new SalesEvidenceLACreationResponseDto
+            {
+                Msg = "success",
+                ReportId = createdSalesEvidence.ReportId // Using the common report table ID
+            };
+            
+            return Ok(response);
         }
 
         // PUT: api/SalesEvidenceLA/5

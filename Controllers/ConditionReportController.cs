@@ -40,14 +40,18 @@ namespace ValuationBackend.Controllers
 
         // POST: api/ConditionReport
         [HttpPost]
-        public async Task<ActionResult<ConditionReportResponseDto>> CreateConditionReport(ConditionReportCreateDto dto)
+        public async Task<ActionResult<ConditionReportCreationResponseDto>> CreateConditionReport(ConditionReportCreateDto dto)
         {
             var result = await _conditionReportService.CreateAsync(dto);
             
-            return CreatedAtAction(
-                nameof(GetConditionReport),
-                new { id = result.Id },
-                result);
+            // Return the custom response format with msg and reportId
+            var response = new ConditionReportCreationResponseDto
+            {
+                Msg = "success",
+                ReportId = result.ReportId // Using the common report table ID, not the condition report ID
+            };
+            
+            return Ok(response);
         }
 
         // PUT: api/ConditionReport/5

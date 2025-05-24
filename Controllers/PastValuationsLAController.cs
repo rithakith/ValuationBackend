@@ -42,14 +42,18 @@ namespace ValuationBackend.Controllers
 
         // POST: api/PastValuationsLA
         [HttpPost]
-        public async Task<ActionResult<PastValuationsLAReadDto>> CreatePastValuationLA(PastValuationsLACreateDto dto)
+        public async Task<ActionResult<PastValuationsLACreationResponseDto>> CreatePastValuationLA(PastValuationsLACreateDto dto)
         {
             var createdPastValuation = await _pastValuationsService.CreatePastValuationAsync(dto);
             
-            return CreatedAtAction(
-                nameof(GetPastValuationLA),
-                new { id = createdPastValuation.Id },
-                createdPastValuation);
+            // Return the custom response format with msg and reportId
+            var response = new PastValuationsLACreationResponseDto
+            {
+                Msg = "success",
+                ReportId = createdPastValuation.ReportId // Using the common report table ID
+            };
+            
+            return Ok(response);
         }
 
         // PUT: api/PastValuationsLA/5
