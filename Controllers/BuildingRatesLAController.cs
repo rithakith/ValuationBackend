@@ -40,14 +40,15 @@ namespace ValuationBackend.Controllers
 
         // POST: api/BuildingRatesLA
         [HttpPost]
-        public async Task<ActionResult<BuildingRatesLAResponseDto>> CreateBuildingRateLA(BuildingRatesLACreateDto dto)
+        public async Task<ActionResult<BuildingRatesLACreationResponseDto>> CreateBuildingRateLA(BuildingRatesLACreateDto dto)
         {
             var result = await _buildingRatesService.CreateAsync(dto);
             
-            return CreatedAtAction(
-                nameof(GetBuildingRateLA), 
-                new { id = result.Id }, 
-                result);
+            return Ok(new BuildingRatesLACreationResponseDto
+            { 
+                Msg = "success", 
+                ReportId = result.ReportId.ToString() 
+            });
         }
 
         // PUT: api/BuildingRatesLA/5
