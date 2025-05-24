@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using ValuationBackend.Data;
-using ValuationBackend.Models;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ValuationBackend.Models.DTOs;
+using ValuationBackend.Services;
 
 namespace ValuationBackend.Controllers
 {
@@ -11,73 +11,91 @@ namespace ValuationBackend.Controllers
     [Route("api/[controller]")]
     public class SalesEvidenceLAController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ISalesEvidenceLAService _salesEvidenceService;
 
-        public SalesEvidenceLAController(AppDbContext context)
+        public SalesEvidenceLAController(ISalesEvidenceLAService salesEvidenceService)
         {
-            _context = context;
+            _salesEvidenceService = salesEvidenceService;
         }
 
-        [HttpPost("submit")]
-        public async Task<IActionResult> SubmitSalesEvidenceLA([FromBody] SalesEvidenceLA evidence)
+        // GET: api/SalesEvidenceLA
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<SalesEvidenceLAResponseDto>>> GetSalesEvidencesLA()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            evidence.CreatedAt = DateTime.UtcNow;
-            _context.SalesEvidencesLA.Add(evidence);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Sales evidence saved successfully", evidenceId = evidence.Id });
+            var salesEvidences = await _salesEvidenceService.GetAllSalesEvidencesAsync();
+            return Ok(salesEvidences);
         }
 
-        [HttpPut("edit/{id}")]
-        [HttpPatch("edit/{id}")]
-        public async Task<IActionResult> EditSalesEvidenceLA(int id, [FromBody] SalesEvidenceLA evidence)
+        // GET: api/SalesEvidenceLA/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<SalesEvidenceLAResponseDto>> GetSalesEvidenceLA(int id)
         {
-            if (!ModelState.IsValid)
+            var salesEvidence = await _salesEvidenceService.GetSalesEvidenceByIdAsync(id);
+
+            if (salesEvidence == null)
             {
-                return BadRequest(ModelState);
+                return NotFound();
             }
 
-            // Find the existing evidence
-            var existingEvidence = await _context.SalesEvidencesLA.FindAsync(id);
-            if (existingEvidence == null)
-            {
-                return NotFound($"Sales evidence with ID {id} not found");
-            }
+            return Ok(salesEvidence);
+        }
 
-            // Set the correct ID in the evidence object
-            evidence.Id = id;
-            evidence.CreatedAt = existingEvidence.CreatedAt;
-            evidence.UpdatedAt = DateTime.UtcNow;
+        // POST: api/SalesEvidenceLA
+        [HttpPost]
+        public async Task<ActionResult<SalesEvidenceLACreationResponseDto>> CreateSalesEvidenceLA(SalesEvidenceLACreateDto dto)
+        {
+            var createdSalesEvidence = await _salesEvidenceService.CreateSalesEvidenceAsync(dto);
             
-            // Update the existing evidence with new values
-            _context.Entry(existingEvidence).CurrentValues.SetValues(evidence);
+            // Return the custom response format with msg and reportId
+            var response = new SalesEvidenceLACreationResponseDto
+            {
+                Msg = "success",
+                ReportId = createdSalesEvidence.ReportId // Using the common report table ID
+            };
             
-            try
-            {
-                await _context.SaveChangesAsync();
-                return Ok(new { message = "Sales evidence updated successfully", evidenceId = id });
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!SalesEvidenceLAExists(id))
-                {
-                    return NotFound($"Sales evidence with ID {id} not found");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            return Ok(response);
         }
 
-        private bool SalesEvidenceLAExists(int id)
+        // PUT: api/SalesEvidenceLA/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateSalesEvidenceLA(int id, SalesEvidenceLAUpdateDto dto)
         {
-            return _context.SalesEvidencesLA.Any(e => e.Id == id);
+            var updatedSalesEvidence = await _salesEvidenceService.UpdateSalesEvidenceAsync(id, dto);
+
+            if (updatedSalesEvidence == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/SalesEvidenceLA/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSalesEvidenceLA(int id)
+        {
+            var result = await _salesEvidenceService.DeleteSalesEvidenceAsync(id);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        // GET: api/SalesEvidenceLA/ByReport/{reportId}
+        [HttpGet("ByReport/{reportId}")]
+        public async Task<ActionResult<SalesEvidenceLAResponseDto>> GetSalesEvidenceLAByReportId(int reportId)
+        {
+            var salesEvidence = await _salesEvidenceService.GetSalesEvidenceByReportIdAsync(reportId);
+
+            if (salesEvidence == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(salesEvidence);
         }
     }
 }

@@ -1,15 +1,26 @@
 using System;
 using System.ComponentModel.DataAnnotations;
-using System.Text.Json.Serialization;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ValuationBackend.Models
 {
     public class ConditionReport
     {
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
+        [Required]
+        public int ReportId { get; set; }
+        
+        [ForeignKey("ReportId")]
+        public Report Report { get; set; }
         
         [Required]
         public string MasterFileId { get; set; }
+
+        [Required]
+        public string MasterFileRefNo { get; set; }
         
         // Land Info
         public string NameOfTheVillage { get; set; }

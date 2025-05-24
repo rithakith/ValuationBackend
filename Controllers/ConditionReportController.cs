@@ -1,8 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using ValuationBackend.Data;
-using ValuationBackend.Models;
+using ValuationBackend.Models.DTOs;
+using ValuationBackend.Services;
 
 namespace ValuationBackend.Controllers
 {
@@ -10,70 +10,90 @@ namespace ValuationBackend.Controllers
     [Route("api/[controller]")]
     public class ConditionReportController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IConditionReportService _conditionReportService;
 
-        public ConditionReportController(AppDbContext context)
+        public ConditionReportController(IConditionReportService conditionReportService)
         {
-            _context = context;
+            _conditionReportService = conditionReportService;
         }
 
-        [HttpPost("submit")]
-        public async Task<IActionResult> SubmitConditionReport([FromBody] ConditionReport report)
+        // GET: api/ConditionReport
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ConditionReportResponseDto>>> GetConditionReports()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            _context.ConditionReports.Add(report);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Condition report saved successfully", reportId = report.Id });
+            return Ok(await _conditionReportService.GetAllAsync());
         }
 
-        [HttpPut("edit/{id}")]
-        [HttpPatch("edit/{id}")]
-        public async Task<IActionResult> EditConditionReport(int id, [FromBody] ConditionReport report)
+        // GET: api/ConditionReport/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<ConditionReportResponseDto>> GetConditionReport(int id)
         {
-            if (!ModelState.IsValid)
+            var conditionReport = await _conditionReportService.GetByIdAsync(id);
+
+            if (conditionReport == null)
             {
-                return BadRequest(ModelState);
+                return NotFound();
             }
 
-            // Find the existing report
-            var existingReport = await _context.ConditionReports.FindAsync(id);
-            if (existingReport == null)
-            {
-                return NotFound($"Condition report with ID {id} not found");
-            }
+            return conditionReport;
+        }
 
-            // Set the correct ID in the report object
-            report.Id = id;
+        // POST: api/ConditionReport
+        [HttpPost]
+        public async Task<ActionResult<ConditionReportCreationResponseDto>> CreateConditionReport(ConditionReportCreateDto dto)
+        {
+            var result = await _conditionReportService.CreateAsync(dto);
             
-            // Update the existing report with new values
-            _context.Entry(existingReport).CurrentValues.SetValues(report);
+            // Return the custom response format with msg and reportId
+            var response = new ConditionReportCreationResponseDto
+            {
+                Msg = "success",
+                ReportId = result.ReportId // Using the common report table ID, not the condition report ID
+            };
             
-            try
-            {
-                await _context.SaveChangesAsync();
-                return Ok(new { message = "Condition report updated successfully", reportId = id });
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ConditionReportExists(id))
-                {
-                    return NotFound($"Condition report with ID {id} not found");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            return Ok(response);
         }
 
-        private bool ConditionReportExists(int id)
+        // PUT: api/ConditionReport/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateConditionReport(int id, ConditionReportUpdateDto dto)
         {
-            return _context.ConditionReports.Any(e => e.Id == id);
+            var result = await _conditionReportService.UpdateAsync(id, dto);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/ConditionReport/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteConditionReport(int id)
+        {
+            var result = await _conditionReportService.DeleteAsync(id);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        // GET: api/ConditionReport/ByReport/{reportId}
+        [HttpGet("ByReport/{reportId}")]
+        public async Task<ActionResult<ConditionReportResponseDto>> GetConditionReportByReportId(int reportId)
+        {
+            var conditionReport = await _conditionReportService.GetByReportIdAsync(reportId);
+
+            if (conditionReport == null)
+            {
+                return NotFound();
+            }
+
+            return conditionReport;
         }
     }
 }
