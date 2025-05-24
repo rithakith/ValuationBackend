@@ -1,9 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System.Threading.Tasks;
-using ValuationBackend.Data;
-using ValuationBackend.Models;
 using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using ValuationBackend.Models.DTOs;
+using ValuationBackend.Services;
 
 namespace ValuationBackend.Controllers
 {
@@ -11,73 +11,91 @@ namespace ValuationBackend.Controllers
     [Route("api/[controller]")]
     public class PastValuationsLAController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IPastValuationsLAService _pastValuationsService;
 
-        public PastValuationsLAController(AppDbContext context)
+        public PastValuationsLAController(IPastValuationsLAService pastValuationsService)
         {
-            _context = context;
+            _pastValuationsService = pastValuationsService;
         }
 
-        [HttpPost("submit")]
-        public async Task<IActionResult> SubmitPastValuationsLA([FromBody] PastValuationsLA pastValuation)
+        // GET: api/PastValuationsLA
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<PastValuationsLAReadDto>>> GetPastValuationsLA()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            pastValuation.CreatedAt = DateTime.UtcNow;
-            _context.PastValuationsLA.Add(pastValuation);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Past valuation saved successfully", pastValuationId = pastValuation.Id });
+            var pastValuations = await _pastValuationsService.GetAllPastValuationsAsync();
+            return Ok(pastValuations);
         }
 
-        [HttpPut("edit/{id}")]
-        [HttpPatch("edit/{id}")]
-        public async Task<IActionResult> EditPastValuationsLA(int id, [FromBody] PastValuationsLA pastValuation)
+        // GET: api/PastValuationsLA/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<PastValuationsLAReadDto>> GetPastValuationLA(int id)
         {
-            if (!ModelState.IsValid)
+            var pastValuation = await _pastValuationsService.GetPastValuationByIdAsync(id);
+
+            if (pastValuation == null)
             {
-                return BadRequest(ModelState);
+                return NotFound();
             }
 
-            // Find the existing past valuation
-            var existingPastValuation = await _context.PastValuationsLA.FindAsync(id);
-            if (existingPastValuation == null)
-            {
-                return NotFound($"Past valuation with ID {id} not found");
-            }
+            return Ok(pastValuation);
+        }
 
-            // Set the correct ID in the past valuation object
-            pastValuation.Id = id;
-            pastValuation.CreatedAt = existingPastValuation.CreatedAt;
-            pastValuation.UpdatedAt = DateTime.UtcNow;
+        // POST: api/PastValuationsLA
+        [HttpPost]
+        public async Task<ActionResult<PastValuationsLACreationResponseDto>> CreatePastValuationLA(PastValuationsLACreateDto dto)
+        {
+            var createdPastValuation = await _pastValuationsService.CreatePastValuationAsync(dto);
             
-            // Update the existing past valuation with new values
-            _context.Entry(existingPastValuation).CurrentValues.SetValues(pastValuation);
+            // Return the custom response format with msg and reportId
+            var response = new PastValuationsLACreationResponseDto
+            {
+                Msg = "success",
+                ReportId = createdPastValuation.ReportId // Using the common report table ID
+            };
             
-            try
-            {
-                await _context.SaveChangesAsync();
-                return Ok(new { message = "Past valuation updated successfully", pastValuationId = id });
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!PastValuationsLAExists(id))
-                {
-                    return NotFound($"Past valuation with ID {id} not found");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            return Ok(response);
         }
 
-        private bool PastValuationsLAExists(int id)
+        // PUT: api/PastValuationsLA/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdatePastValuationLA(int id, PastValuationsLAUpdateDto dto)
         {
-            return _context.PastValuationsLA.Any(e => e.Id == id);
+            var updatedPastValuation = await _pastValuationsService.UpdatePastValuationAsync(id, dto);
+
+            if (updatedPastValuation == null)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/PastValuationsLA/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeletePastValuationLA(int id)
+        {
+            var result = await _pastValuationsService.DeletePastValuationAsync(id);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        // GET: api/PastValuationsLA/ByReport/{reportId}
+        [HttpGet("ByReport/{reportId}")]
+        public async Task<ActionResult<PastValuationsLAReadDto>> GetPastValuationLAByReportId(int reportId)
+        {
+            var pastValuation = await _pastValuationsService.GetPastValuationByReportIdAsync(reportId);
+
+            if (pastValuation == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(pastValuation);
         }
     }
 }

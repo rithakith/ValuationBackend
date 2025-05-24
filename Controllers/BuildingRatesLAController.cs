@@ -1,9 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
 using System.Threading.Tasks;
-using ValuationBackend.Data;
-using ValuationBackend.Models;
-using System;
+using ValuationBackend.Models.DTOs;
+using ValuationBackend.Services;
 
 namespace ValuationBackend.Controllers
 {
@@ -11,73 +10,86 @@ namespace ValuationBackend.Controllers
     [Route("api/[controller]")]
     public class BuildingRatesLAController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IBuildingRatesLAService _buildingRatesService;
 
-        public BuildingRatesLAController(AppDbContext context)
+        public BuildingRatesLAController(IBuildingRatesLAService buildingRatesService)
         {
-            _context = context;
+            _buildingRatesService = buildingRatesService;
         }
 
-        [HttpPost("submit")]
-        public async Task<IActionResult> SubmitBuildingRatesLA([FromBody] BuildingRatesLA buildingRates)
+        // GET: api/BuildingRatesLA
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<BuildingRatesLAResponseDto>>> GetBuildingRatesLA()
         {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            buildingRates.CreatedAt = DateTime.UtcNow;
-            _context.BuildingRatesLA.Add(buildingRates);
-            await _context.SaveChangesAsync();
-
-            return Ok(new { message = "Building rates saved successfully", buildingRatesId = buildingRates.Id });
+            return Ok(await _buildingRatesService.GetAllAsync());
         }
 
-        [HttpPut("edit/{id}")]
-        [HttpPatch("edit/{id}")]
-        public async Task<IActionResult> EditBuildingRatesLA(int id, [FromBody] BuildingRatesLA buildingRates)
+        // GET: api/BuildingRatesLA/5
+        [HttpGet("{id}")]
+        public async Task<ActionResult<BuildingRatesLAResponseDto>> GetBuildingRateLA(int id)
         {
-            if (!ModelState.IsValid)
+            var buildingRate = await _buildingRatesService.GetByIdAsync(id);
+
+            if (buildingRate == null)
             {
-                return BadRequest(ModelState);
+                return NotFound();
             }
 
-            // Find the existing building rates
-            var existingBuildingRates = await _context.BuildingRatesLA.FindAsync(id);
-            if (existingBuildingRates == null)
-            {
-                return NotFound($"Building rates with ID {id} not found");
-            }
+            return buildingRate;
+        }
 
-            // Set the correct ID in the building rates object
-            buildingRates.Id = id;
-            buildingRates.CreatedAt = existingBuildingRates.CreatedAt;
-            buildingRates.UpdatedAt = DateTime.UtcNow;
+        // POST: api/BuildingRatesLA
+        [HttpPost]
+        public async Task<ActionResult<BuildingRatesLAResponseDto>> CreateBuildingRateLA(BuildingRatesLACreateDto dto)
+        {
+            var result = await _buildingRatesService.CreateAsync(dto);
             
-            // Update the existing building rates with new values
-            _context.Entry(existingBuildingRates).CurrentValues.SetValues(buildingRates);
-            
-            try
-            {
-                await _context.SaveChangesAsync();
-                return Ok(new { message = "Building rates updated successfully", buildingRatesId = id });
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!BuildingRatesLAExists(id))
-                {
-                    return NotFound($"Building rates with ID {id} not found");
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            return CreatedAtAction(
+                nameof(GetBuildingRateLA), 
+                new { id = result.Id }, 
+                result);
         }
 
-        private bool BuildingRatesLAExists(int id)
+        // PUT: api/BuildingRatesLA/5
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateBuildingRateLA(int id, BuildingRatesLAUpdateDto dto)
         {
-            return _context.BuildingRatesLA.Any(e => e.Id == id);
+            var result = await _buildingRatesService.UpdateAsync(id, dto);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        // DELETE: api/BuildingRatesLA/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteBuildingRateLA(int id)
+        {
+            var result = await _buildingRatesService.DeleteAsync(id);
+
+            if (!result)
+            {
+                return NotFound();
+            }
+
+            return NoContent();
+        }
+
+        // GET: api/BuildingRatesLA/ByReport/{reportId}
+        [HttpGet("ByReport/{reportId}")]
+        public async Task<ActionResult<BuildingRatesLAResponseDto>> GetBuildingRateLAByReportId(int reportId)
+        {
+            var buildingRate = await _buildingRatesService.GetByReportIdAsync(reportId);
+
+            if (buildingRate == null)
+            {
+                return NotFound();
+            }
+
+            return buildingRate;
         }
     }
 }
