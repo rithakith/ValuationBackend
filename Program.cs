@@ -4,6 +4,11 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ValuationBackend.Data;
 using ValuationBackend.Extensions;
+using ValuationBackend.Models;
+using DotNetEnv;
+
+// Load environment variables from .env file
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -34,18 +39,32 @@ builder.Services.AddServices();
 
 
 // Configure PostgreSQL
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") 
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
-// Configure JWT settings
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
-var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
-
-if (jwtSettings == null || string.IsNullOrWhiteSpace(jwtSettings.SecretKey))
+// Configure JWT settings from environment variables
+var jwtSettings = new JwtSettings
 {
-    throw new InvalidOperationException("JWT settings or SecretKey is not configured correctly.");
-}
+    SecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
+        ?? throw new InvalidOperationException("JWT_SECRET_KEY environment variable is not configured."),
+    Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") 
+        ?? throw new InvalidOperationException("JWT_ISSUER environment variable is not configured."),
+    Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") 
+        ?? throw new InvalidOperationException("JWT_AUDIENCE environment variable is not configured."),
+    ExpiryMinutes = int.TryParse(Environment.GetEnvironmentVariable("JWT_EXPIRY_MINUTES"), out var expiry) 
+        ? expiry : 60
+};
+
+// Register JWT settings
+builder.Services.Configure<JwtSettings>(options =>
+{
+    options.SecretKey = jwtSettings.SecretKey;
+    options.Issuer = jwtSettings.Issuer;
+    options.Audience = jwtSettings.Audience;
+    options.ExpiryMinutes = jwtSettings.ExpiryMinutes;
+});
 
 // Add Authentication
 var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
