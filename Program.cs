@@ -39,7 +39,7 @@ builder.Services.AddServices();
 
 
 // Configure PostgreSQL
-var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") 
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
     ?? builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
@@ -47,13 +47,13 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 // Configure JWT settings from environment variables
 var jwtSettings = new JwtSettings
 {
-    SecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY") 
+    SecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")
         ?? throw new InvalidOperationException("JWT_SECRET_KEY environment variable is not configured."),
-    Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER") 
+    Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER")
         ?? throw new InvalidOperationException("JWT_ISSUER environment variable is not configured."),
-    Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE") 
+    Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")
         ?? throw new InvalidOperationException("JWT_AUDIENCE environment variable is not configured."),
-    ExpiryMinutes = int.TryParse(Environment.GetEnvironmentVariable("JWT_EXPIRY_MINUTES"), out var expiry) 
+    ExpiryMinutes = int.TryParse(Environment.GetEnvironmentVariable("JWT_EXPIRY_MINUTES"), out var expiry)
         ? expiry : 60
 };
 

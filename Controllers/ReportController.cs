@@ -1,10 +1,9 @@
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using ValuationBackend.Data;
 using ValuationBackend.Models;
+using ValuationBackend.Services;
 
 namespace ValuationBackend.Controllers
 {
@@ -12,51 +11,38 @@ namespace ValuationBackend.Controllers
     [ApiController]
     public class ReportController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly IReportService _reportService;
 
-        public ReportController(AppDbContext context)
+        public ReportController(IReportService reportService)
         {
-            _context = context;
-        }
-
-        // GET: api/Report
+            _reportService = reportService;
+        }        // GET: api/Report
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Report>>> GetReports()
         {
-            return await _context.Reports.ToListAsync();
+            var reports = await _reportService.GetAllAsync();
+            return Ok(reports);
         }
 
         // GET: api/Report/5
         [HttpGet("{id}")]
         public async Task<ActionResult<Report>> GetReport(int id)
         {
-            var report = await _context.Reports.FindAsync(id);
+            var report = await _reportService.GetByIdAsync(id);
 
             if (report == null)
             {
                 return NotFound();
             }
 
-            return report;
-        }
-
-        // POST: api/Report
+            return Ok(report);
+        }        // POST: api/Report
         [HttpPost]
         public async Task<ActionResult<Report>> PostReport(Report report)
         {
-            // Ensure timestamp is set to current time if not provided
-            if (report.Timestamp == default)
-            {
-                report.Timestamp = DateTime.UtcNow;
-            }
-
-            _context.Reports.Add(report);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction(nameof(GetReport), new { id = report.ReportId }, report);
-        }
-
-        // PUT: api/Report/5
+            var createdReport = await _reportService.CreateAsync(report);
+            return CreatedAtAction(nameof(GetReport), new { id = createdReport.ReportId }, createdReport);
+        }        // PUT: api/Report/5
         [HttpPut("{id}")]
         public async Task<IActionResult> PutReport(int id, Report report)
         {
@@ -65,46 +51,30 @@ namespace ValuationBackend.Controllers
                 return BadRequest();
             }
 
-            _context.Entry(report).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!ReportExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // DELETE: api/Report/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteReport(int id)
-        {
-            var report = await _context.Reports.FindAsync(id);
-            if (report == null)
+            var existingReport = await _reportService.GetByIdAsync(id);
+            if (existingReport == null)
             {
                 return NotFound();
             }
 
-            _context.Reports.Remove(report);
-            await _context.SaveChangesAsync();
+            await _reportService.UpdateAsync(report);
+            return NoContent();
+        }        // DELETE: api/Report/5
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteReport(int id)
+        {
+            var success = await _reportService.DeleteAsync(id);
+            if (!success)
+            {
+                return NotFound();
+            }
 
             return NoContent();
         }
 
-        private bool ReportExists(int id)
+        private async Task<bool> ReportExists(int id)
         {
-            return _context.Reports.Any(e => e.ReportId == id);
+            return await _reportService.ExistsAsync(id);
         }
     }
 }
