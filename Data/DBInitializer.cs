@@ -27,10 +27,11 @@ namespace ValuationBackend.Data
 
             // Initialize Land Aquisition Master Files
             InitializeLandAquisitionMasterFiles(context); // Initialize Reports
-            InitializeReports(context);
-
-            // Initialize Request Types
+            InitializeReports(context);            // Initialize Request Types
             InitializeRequestTypes(context);
+
+            // Initialize Requests
+            InitializeRequests(context);
         }
 
         private static void InitializeRatingRequests(AppDbContext context)
@@ -511,11 +512,95 @@ namespace ValuationBackend.Data
                 new RequestType { Code = "ra", Name = "Rating Assessment" },
                 new RequestType { Code = "rb", Name = "Rating Building" },
                 new RequestType { Code = "ro", Name = "Rating Object" },
-            };
-
-            context.RequestTypes.AddRange(requestTypes);
+            };            context.RequestTypes.AddRange(requestTypes);
             context.SaveChanges();
             Console.WriteLine("Request types seeded.");
+        }
+
+        private static void InitializeRequests(AppDbContext context)
+        {
+            // If there's any data, stop
+            if (context.Requests.Any())
+                return;
+
+            Console.WriteLine("Seeding requests...");
+
+            // Get request types for foreign key references
+            var requestTypes = context.RequestTypes.ToList();
+            if (!requestTypes.Any())
+            {
+                Console.WriteLine("No request types found. Requests seeding skipped.");
+                return;
+            }
+
+            // Add sample requests
+            var requests = new Request[]
+            {
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2024-001",
+                    LocalAuthority = "Colombo Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25)
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "ra").Id,
+                    RatingReferenceNo = "RA-2024-001",
+                    LocalAuthority = "Galle Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = false, // pending
+                    CreatedAt = DateTime.UtcNow.AddDays(-20),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-15)
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "rb").Id,
+                    RatingReferenceNo = "RB-2024-001",
+                    LocalAuthority = "Kandy Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-15),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-10)
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2023-005",
+                    LocalAuthority = "Negombo Municipal Council",
+                    YearOfRevision = 2023,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-50),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-45)
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "ro").Id,
+                    RatingReferenceNo = "RO-2024-002",
+                    LocalAuthority = "Matara Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = false, // pending
+                    CreatedAt = DateTime.UtcNow.AddDays(-10),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-5)
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "ra").Id,
+                    RatingReferenceNo = "RA-2023-010",
+                    LocalAuthority = "Panadura Urban Council",
+                    YearOfRevision = 2023,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-60),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-55)
+                }
+            };
+
+            context.Requests.AddRange(requests);
+            context.SaveChanges();
+            Console.WriteLine("Requests seeded.");
         }
     }
 }
