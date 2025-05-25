@@ -26,13 +26,13 @@ namespace ValuationBackend.Services
             return pastValuations.Select(p => MapToReadDto(p));
         }
 
-        public async Task<PastValuationsLAReadDto> GetPastValuationByIdAsync(int id)
+        public async Task<PastValuationsLAReadDto?> GetPastValuationByIdAsync(int id)
         {
             var pastValuation = await _repository.GetByIdAsync(id);
             return pastValuation != null ? MapToReadDto(pastValuation) : null;
         }
 
-        public async Task<PastValuationsLAReadDto> GetPastValuationByReportIdAsync(int reportId)
+        public async Task<PastValuationsLAReadDto?> GetPastValuationByReportIdAsync(int reportId)
         {
             var pastValuation = await _repository.GetByReportIdAsync(reportId);
             return pastValuation != null ? MapToReadDto(pastValuation) : null;
@@ -40,17 +40,22 @@ namespace ValuationBackend.Services
 
         public async Task<PastValuationsLAReadDto> CreatePastValuationAsync(PastValuationsLACreateDto pastValuationDto)
         {
-            // Find report
-            var report = await _context.Reports.FindAsync(pastValuationDto.ReportId);
-            if (report == null)
+            // Create a new Report for this past valuation
+            var report = new Report
             {
-                throw new InvalidOperationException($"Report with ID {pastValuationDto.ReportId} not found.");
-            }
+                ReportType = "LA_past_valuations",
+                Timestamp = DateTime.UtcNow,
+                Description = $"Land Acquisition Past Valuations for {pastValuationDto.MasterFileRefNo}"
+            };
+
+            // Add the report first
+            _context.Reports.Add(report);
+            await _context.SaveChangesAsync();
 
             // Map DTO to entity
             var pastValuation = new PastValuationsLA
             {
-                ReportId = pastValuationDto.ReportId,
+                ReportId = report.ReportId,
                 MasterFileId = pastValuationDto.MasterFileId,
                 MasterFileRefNo = pastValuationDto.MasterFileRefNo,
                 FileNoGNDivision = pastValuationDto.FileNoGNDivision,
@@ -72,7 +77,7 @@ namespace ValuationBackend.Services
             return MapToReadDto(pastValuation);
         }
 
-        public async Task<PastValuationsLAReadDto> UpdatePastValuationAsync(int id, PastValuationsLAUpdateDto pastValuationDto)
+        public async Task<PastValuationsLAReadDto?> UpdatePastValuationAsync(int id, PastValuationsLAUpdateDto pastValuationDto)
         {
             var existingPastValuation = await _repository.GetByIdAsync(id);
             if (existingPastValuation == null)

@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ValuationBackend.Data;
-using ValuationBackend.Models;
+using ValuationBackend.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,6 +27,11 @@ builder.Services.AddScoped<ValuationBackend.Services.IPastValuationsLAService, V
 builder.Services.AddScoped<ValuationBackend.Services.IRentalEvidenceLAService, ValuationBackend.Services.RentalEvidenceLAService>();
 builder.Services.AddScoped<ValuationBackend.Services.ISalesEvidenceLAService, ValuationBackend.Services.SalesEvidenceLAService>();
 builder.Services.AddScoped<ValuationBackend.Services.ILAMasterfileService, ValuationBackend.Services.LAMasterfileService>();
+
+// Register repositories and services using extension methods
+builder.Services.AddRepositories();
+builder.Services.AddServices();
+
 
 // Configure PostgreSQL
 builder.Services.AddDbContext<AppDbContext>(options =>
