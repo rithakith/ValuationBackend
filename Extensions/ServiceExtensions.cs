@@ -10,9 +10,10 @@ namespace ValuationBackend.Extensions
             services.AddScoped<IBuildingRatesLAService, BuildingRatesLAService>();
             services.AddScoped<IPastValuationsLAService, PastValuationsLAService>();
             services.AddScoped<IRentalEvidenceLAService, RentalEvidenceLAService>();
-            services.AddScoped<ISalesEvidenceLAService, SalesEvidenceLAService>();
-            services.AddScoped<IInspectionReportService, InspectionReportService>();
+            services.AddScoped<ISalesEvidenceLAService, SalesEvidenceLAService>(); services.AddScoped<IInspectionReportService, InspectionReportService>();
             services.AddScoped<ILandMiscellaneousService, LandMiscellaneousService>();
+            services.AddScoped<ILMBuildingRatesService, LMBuildingRatesService>();
+            services.AddScoped<IReportService, ReportService>();
             // Add other service registrations here
             return services;
         }

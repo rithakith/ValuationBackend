@@ -4,6 +4,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using ValuationBackend.Data;
 using ValuationBackend.Extensions;
+using ValuationBackend.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
