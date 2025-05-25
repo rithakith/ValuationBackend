@@ -21,22 +21,27 @@ namespace ValuationBackend.Controllers
             return Ok(_service.GetAll());
         }
 
+        [HttpGet("paged")]
+        public ActionResult<LAMasterfileResponse> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            return Ok(_service.GetPaged(page, pageSize));
+        }
+
         [HttpPost("search")]
         [HttpPost("filter")]
         public ActionResult<LAMasterfileResponse> Search([FromBody] LAQueryRequest request)
         {
             var query = request.Query.ToLower();
-            var data = _context.LandAquisitionMasterFiles
-                .Where(f =>
-                    f.MasterFileNo.ToString().Contains(query) ||
-                    f.MasterFilesRefNo.ToLower().Contains(query) ||
-                    f.PlanNo.ToLower().Contains(query) ||
-                    f.PlanType.ToLower().Contains(query) ||
-                    f.RequestingAuthorityReferenceNo.ToLower().Contains(query) ||
-                    f.Status.ToLower().Contains(query))
-                .ToList();
+            var response = _service.Search(query);
+            return Ok(response);
+        }
 
-            return Ok(new LAMasterfileResponse { MasterFiles = data });
+        [HttpPost("search/paged")]
+        public ActionResult<LAMasterfileResponse> SearchPaged([FromBody] LAQueryRequest request, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            var query = request.Query.ToLower();
+            var response = _service.SearchPaged(query, page, pageSize);
+            return Ok(response);
         }
     }
 }
