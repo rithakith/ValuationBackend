@@ -18,9 +18,6 @@ namespace ValuationBackend.Models
         
         [Required]
         public string MasterFileId { get; set; }
-
-        [Required]
-        public string MasterFileRefNo { get; set; }
         
         // Land Info
         public string NameOfTheVillage { get; set; }

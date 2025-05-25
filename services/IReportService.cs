@@ -2,9 +2,9 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ValuationBackend.Models;
 
-namespace ValuationBackend.Repositories
+namespace ValuationBackend.Services
 {
-    public interface IReportRepository
+    public interface IReportService
     {
         Task<List<Report>> GetAllAsync();
         Task<Report?> GetByIdAsync(int id);
