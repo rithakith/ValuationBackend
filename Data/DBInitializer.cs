@@ -13,7 +13,6 @@ namespace ValuationBackend.Data
 
             // Initialize Rating Requests
             InitializeRatingRequests(context);
-
             // Initialize Land Miscellaneous Master Files
             InitializeLandMiscellaneousMasterFiles(context);
 
@@ -26,12 +25,12 @@ namespace ValuationBackend.Data
             // Initialize Master Data
             InitializeMasterData(context);
 
-            // Initialize Land Aquisition Master Files  
-            InitializeLandAquisitionMasterFiles(context);
-
-            
-            // Initialize Reports
+            // Initialize Land Aquisition Master Files
+            InitializeLandAquisitionMasterFiles(context); // Initialize Reports
             InitializeReports(context);
+
+            // Initialize Request Types
+            InitializeRequestTypes(context);
         }
 
         private static void InitializeRatingRequests(AppDbContext context)
@@ -49,7 +48,7 @@ namespace ValuationBackend.Data
                     RatingReferenceNo = "MR-001",
                     LocalAuthority = "Colombo MC",
                     YearOfRevision = 2022,
-                    Status = "Pending"
+                    Status = "Pending",
                 },
                 new RatingRequest
                 {
@@ -57,7 +56,7 @@ namespace ValuationBackend.Data
                     RatingReferenceNo = "RA-001",
                     LocalAuthority = "Galle MC",
                     YearOfRevision = 2023,
-                    Status = "Approved"
+                    Status = "Approved",
                 },
                 new RatingRequest
                 {
@@ -65,14 +64,13 @@ namespace ValuationBackend.Data
                     RatingReferenceNo = "RB-001",
                     LocalAuthority = "Kandy UC",
                     YearOfRevision = 2021,
-                    Status = "Rejected"
-                }
+                    Status = "Rejected",
+                },
             };
 
             context.RatingRequests.AddRange(requests);
             context.SaveChanges();
         }
-
 
         private static void InitializeLandMiscellaneousMasterFiles(AppDbContext context)
         {
@@ -227,7 +225,8 @@ namespace ValuationBackend.Data
                     RequestingAuthorityReferenceNo = "12341234-A-18",
                     Status = "Pending",
                 },
-            };            context.LandMiscellaneousMasterFiles.AddRange(masterFiles);
+            };
+            context.LandMiscellaneousMasterFiles.AddRange(masterFiles);
             context.SaveChanges();
         }
 
@@ -244,20 +243,20 @@ namespace ValuationBackend.Data
                 {
                     ReportType = "Valuation Report",
                     Description = "Annual valuation summary report",
-                    Timestamp = DateTime.UtcNow.AddDays(-30)
+                    Timestamp = DateTime.UtcNow.AddDays(-30),
                 },
                 new Report
                 {
                     ReportType = "Rating Assessment",
                     Description = "Quarterly rating assessment report",
-                    Timestamp = DateTime.UtcNow.AddDays(-15)
+                    Timestamp = DateTime.UtcNow.AddDays(-15),
                 },
                 new Report
                 {
                     ReportType = "Audit Report",
                     Description = "System audit report",
-                    Timestamp = DateTime.UtcNow.AddDays(-7)
-                }
+                    Timestamp = DateTime.UtcNow.AddDays(-7),
+                },
             };
 
             context.Reports.AddRange(reports);
@@ -265,144 +264,258 @@ namespace ValuationBackend.Data
         }
 
         private static void InitializeUsers(AppDbContext context)
-{
-    //if (context.Users.Any()) return;
-    
-    Console.WriteLine("Seeding users...");
-
-    var users = new List<User>();
-
-    void AddUser(string username, string password, string name, string email, string id, string position, string division)
-    {
-        using var hmac = new System.Security.Cryptography.HMACSHA512();
-        users.Add(new User
         {
-            Username = username,
-            PasswordSalt = hmac.Key,
-            PasswordHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(password)),
-            EmpName = name,
-            EmpEmail = email,
-            EmpId = id,
-            Position = position,
-            AssignedDivision = division
-        });
-    }
+            //if (context.Users.Any()) return;
 
-    // Add dummy users
-    AddUser("Jalina", "Jalina123", "Jalina Hirushan", "jalinahirushan@valdept.com", "1001V", "ADV", "Gampaha");
-    AddUser("Akith", "Akith123", "Akith Chandinu", "akithchandinu@valdept.com", "1002V", "SUP", "Kurunegala");
-    AddUser("Dulmini", "Dulmini123", "Samiksha Abeyweera", "samiksha@valdept.com", "1003V", "ADV", "Colombo");
-    AddUser("Vishwa", "Vishwa123", "Vishwa Jayasankha", "vishwa@valdept.com", "1004V", "SUP", "Matara");
-    AddUser("Rithara", "Rithara123", "Rithara Edirisinghe", "rithara@valdept.com", "1005V", "ADV", "Maradana");
+            Console.WriteLine("Seeding users...");
 
-    context.Users.AddRange(users);
-    context.SaveChanges();
-    Console.WriteLine("User data seeded.");
-}
+            var users = new List<User>();
 
-private static void InitializeUserTasks(AppDbContext context)
-{
-    if (context.UserTasks.Any()) return;
+            void AddUser(
+                string username,
+                string password,
+                string name,
+                string email,
+                string id,
+                string position,
+                string division
+            )
+            {
+                using var hmac = new System.Security.Cryptography.HMACSHA512();
+                users.Add(
+                    new User
+                    {
+                        Username = username,
+                        PasswordSalt = hmac.Key,
+                        PasswordHash = hmac.ComputeHash(
+                            System.Text.Encoding.UTF8.GetBytes(password)
+                        ),
+                        EmpName = name,
+                        EmpEmail = email,
+                        EmpId = id,
+                        Position = position,
+                        AssignedDivision = division,
+                    }
+                );
+            }
 
-    Console.WriteLine("Seeding user tasks...");
-    var tasks = new List<UserTask>();
+            // Add dummy users
+            AddUser(
+                "Jalina",
+                "Jalina123",
+                "Jalina Hirushan",
+                "jalinahirushan@valdept.com",
+                "1001V",
+                "ADV",
+                "Gampaha"
+            );
+            AddUser(
+                "Akith",
+                "Akith123",
+                "Akith Chandinu",
+                "akithchandinu@valdept.com",
+                "1002V",
+                "SUP",
+                "Kurunegala"
+            );
+            AddUser(
+                "Dulmini",
+                "Dulmini123",
+                "Samiksha Abeyweera",
+                "samiksha@valdept.com",
+                "1003V",
+                "ADV",
+                "Colombo"
+            );
+            AddUser(
+                "Vishwa",
+                "Vishwa123",
+                "Vishwa Jayasankha",
+                "vishwa@valdept.com",
+                "1004V",
+                "SUP",
+                "Matara"
+            );
+            AddUser(
+                "Rithara",
+                "Rithara123",
+                "Rithara Edirisinghe",
+                "rithara@valdept.com",
+                "1005V",
+                "ADV",
+                "Maradana"
+            );
 
-    void AddTask(string username, string type, bool completed, string date)
-    {
-        tasks.Add(new UserTask
+            context.Users.AddRange(users);
+            context.SaveChanges();
+            Console.WriteLine("User data seeded.");
+        }
+
+        private static void InitializeUserTasks(AppDbContext context)
         {
-            Username = username,
-            TaskType = type,
-            IsCompleted = completed,
-            AssignedDate = DateTime.SpecifyKind(DateTime.ParseExact(date, "yyyyMMdd", null), DateTimeKind.Utc)
-        });
-    }
+            if (context.UserTasks.Any())
+                return;
 
-    AddTask("Jalina", "LA", true, "20250105");
-    AddTask("Jalina", "MR", true, "20250115");
-    AddTask("Jalina", "LM", false, "20250210");
-    AddTask("Jalina", "LA", true, "20250301");
+            Console.WriteLine("Seeding user tasks...");
+            var tasks = new List<UserTask>();
 
-    AddTask("Akith", "MR", true, "20250120");
-    AddTask("Akith", "LM", true, "20250212");
-    AddTask("Akith", "LA", false, "20250225");
-    AddTask("Akith", "LM", false, "20250303");
+            void AddTask(string username, string type, bool completed, string date)
+            {
+                tasks.Add(
+                    new UserTask
+                    {
+                        Username = username,
+                        TaskType = type,
+                        IsCompleted = completed,
+                        AssignedDate = DateTime.SpecifyKind(
+                            DateTime.ParseExact(date, "yyyyMMdd", null),
+                            DateTimeKind.Utc
+                        ),
+                    }
+                );
+            }
 
-    AddTask("Dulmini", "LA", true, "20250110");
-    AddTask("Dulmini", "MR", true, "20250112");
-    AddTask("Dulmini", "MR", false, "20250302");
-    AddTask("Dulmini", "LM", true, "20250310");
+            AddTask("Jalina", "LA", true, "20250105");
+            AddTask("Jalina", "MR", true, "20250115");
+            AddTask("Jalina", "LM", false, "20250210");
+            AddTask("Jalina", "LA", true, "20250301");
 
-    AddTask("Vishwa", "LA", true, "20250101");
-    AddTask("Vishwa", "LA", true, "20250215");
-    AddTask("Vishwa", "LM", false, "20250305");
-    AddTask("Vishwa", "MR", true, "20250318");
+            AddTask("Akith", "MR", true, "20250120");
+            AddTask("Akith", "LM", true, "20250212");
+            AddTask("Akith", "LA", false, "20250225");
+            AddTask("Akith", "LM", false, "20250303");
 
-    AddTask("Rithara", "MR", true, "20250118");
-    AddTask("Rithara", "LM", true, "20250222");
-    AddTask("Rithara", "LA", false, "20250311");
-    AddTask("Rithara", "LM", false, "20250330");
+            AddTask("Dulmini", "LA", true, "20250110");
+            AddTask("Dulmini", "MR", true, "20250112");
+            AddTask("Dulmini", "MR", false, "20250302");
+            AddTask("Dulmini", "LM", true, "20250310");
 
-    context.UserTasks.AddRange(tasks);
-    context.SaveChanges();
-    Console.WriteLine("User tasks seeded.");
-}
+            AddTask("Vishwa", "LA", true, "20250101");
+            AddTask("Vishwa", "LA", true, "20250215");
+            AddTask("Vishwa", "LM", false, "20250305");
+            AddTask("Vishwa", "MR", true, "20250318");
 
-private static void InitializeMasterData(AppDbContext context)
-{
-    if (context.MasterDataItems.Any()) return;
+            AddTask("Rithara", "MR", true, "20250118");
+            AddTask("Rithara", "LM", true, "20250222");
+            AddTask("Rithara", "LA", false, "20250311");
+            AddTask("Rithara", "LM", false, "20250330");
 
-    Console.WriteLine("Seeding master data...");
+            context.UserTasks.AddRange(tasks);
+            context.SaveChanges();
+            Console.WriteLine("User tasks seeded.");
+        }
 
-    var items = new List<(string Category, string Value)>
-    {
-        ("buildingCategory", "category1"), ("buildingCategory", "category2"),
-        ("buildingClass", "classType1"), ("buildingClass", "classType2"),
-        ("conviences", "type1"), ("conviences", "type2"),
-        ("natureOfConstruction", "type1"), ("natureOfConstruction", "type2"),
-        ("roofMaterial", "type1"), ("roofMaterial", "type2"),
-        ("roofFrame", "type1"), ("roofFrame", "type2"),
-        ("roofFinisher", "type1"), ("roofFinisher", "type2"),
-        ("celing", "type1"), ("celing", "type2"),
-        ("foundationStructure", "type1"), ("foundationStructure", "type2"),
-        ("wallStructure", "type1"), ("wallStructure", "type2"),
-        ("floorStructure", "type1"), ("floorStructure", "type2"),
-        ("door", "type1"), ("door", "type2"),
-        ("window", "type1"), ("window", "type2"),
-        ("windowProtection", "type1"), ("windowProtection", "type2"),
-        ("doorsBathroomAndToiletFittings", "type1"), ("doorsBathroomAndToiletFittings", "type2"),
-        ("doorsHandRail", "type1"), ("doorsHandRail", "type2"),
-        ("doorsPantryCupboard", "type1"), ("doorsPantryCupboard", "type2"),
-        ("doorsOther", "type1"), ("doorsOther", "type2"),
-        ("wallFinisher", "type1"), ("wallFinisher", "type2"),
-        ("floorFinisher", "type1"), ("floorFinisher", "type2"),
-        ("bathroomAndToilet", "type1"), ("bathroomAndToilet", "type2"),
-        ("services", "type1"), ("services", "type2")
-    };
+        private static void InitializeMasterData(AppDbContext context)
+        {
+            if (context.MasterDataItems.Any())
+                return;
 
-    context.MasterDataItems.AddRange(
-        items.Select(i => new MasterDataItem { Category = i.Category, Value = i.Value })
-    );
+            Console.WriteLine("Seeding master data...");
 
-    context.SaveChanges();
-    Console.WriteLine("Master data seeded.");
-}
+            var items = new List<(string Category, string Value)>
+            {
+                ("buildingCategory", "category1"),
+                ("buildingCategory", "category2"),
+                ("buildingClass", "classType1"),
+                ("buildingClass", "classType2"),
+                ("conviences", "type1"),
+                ("conviences", "type2"),
+                ("natureOfConstruction", "type1"),
+                ("natureOfConstruction", "type2"),
+                ("roofMaterial", "type1"),
+                ("roofMaterial", "type2"),
+                ("roofFrame", "type1"),
+                ("roofFrame", "type2"),
+                ("roofFinisher", "type1"),
+                ("roofFinisher", "type2"),
+                ("celing", "type1"),
+                ("celing", "type2"),
+                ("foundationStructure", "type1"),
+                ("foundationStructure", "type2"),
+                ("wallStructure", "type1"),
+                ("wallStructure", "type2"),
+                ("floorStructure", "type1"),
+                ("floorStructure", "type2"),
+                ("door", "type1"),
+                ("door", "type2"),
+                ("window", "type1"),
+                ("window", "type2"),
+                ("windowProtection", "type1"),
+                ("windowProtection", "type2"),
+                ("doorsBathroomAndToiletFittings", "type1"),
+                ("doorsBathroomAndToiletFittings", "type2"),
+                ("doorsHandRail", "type1"),
+                ("doorsHandRail", "type2"),
+                ("doorsPantryCupboard", "type1"),
+                ("doorsPantryCupboard", "type2"),
+                ("doorsOther", "type1"),
+                ("doorsOther", "type2"),
+                ("wallFinisher", "type1"),
+                ("wallFinisher", "type2"),
+                ("floorFinisher", "type1"),
+                ("floorFinisher", "type2"),
+                ("bathroomAndToilet", "type1"),
+                ("bathroomAndToilet", "type2"),
+                ("services", "type1"),
+                ("services", "type2"),
+            };
 
-private static void InitializeLandAquisitionMasterFiles(AppDbContext context)
-{
-    if (context.LandAquisitionMasterFiles.Any()) return;
+            context.MasterDataItems.AddRange(
+                items.Select(i => new MasterDataItem { Category = i.Category, Value = i.Value })
+            );
 
-    var files = new List<LandAquisitionMasterFile>
-    {
-        new() { MasterFileNo = 52412, PlanType = "Survey Plan", PlanNo = "SP-2023-001", RequestingAuthorityReferenceNo = "001", Status = "Success" },
-        new() { MasterFileNo = 52413, PlanType = "Block Survey", PlanNo = "BS-2023-045", RequestingAuthorityReferenceNo = "002", Status = "Pending" }
-    };
+            context.SaveChanges();
+            Console.WriteLine("Master data seeded.");
+        }
 
-    context.LandAquisitionMasterFiles.AddRange(files);
-    context.SaveChanges();
-}
+        private static void InitializeLandAquisitionMasterFiles(AppDbContext context)
+        {
+            if (context.LandAquisitionMasterFiles.Any())
+                return;
 
+            var files = new List<LandAquisitionMasterFile>
+            {
+                new()
+                {
+                    MasterFileNo = 52412,
+                    PlanType = "Survey Plan",
+                    PlanNo = "SP-2023-001",
+                    RequestingAuthorityReferenceNo = "001",
+                    Status = "Success",
+                },
+                new()
+                {
+                    MasterFileNo = 52413,
+                    PlanType = "Block Survey",
+                    PlanNo = "BS-2023-045",
+                    RequestingAuthorityReferenceNo = "002",
+                    Status = "Pending",
+                },
+            };
+            context.LandAquisitionMasterFiles.AddRange(files);
+            context.SaveChanges();
+        }
 
+        private static void InitializeRequestTypes(AppDbContext context)
+        {
+            // If there's any data, stop
+            if (context.RequestTypes.Any())
+                return;
 
+            Console.WriteLine("Seeding request types...");
+
+            // Add request types with better sample data
+            var requestTypes = new RequestType[]
+            {
+                new RequestType { Code = "mr", Name = "Mass Rating" },
+                new RequestType { Code = "ra", Name = "Rating Assessment" },
+                new RequestType { Code = "rb", Name = "Rating Building" },
+                new RequestType { Code = "ro", Name = "Rating Object" },
+            };
+
+            context.RequestTypes.AddRange(requestTypes);
+            context.SaveChanges();
+            Console.WriteLine("Request types seeded.");
+        }
     }
 }
