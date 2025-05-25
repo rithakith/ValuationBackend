@@ -1,6 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using ValuationBackend.Data;
 using ValuationBackend.Models;
+using ValuationBackend.Services;
 
 namespace ValuationBackend.Controllers
 {
@@ -8,18 +8,17 @@ namespace ValuationBackend.Controllers
     [Route("api/[controller]")]
     public class LAMasterfileController : ControllerBase
     {
-        private readonly AppDbContext _context;
+        private readonly ILAMasterfileService _service;
 
-        public LAMasterfileController(AppDbContext context)
+        public LAMasterfileController(ILAMasterfileService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
         public ActionResult<LAMasterfileResponse> GetAll()
         {
-            var data = _context.LandAquisitionMasterFiles.ToList();
-            return Ok(new LAMasterfileResponse { MasterFiles = data });
+            return Ok(_service.GetAll());
         }
 
         [HttpPost("search")]
@@ -30,6 +29,7 @@ namespace ValuationBackend.Controllers
             var data = _context.LandAquisitionMasterFiles
                 .Where(f =>
                     f.MasterFileNo.ToString().Contains(query) ||
+                    f.MasterFilesRefNo.ToLower().Contains(query) ||
                     f.PlanNo.ToLower().Contains(query) ||
                     f.PlanType.ToLower().Contains(query) ||
                     f.RequestingAuthorityReferenceNo.ToLower().Contains(query) ||

@@ -5,6 +5,10 @@ using System.Text;
 using ValuationBackend.Data;
 using ValuationBackend.Extensions;
 using ValuationBackend.Models;
+using DotNetEnv;
+
+// Load environment variables from .env file
+Env.Load();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -13,23 +17,54 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Register repositories
+builder.Services.AddScoped<ValuationBackend.Repositories.IConditionReportRepository, ValuationBackend.Repositories.ConditionReportRepository>();
+builder.Services.AddScoped<ValuationBackend.Repositories.IBuildingRatesLARepository, ValuationBackend.Repositories.BuildingRatesLARepository>();
+builder.Services.AddScoped<ValuationBackend.Repositories.IPastValuationsLARepository, ValuationBackend.Repositories.PastValuationsLARepository>();
+builder.Services.AddScoped<ValuationBackend.Repositories.IRentalEvidenceLARepository, ValuationBackend.Repositories.RentalEvidenceLARepository>();
+builder.Services.AddScoped<ValuationBackend.Repositories.ISalesEvidenceLARepository, ValuationBackend.Repositories.SalesEvidenceLARepository>();
+builder.Services.AddScoped<ValuationBackend.Repositories.ILAMasterfileRepository, ValuationBackend.Repositories.LAMasterfileRepository>();
+
+// Register services
+builder.Services.AddScoped<ValuationBackend.Services.IConditionReportService, ValuationBackend.Services.ConditionReportService>();
+builder.Services.AddScoped<ValuationBackend.Services.IBuildingRatesLAService, ValuationBackend.Services.BuildingRatesLAService>();
+builder.Services.AddScoped<ValuationBackend.Services.IPastValuationsLAService, ValuationBackend.Services.PastValuationsLAService>();
+builder.Services.AddScoped<ValuationBackend.Services.IRentalEvidenceLAService, ValuationBackend.Services.RentalEvidenceLAService>();
+builder.Services.AddScoped<ValuationBackend.Services.ISalesEvidenceLAService, ValuationBackend.Services.SalesEvidenceLAService>();
+builder.Services.AddScoped<ValuationBackend.Services.ILAMasterfileService, ValuationBackend.Services.LAMasterfileService>();
+
 // Register repositories and services using extension methods
 builder.Services.AddRepositories();
 builder.Services.AddServices();
 
+
 // Configure PostgreSQL
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING")
+    ?? builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(connectionString));
 
-// Configure JWT settings
-builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("JwtSettings"));
-var jwtSettingsSection = builder.Configuration.GetSection("JwtSettings");
-var jwtSettings = jwtSettingsSection.Get<JwtSettings>();
-
-if (jwtSettings == null || string.IsNullOrWhiteSpace(jwtSettings.SecretKey))
+// Configure JWT settings from environment variables
+var jwtSettings = new JwtSettings
 {
-    throw new InvalidOperationException("JWT settings or SecretKey is not configured correctly.");
-}
+    SecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")
+        ?? throw new InvalidOperationException("JWT_SECRET_KEY environment variable is not configured."),
+    Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER")
+        ?? throw new InvalidOperationException("JWT_ISSUER environment variable is not configured."),
+    Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")
+        ?? throw new InvalidOperationException("JWT_AUDIENCE environment variable is not configured."),
+    ExpiryMinutes = int.TryParse(Environment.GetEnvironmentVariable("JWT_EXPIRY_MINUTES"), out var expiry)
+        ? expiry : 60
+};
+
+// Register JWT settings
+builder.Services.Configure<JwtSettings>(options =>
+{
+    options.SecretKey = jwtSettings.SecretKey;
+    options.Issuer = jwtSettings.Issuer;
+    options.Audience = jwtSettings.Audience;
+    options.ExpiryMinutes = jwtSettings.ExpiryMinutes;
+});
 
 // Add Authentication
 var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
