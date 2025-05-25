@@ -9,11 +9,11 @@ using ValuationBackend.Data;
 
 #nullable disable
 
-namespace ValuationBackend.Data.Migrations
+namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250523100228_AddLMPastValuation")]
-    partial class AddLMPastValuation
+    [Migration("20250525124537_AddMasterFilesRefNoColumnToLandAquisition")]
+    partial class AddMasterFilesRefNoColumnToLandAquisition
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -35,6 +35,10 @@ namespace ValuationBackend.Data.Migrations
 
                     b.Property<int>("MasterFileNo")
                         .HasColumnType("integer");
+
+                    b.Property<string>("MasterFilesRefNo")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("PlanNo")
                         .IsRequired()
@@ -66,34 +70,27 @@ namespace ValuationBackend.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AssessmentNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ConstructedBy")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Cost")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DescriptionOfProperty")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FloorAreaSQFT")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLatitude")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLongitude")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("MasterFileId")
@@ -101,25 +98,26 @@ namespace ValuationBackend.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Owner")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RatePerSQFT")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Remarks")
-                        .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int>("ReportId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("YearOfConstruction")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReportId");
 
                     b.ToTable("BuildingRatesLA");
                 });
@@ -271,11 +269,16 @@ namespace ValuationBackend.Data.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("ReportId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("RoadName")
                         .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReportId");
 
                     b.ToTable("ConditionReports");
                 });
@@ -481,6 +484,61 @@ namespace ValuationBackend.Data.Migrations
                     b.HasIndex("ReportId");
 
                     b.ToTable("InspectionReports");
+                });
+
+            modelBuilder.Entity("ValuationBackend.Models.LMBuildingRates", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AssessmentNumber")
+                        .HasColumnType("text");
+
+                    b.Property<string>("ConstructedBy")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Cost")
+                        .HasColumnType("text");
+
+                    b.Property<string>("DescriptionOfProperty")
+                        .HasColumnType("text");
+
+                    b.Property<string>("FloorArea")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LocationLatitude")
+                        .HasColumnType("text");
+
+                    b.Property<string>("LocationLongitude")
+                        .HasColumnType("text");
+
+                    b.Property<string>("MasterFileRefNo")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Owner")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RatePerSQFT")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Remarks")
+                        .HasColumnType("text");
+
+                    b.Property<int>("ReportId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("YearOfConstruction")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReportId");
+
+                    b.ToTable("LMBuildingRates");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.LMPastValuation", b =>
@@ -743,23 +801,18 @@ namespace ValuationBackend.Data.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DateOfValuation")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Extent")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FileNoGNDivision")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLatitude")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLongitude")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("MasterFileId")
@@ -771,33 +824,32 @@ namespace ValuationBackend.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("PlanOfParticulars")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PurposeOfValuation")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Rate")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RateType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Remarks")
-                        .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("ReportId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Situation")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReportId");
 
                     b.ToTable("PastValuationsLA");
                 });
@@ -843,30 +895,24 @@ namespace ValuationBackend.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AssessmentNo")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FloorRateSQFT")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("HeadOfTerms")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLatitude")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLongitude")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("MasterFileId")
@@ -878,33 +924,32 @@ namespace ValuationBackend.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Occupier")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Owner")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RatePerMonth")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RatePerSqft")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Remarks")
-                        .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("ReportId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Situation")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReportId");
 
                     b.ToTable("RentalEvidencesLA", (string)null);
                 });
@@ -943,54 +988,42 @@ namespace ValuationBackend.Data.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AssetNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Consideration")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("DeedAttestedNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DeedNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Description")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("DescriptionOfProperty")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Extent")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("FloorRate")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LandRegistryReferences")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLatitude")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLongitude")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LotNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("MasterFileId")
@@ -1002,57 +1035,50 @@ namespace ValuationBackend.Data.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("NotaryName")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Occupier")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Owner")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PlanDate")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PlanNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Rate")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RateType")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Remarks")
-                        .IsRequired()
                         .HasColumnType("text");
 
+                    b.Property<int>("ReportId")
+                        .HasColumnType("integer");
+
                     b.Property<string>("Road")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Situation")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime?>("UpdatedAt")
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Vendor")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Village")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("ReportId");
 
                     b.ToTable("SalesEvidencesLA", (string)null);
                 });
@@ -1129,6 +1155,28 @@ namespace ValuationBackend.Data.Migrations
                     b.ToTable("UserTasks");
                 });
 
+            modelBuilder.Entity("ValuationBackend.Models.BuildingRatesLA", b =>
+                {
+                    b.HasOne("ValuationBackend.Models.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("ReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+                });
+
+            modelBuilder.Entity("ValuationBackend.Models.ConditionReport", b =>
+                {
+                    b.HasOne("ValuationBackend.Models.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("ReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+                });
+
             modelBuilder.Entity("ValuationBackend.Models.InspectionBuilding", b =>
                 {
                     b.HasOne("ValuationBackend.Models.InspectionReport", "InspectionReport")
@@ -1141,6 +1189,17 @@ namespace ValuationBackend.Data.Migrations
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.InspectionReport", b =>
+                {
+                    b.HasOne("ValuationBackend.Models.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("ReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+                });
+
+            modelBuilder.Entity("ValuationBackend.Models.LMBuildingRates", b =>
                 {
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()
@@ -1174,6 +1233,39 @@ namespace ValuationBackend.Data.Migrations
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.LMSalesEvidence", b =>
+                {
+                    b.HasOne("ValuationBackend.Models.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("ReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+                });
+
+            modelBuilder.Entity("ValuationBackend.Models.PastValuationsLA", b =>
+                {
+                    b.HasOne("ValuationBackend.Models.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("ReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+                });
+
+            modelBuilder.Entity("ValuationBackend.Models.RentalEvidenceLA", b =>
+                {
+                    b.HasOne("ValuationBackend.Models.Report", "Report")
+                        .WithMany()
+                        .HasForeignKey("ReportId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Report");
+                });
+
+            modelBuilder.Entity("ValuationBackend.Models.SalesEvidenceLA", b =>
                 {
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()

@@ -12,8 +12,8 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250525095124_AddMasterFilesRefNoToLAMasterFile")]
-    partial class AddMasterFilesRefNoToLAMasterFile
+    [Migration("20250525124221_AddMasterFilesRefNoToLandAquisition")]
+    partial class AddMasterFilesRefNoToLandAquisition
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -238,10 +238,6 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("MasterFileId")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("MasterFileRefNo")
                         .IsRequired()
                         .HasColumnType("text");
 

@@ -42,7 +42,7 @@ namespace ValuationBackend.Services
             {
                 ReportType = "LA_condition",
                 Timestamp = DateTime.UtcNow,
-                Description = $"Land Acquisition Condition Report for {dto.MasterFileRefNo}"
+                Description = $"Land Acquisition Condition Report for {dto.MasterFileId}"
             };
 
             // Add the report first
@@ -53,7 +53,6 @@ namespace ValuationBackend.Services
             {
                 ReportId = report.ReportId,
                 MasterFileId = dto.MasterFileId,
-                MasterFileRefNo = dto.MasterFileRefNo,
                 NameOfTheVillage = dto.NameOfTheVillage,
                 NameOfTheLand = dto.NameOfTheLand,
                 AtPlanNumber = dto.AtPlanNumber,
@@ -107,7 +106,6 @@ namespace ValuationBackend.Services
 
             // Update existing report with data from DTO
             existingReport.MasterFileId = dto.MasterFileId;
-            existingReport.MasterFileRefNo = dto.MasterFileRefNo;
             existingReport.NameOfTheVillage = dto.NameOfTheVillage;
             existingReport.NameOfTheLand = dto.NameOfTheLand;
             existingReport.AtPlanNumber = dto.AtPlanNumber;
@@ -158,7 +156,7 @@ namespace ValuationBackend.Services
                 Id = report.Id,
                 ReportId = report.ReportId,
                 MasterFileId = report.MasterFileId,
-                MasterFileRefNo = report.MasterFileRefNo,
+                
                 NameOfTheVillage = report.NameOfTheVillage,
                 NameOfTheLand = report.NameOfTheLand,
                 AtPlanNumber = report.AtPlanNumber,

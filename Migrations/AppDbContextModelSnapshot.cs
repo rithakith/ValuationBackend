@@ -238,10 +238,6 @@ namespace ValuationBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("MasterFileRefNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<string>("NameOfTheLand")
                         .IsRequired()
                         .HasColumnType("text");
