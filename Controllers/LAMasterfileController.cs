@@ -19,24 +19,12 @@ namespace ValuationBackend.Controllers
         public ActionResult<LAMasterfileResponse> GetAll()
         {
             return Ok(_service.GetAll());
-        }
-
-        [HttpPost("search")]
+        }        [HttpPost("search")]
         [HttpPost("filter")]
         public ActionResult<LAMasterfileResponse> Search([FromBody] LAQueryRequest request)
         {
-            var query = request.Query.ToLower();
-            var data = _context.LandAquisitionMasterFiles
-                .Where(f =>
-                    f.MasterFileNo.ToString().Contains(query) ||
-                    f.MasterFilesRefNo.ToLower().Contains(query) ||
-                    f.PlanNo.ToLower().Contains(query) ||
-                    f.PlanType.ToLower().Contains(query) ||
-                    f.RequestingAuthorityReferenceNo.ToLower().Contains(query) ||
-                    f.Status.ToLower().Contains(query))
-                .ToList();
-
-            return Ok(new LAMasterfileResponse { MasterFiles = data });
+            var response = _service.Search(request.Query);
+            return Ok(response);
         }
     }
 }
