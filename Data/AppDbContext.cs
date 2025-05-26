@@ -8,7 +8,10 @@ namespace ValuationBackend.Data
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
         public DbSet<RatingRequest> RatingRequests { get; set; }
+        
         public DbSet<LandMiscellaneousMasterFile> LandMiscellaneousMasterFiles { get; set; }
+
+        public DbSet<AssetNumberChange> AssetNumberChanges { get; set; }
 
         public DbSet<User> Users { get; set; }
 
