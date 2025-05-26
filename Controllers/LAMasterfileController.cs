@@ -19,11 +19,28 @@ namespace ValuationBackend.Controllers
         public ActionResult<LAMasterfileResponse> GetAll()
         {
             return Ok(_service.GetAll());
-        }        [HttpPost("search")]
+        }
+
+        [HttpGet("paged")]
+        public ActionResult<LAMasterfileResponse> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            return Ok(_service.GetPaged(page, pageSize));
+        }
+
+        [HttpPost("search")]
         [HttpPost("filter")]
         public ActionResult<LAMasterfileResponse> Search([FromBody] LAQueryRequest request)
         {
-            var response = _service.Search(request.Query);
+            var query = request.Query.ToLower();
+            var response = _service.Search(query);
+            return Ok(response);
+        }
+
+        [HttpPost("search/paged")]
+        public ActionResult<LAMasterfileResponse> SearchPaged([FromBody] LAQueryRequest request, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        {
+            var query = request.Query.ToLower();
+            var response = _service.SearchPaged(query, page, pageSize);
             return Ok(response);
         }
     }

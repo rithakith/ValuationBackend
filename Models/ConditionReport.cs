@@ -14,54 +14,88 @@ namespace ValuationBackend.Models
         public int ReportId { get; set; }
         
         [ForeignKey("ReportId")]
-        public Report Report { get; set; }
+        public Report? Report { get; set; }
         
         [Required]
-        public string MasterFileId { get; set; }
+        public required string MasterFileId { get; set; }
         
         // Land Info
-        public string NameOfTheVillage { get; set; }
-        public string NameOfTheLand { get; set; }
-        public string AtPlanNumber { get; set; }
-        public string AtLotNumber { get; set; }
-        public string PpCadNumber { get; set; }
-        public string PpCadLotNumber { get; set; }
-        public string AcquiredExtent { get; set; }
-        public string AssessmentNumber { get; set; }
-        public string RoadName { get; set; }
-        public string AccessCategory { get; set; }
-        public string AccessCategoryDescription { get; set; }
-        public string DescriptionOfLand { get; set; }
-        public string LandUseDescription { get; set; }
-        public string LandUseType { get; set; }
-        public string Frontage { get; set; }
-        public string DepthOfLand { get; set; }
-        public string LevelWithAccess { get; set; }
-        public string PlantationDetails { get; set; }
-        public string DetailsOfBusiness { get; set; }
-        public string AcquisitionName { get; set; }
-        public string DatePrepared { get; set; }
-        public string DateOfSection3BA { get; set; }
+        [Required]
+        public required string NameOfTheVillage { get; set; }
+        [Required]
+        public required string NameOfTheLand { get; set; }
+        [Required]
+        public required string AtPlanNumber { get; set; }
+        [Required]
+        public required string AtLotNumber { get; set; }
+        [Required]
+        public required string PpCadNumber { get; set; }
+        [Required]
+        public required string PpCadLotNumber { get; set; }
+        [Required]
+        public required string AcquiredExtent { get; set; }
+        [Required]
+        public required string AssessmentNumber { get; set; }
+        [Required]
+        public required string RoadName { get; set; }
+        [Required]
+        public required string AccessCategory { get; set; }
+        [Required]
+        public required string AccessCategoryDescription { get; set; }
+        [Required]
+        public required string DescriptionOfLand { get; set; }
+        [Required]
+        public required string LandUseDescription { get; set; }
+        [Required]
+        public required string LandUseType { get; set; }
+        [Required]
+        public required string Frontage { get; set; }
+        [Required]
+        public required string DepthOfLand { get; set; }
+        [Required]
+        public required string LevelWithAccess { get; set; }
+        [Required]
+        public required string PlantationDetails { get; set; }
+        [Required]
+        public required string DetailsOfBusiness { get; set; }
+        [Required]
+        public required string AcquisitionName { get; set; }
+        [Required]
+        public required string DatePrepared { get; set; }
+        [Required]
+        public required string DateOfSection3BA { get; set; }
         
         // Boundaries
-        public string BoundaryNorth { get; set; }
-        public string BoundaryEast { get; set; }
-        public string BoundaryWest { get; set; }
-        public string BoundarySouth { get; set; }
-        public string BoundaryBottom { get; set; }
+        [Required]
+        public required string BoundaryNorth { get; set; }
+        [Required]
+        public required string BoundaryEast { get; set; }
+        [Required]
+        public required string BoundaryWest { get; set; }
+        [Required]
+        public required string BoundarySouth { get; set; }
+        [Required]
+        public required string BoundaryBottom { get; set; }
         
         // Building Info
-        public string BuildingDescription { get; set; }
-        public string BuildingInfo { get; set; } // JSON string containing all buildings
+        [Required]
+        public required string BuildingDescription { get; set; }
+        [Required]
+        public required string BuildingInfo { get; set; } // JSON string containing all buildings
         
         // Other Constructions
-        public string OtherConstructionsDescription { get; set; }
-        public string OtherConstructionsInfo { get; set; } // JSON string containing other constructions
+        [Required]
+        public required string OtherConstructionsDescription { get; set; }
+        [Required]
+        public required string OtherConstructionsInfo { get; set; } // JSON string containing other constructions
         
         // Signatures
-        public string AcquiringOfficerSignature { get; set; }
-        public string GramasewakaSignature { get; set; }
-        public string ChiefValuerRepresentativeSignature { get; set; }
+        [Required]
+        public required string AcquiringOfficerSignature { get; set; }
+        [Required]
+        public required string GramasewakaSignature { get; set; }
+        [Required]
+        public required string ChiefValuerRepresentativeSignature { get; set; }
         
         public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
     }
