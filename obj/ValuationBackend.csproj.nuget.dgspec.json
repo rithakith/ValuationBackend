@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jalinahirushan/Desktop/Uni/Level 2 Software Project/VD/app/ValuationBackend/ValuationBackend.csproj": {}
+    "C:\\VD\\appnew\\ValuationBackend\\ValuationBackend.csproj": {}
   },
   "projects": {
-    "/Users/jalinahirushan/Desktop/Uni/Level 2 Software Project/VD/app/ValuationBackend/ValuationBackend.csproj": {
+    "C:\\VD\\appnew\\ValuationBackend\\ValuationBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jalinahirushan/Desktop/Uni/Level 2 Software Project/VD/app/ValuationBackend/ValuationBackend.csproj",
+        "projectUniqueName": "C:\\VD\\appnew\\ValuationBackend\\ValuationBackend.csproj",
         "projectName": "ValuationBackend",
-        "projectPath": "/Users/jalinahirushan/Desktop/Uni/Level 2 Software Project/VD/app/ValuationBackend/ValuationBackend.csproj",
-        "packagesPath": "/Users/jalinahirushan/.nuget/packages/",
-        "outputPath": "/Users/jalinahirushan/Desktop/Uni/Level 2 Software Project/VD/app/ValuationBackend/obj/",
+        "projectPath": "C:\\VD\\appnew\\ValuationBackend\\ValuationBackend.csproj",
+        "packagesPath": "C:\\Users\\samik\\.nuget\\packages\\",
+        "outputPath": "C:\\VD\\appnew\\ValuationBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/jalinahirushan/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\samik\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -94,7 +94,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }
