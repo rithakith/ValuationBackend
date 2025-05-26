@@ -34,12 +34,20 @@ namespace ValuationBackend.Data
 
         public DbSet<BuildingRatesLA> BuildingRatesLA { get; set; }
 
-        public DbSet<PastValuationsLA> PastValuationsLA { get; set; }        public DbSet<LMRentalEvidence> LMRentalEvidences { get; set; }
+        public DbSet<PastValuationsLA> PastValuationsLA { get; set; }
+        
+        public DbSet<LMRentalEvidence> LMRentalEvidences { get; set; }
         public DbSet<LMSalesEvidence> LMSalesEvidences { get; set; }
         public DbSet<LMPastValuation> LMPastValuations { get; set; }
-        public DbSet<LMBuildingRates> LMBuildingRates { get; set; }        public DbSet<RequestType> RequestTypes { get; set; }
+        public DbSet<LMBuildingRates> LMBuildingRates { get; set; }
+        
+        public DbSet<RequestType> RequestTypes { get; set; }
 
         public DbSet<Request> Requests { get; set; }
+
+        public DbSet<Asset> Assets { get; set; }
+
+        public DbSet<PropertyCategory> PropertyCategories { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
