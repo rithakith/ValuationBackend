@@ -5,7 +5,8 @@ using ValuationBackend.Models;
 using ValuationBackend.Models.Enums;
 
 namespace ValuationBackend.Data
-{    public static class DomesticRatingCardInitializer
+{
+    public static class DomesticRatingCardInitializer
     {
         public static void InitializeDomesticRatingCards(AppDbContext context)
         {
@@ -16,28 +17,33 @@ namespace ValuationBackend.Data
             Console.WriteLine("Seeding domestic rating cards...");
 
             // Get assets for foreign key references
-            var assets = context.Assets
-                .Where(a => a.Description == PropertyType.ResidentialProperty)
+            var assets = context
+                .Assets.Where(a => a.Description == PropertyType.ResidentialProperty)
                 .ToList();
 
             if (!assets.Any())
             {
-                Console.WriteLine("No residential property assets found. Domestic Rating Cards seeding skipped.");
+                Console.WriteLine(
+                    "No residential property assets found. Domestic Rating Cards seeding skipped."
+                );
                 return;
             }
 
             // Find the Domestic property category
-            var domesticCategory = context.PropertyCategories
-                .FirstOrDefault(pc => pc.Name == "Domestic");
+            var domesticCategory = context.PropertyCategories.FirstOrDefault(pc =>
+                pc.Name == "Domestic"
+            );
 
             if (domesticCategory == null)
             {
-                Console.WriteLine("Domestic property category not found. Domestic Rating Cards seeding skipped.");
+                Console.WriteLine(
+                    "Domestic property category not found. Domestic Rating Cards seeding skipped."
+                );
                 return;
             }
 
             var ratingCards = new List<DomesticRatingCard>();
-            
+
             // Helper function to create a rating card with comprehensive details
             void AddRatingCard(
                 Asset asset,
@@ -62,7 +68,7 @@ namespace ValuationBackend.Data
             {
                 // Generate new number
                 string newNumber = $"DRC-{asset.AssetNo}-001";
-                
+
                 var existingCount = ratingCards.Count(rc => rc.AssetId == asset.Id);
                 if (existingCount > 0)
                 {
@@ -93,8 +99,9 @@ namespace ValuationBackend.Data
                         ParkingSpace = parkingSpace,
                         Date = date,
                         Occupier = occupier,
-                        Terms = terms,                        Notes = notes,
-                        CreatedAt = DateTime.UtcNow
+                        Terms = terms,
+                        Notes = notes,
+                        CreatedAt = DateTime.UtcNow,
                     }
                 );
             }
@@ -103,7 +110,11 @@ namespace ValuationBackend.Data
             foreach (var asset in assets)
             {
                 // Single Family Homes
-                if (asset.AssetNo.Contains("002") || asset.AssetNo.Contains("004") || asset.AssetNo.Contains("008"))
+                if (
+                    asset.AssetNo.Contains("002")
+                    || asset.AssetNo.Contains("004")
+                    || asset.AssetNo.Contains("008")
+                )
                 {
                     AddRatingCard(
                         asset,
@@ -125,7 +136,7 @@ namespace ValuationBackend.Data
                         "Freehold",
                         "Property features newly installed double glazing throughout"
                     );
-                    
+
                     // Add additional rating card for AST-002
                     if (asset.AssetNo.Contains("002"))
                     {
@@ -151,7 +162,7 @@ namespace ValuationBackend.Data
                         );
                     }
                 }
-                
+
                 // Apartment properties
                 if (asset.AssetNo.Contains("006") || asset.AssetNo.Contains("010"))
                 {
@@ -176,7 +187,7 @@ namespace ValuationBackend.Data
                         "Apartment complex features gym and swimming pool facilities"
                     );
                 }
-                
+
                 // Townhouse properties
                 if (asset.AssetNo.Contains("012"))
                 {
@@ -200,7 +211,7 @@ namespace ValuationBackend.Data
                         "Annual lease",
                         "Modern townhouse with energy-efficient features"
                     );
-                    
+
                     // Add a second card for townhouse with different condition
                     AddRatingCard(
                         asset,
@@ -224,12 +235,12 @@ namespace ValuationBackend.Data
                     );
                 }
             }
-            
+
             // Add extra comprehensive examples with detailed specifications
             if (assets.Any(a => a.AssetNo.Contains("004")))
             {
                 var detailedAsset = assets.First(a => a.AssetNo.Contains("004"));
-                
+
                 AddRatingCard(
                     detailedAsset,
                     WallType.Concrete,
@@ -251,12 +262,12 @@ namespace ValuationBackend.Data
                     "Executive property with high-end finishes, smart home technology throughout, security system, and dedicated home office space"
                 );
             }
-            
+
             // Add properties showing various conditions
             if (assets.Any(a => a.AssetNo.Contains("010")))
             {
                 var conditionAsset = assets.First(a => a.AssetNo.Contains("010"));
-                
+
                 // Poor condition property
                 AddRatingCard(
                     conditionAsset,
@@ -278,13 +289,13 @@ namespace ValuationBackend.Data
                     "Previously month-to-month",
                     "Property requires complete renovation. Structural issues evident. Damp problems throughout."
                 );
-            }            // Add more comprehensive examples to showcase different property types
+            } // Add more comprehensive examples to showcase different property types
 
             // Add luxury penthouse
             if (assets.Any(a => a.AssetNo.Contains("011")))
             {
                 var luxuryAsset = assets.First(a => a.AssetNo.Contains("011"));
-                
+
                 AddRatingCard(
                     luxuryAsset,
                     WallType.Concrete,
@@ -311,7 +322,7 @@ namespace ValuationBackend.Data
             if (assets.Any(a => a.AssetNo.Contains("009")))
             {
                 var heritageAsset = assets.First(a => a.AssetNo.Contains("009"));
-                
+
                 AddRatingCard(
                     heritageAsset,
                     WallType.Brick,
@@ -333,12 +344,12 @@ namespace ValuationBackend.Data
                     "Property has significant historical value with original features including cornicing, fireplace, and oak staircase. Refurbished to modern standards while preserving character. Energy efficiency rating affected by conservation restrictions."
                 );
             }
-            
+
             // Add mixed-use commercial/residential property
             if (assets.Any(a => a.AssetNo.Contains("007")))
             {
                 var mixedUseAsset = assets.First(a => a.AssetNo.Contains("007"));
-                
+
                 AddRatingCard(
                     mixedUseAsset,
                     WallType.Concrete,
@@ -360,12 +371,12 @@ namespace ValuationBackend.Data
                     "Ground floor used as retail space with separate entrance to first and second floor residential accommodation. Recently rewired and replumbed throughout. Includes enhanced security system and soundproofing between commercial and residential spaces."
                 );
             }
-            
+
             // Add property with fair condition requiring some work
             if (assets.Any(a => a.AssetNo.Contains("005")))
             {
                 var improvementAsset = assets.First(a => a.AssetNo.Contains("005"));
-                
+
                 AddRatingCard(
                     improvementAsset,
                     WallType.Brick,
@@ -386,7 +397,7 @@ namespace ValuationBackend.Data
                     "Available for new tenancy",
                     "Property requires moderate renovation. Kitchen and bathrooms dated but functional. Evidence of minor damp in utility room. Heating system 20+ years old. Good structural integrity but cosmetic updates needed throughout."
                 );
-                
+
                 // Add second rating card for same property with improvement suggestions
                 AddRatingCard(
                     improvementAsset,
@@ -409,12 +420,12 @@ namespace ValuationBackend.Data
                     "Potential valuation after recommended improvements: New kitchen and bathrooms, resolving damp issues, new energy-efficient heating system, double glazing throughout, and modern decor would significantly increase rental value and energy rating."
                 );
             }
-            
+
             // Add student accommodation property
             if (assets.Any(a => a.AssetNo.Contains("003")))
             {
                 var studentAsset = assets.First(a => a.AssetNo.Contains("003"));
-                
+
                 AddRatingCard(
                     studentAsset,
                     WallType.Brick,
@@ -436,12 +447,12 @@ namespace ValuationBackend.Data
                     "Property converted for student letting with 6 bedrooms, 2 bathrooms, large communal kitchen/living area. All bedrooms furnished. Includes high-speed fiber broadband, fire alarm system, and weekly cleaning of communal areas. HMO license current for 3 more years."
                 );
             }
-            
+
             // Add accessible property with disability adaptations
             if (assets.Any(a => a.AssetNo.Contains("001")))
             {
                 var accessibleAsset = assets.First(a => a.AssetNo.Contains("001"));
-                
+
                 AddRatingCard(
                     accessibleAsset,
                     WallType.Brick,
@@ -466,7 +477,11 @@ namespace ValuationBackend.Data
 
             context.DomesticRatingCards.AddRange(ratingCards);
             context.SaveChanges();
-            Console.WriteLine("Domestic rating cards seeded successfully: " + ratingCards.Count + " records created.");
+            Console.WriteLine(
+                "Domestic rating cards seeded successfully: "
+                    + ratingCards.Count
+                    + " records created."
+            );
         }
     }
 }
