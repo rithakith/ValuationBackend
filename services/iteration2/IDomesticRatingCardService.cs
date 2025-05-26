@@ -30,10 +30,19 @@ namespace ValuationBackend.Services
         /// Update an existing domestic rating card
         /// </summary>
         Task<DomesticRatingCard> UpdateAsync(DomesticRatingCard domesticRatingCard);
-        
-        /// <summary>
+          /// <summary>
         /// Delete a domestic rating card
         /// </summary>
         Task<bool> DeleteAsync(int id);
+
+        /// <summary>
+        /// Get asset by id for autofill functionality
+        /// </summary>
+        Task<Asset?> GetAssetByIdAsync(int assetId);
+
+        /// <summary>
+        /// Generate new number for domestic rating card
+        /// </summary>
+        Task<string> GenerateNewNumberAsync(int assetId);
     }
 }

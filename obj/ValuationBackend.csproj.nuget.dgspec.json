@@ -1,20 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "/Users/jalinahirushan/Desktop/Uni/Level 2 Software Project/VD/app/ValuationBackend/ValuationBackend.csproj": {}
+    "C:\\Users\\User\\Desktop\\ValuationBackend\\ValuationBackend.csproj": {}
   },
   "projects": {
-    "/Users/jalinahirushan/Desktop/Uni/Level 2 Software Project/VD/app/ValuationBackend/ValuationBackend.csproj": {
+    "C:\\Users\\User\\Desktop\\ValuationBackend\\ValuationBackend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "/Users/jalinahirushan/Desktop/Uni/Level 2 Software Project/VD/app/ValuationBackend/ValuationBackend.csproj",
+        "projectUniqueName": "C:\\Users\\User\\Desktop\\ValuationBackend\\ValuationBackend.csproj",
         "projectName": "ValuationBackend",
-        "projectPath": "/Users/jalinahirushan/Desktop/Uni/Level 2 Software Project/VD/app/ValuationBackend/ValuationBackend.csproj",
-        "packagesPath": "/Users/jalinahirushan/.nuget/packages/",
-        "outputPath": "/Users/jalinahirushan/Desktop/Uni/Level 2 Software Project/VD/app/ValuationBackend/obj/",
+        "projectPath": "C:\\Users\\User\\Desktop\\ValuationBackend\\ValuationBackend.csproj",
+        "packagesPath": "C:\\Users\\User\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\User\\Desktop\\ValuationBackend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "/Users/jalinahirushan/.nuget/NuGet/NuGet.Config"
+          "C:\\Users\\User\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
@@ -37,8 +37,7 @@
           "enableAudit": "true",
           "auditLevel": "low",
           "auditMode": "direct"
-        },
-        "SdkAnalysisLevel": "9.0.200"
+        }
       },
       "frameworks": {
         "net8.0": {
@@ -55,6 +54,10 @@
             "Microsoft.AspNetCore.OpenApi": {
               "target": "Package",
               "version": "[8.0.14, )"
+            },
+            "Microsoft.EntityFrameworkCore": {
+              "target": "Package",
+              "version": "[9.0.5, )"
             },
             "Microsoft.EntityFrameworkCore.Design": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -94,7 +97,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.407/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

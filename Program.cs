@@ -56,17 +56,20 @@ var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING"
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseNpgsql(connectionString));
 
-// Configure JWT settings from environment variables
+// Configure JWT settings from environment variables or fallback to appsettings.json
 var jwtSettings = new JwtSettings
 {
     SecretKey = Environment.GetEnvironmentVariable("JWT_SECRET_KEY")
-        ?? throw new InvalidOperationException("JWT_SECRET_KEY environment variable is not configured."),
+        ?? builder.Configuration["JwtSettings:SecretKey"]
+        ?? "fallback-secret-key-for-development-only-min-32-chars",
     Issuer = Environment.GetEnvironmentVariable("JWT_ISSUER")
-        ?? throw new InvalidOperationException("JWT_ISSUER environment variable is not configured."),
+        ?? builder.Configuration["JwtSettings:Issuer"]
+        ?? "ValuationBackend",
     Audience = Environment.GetEnvironmentVariable("JWT_AUDIENCE")
-        ?? throw new InvalidOperationException("JWT_AUDIENCE environment variable is not configured."),
+        ?? builder.Configuration["JwtSettings:Audience"]
+        ?? "ValuationUsers",
     ExpiryMinutes = int.TryParse(Environment.GetEnvironmentVariable("JWT_EXPIRY_MINUTES"), out var expiry)
-        ? expiry : 60
+        ? expiry : (int.TryParse(builder.Configuration["JwtSettings:ExpiryMinutes"], out var configExpiry) ? configExpiry : 60)
 };
 
 // Register JWT settings
@@ -113,11 +116,21 @@ builder.Services.AddCors(options =>
 // Build the app
 var app = builder.Build();
 
-// Initialize database
+// Initialize database with error handling
 using (var scope = app.Services.CreateScope())
 {
-    var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    DbInitializer.Initialize(dbContext);
+    try
+    {
+        var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+        DbInitializer.Initialize(dbContext);
+        Console.WriteLine("Database initialized successfully.");
+    }
+    catch (Exception ex)
+    {
+        Console.WriteLine($"Database initialization failed: {ex.Message}");
+        Console.WriteLine("Application will continue without database initialization.");
+        Console.WriteLine("Swagger UI will still be available for API documentation.");
+    }
 }
 
 // Configure middleware

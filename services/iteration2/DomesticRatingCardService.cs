@@ -6,14 +6,15 @@ using ValuationBackend.Models.Enums;
 using ValuationBackend.Repositories;
 
 namespace ValuationBackend.Services
-{
-    public class DomesticRatingCardService : IDomesticRatingCardService
+{    public class DomesticRatingCardService : IDomesticRatingCardService
     {
         private readonly IDomesticRatingCardRepository _repository;
+        private readonly IAssetService _assetService;
 
-        public DomesticRatingCardService(IDomesticRatingCardRepository repository)
+        public DomesticRatingCardService(IDomesticRatingCardRepository repository, IAssetService assetService)
         {
             _repository = repository;
+            _assetService = assetService;
         }
 
         public async Task<List<DomesticRatingCard>> GetAllAsync()
@@ -52,13 +53,22 @@ namespace ValuationBackend.Services
             ValidateDomesticRatingCard(domesticRatingCard);
             
             return await _repository.UpdateAsync(domesticRatingCard);
-        }
-
-        public async Task<bool> DeleteAsync(int id)
+        }        public async Task<bool> DeleteAsync(int id)
         {
             return await _repository.DeleteAsync(id);
         }
-          private void ValidateDomesticRatingCard(DomesticRatingCard domesticRatingCard)
+
+        public async Task<Asset?> GetAssetByIdAsync(int assetId)
+        {
+            return await Task.FromResult(_assetService.GetAssetById(assetId));
+        }
+
+        public async Task<string> GenerateNewNumberAsync(int assetId)
+        {
+            return await _repository.GenerateNewNumberAsync(assetId);
+        }
+
+        private void ValidateDomesticRatingCard(DomesticRatingCard domesticRatingCard)
         {
             // Check if AssetId is valid
             if (domesticRatingCard.AssetId <= 0)

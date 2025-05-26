@@ -1,8 +1,8 @@
-using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using ValuationBackend.Models;
 using ValuationBackend.Models.DTOs;
 using ValuationBackend.Services;
@@ -18,9 +18,8 @@ namespace ValuationBackend.Controllers
         public DomesticRatingCardController(IDomesticRatingCardService service)
         {
             _service = service;
-        }
+        } // GET: api/DomesticRatingCard
 
-        // GET: api/DomesticRatingCard
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DomesticRatingCardDto>>> GetAll()
         {
@@ -54,7 +53,7 @@ namespace ValuationBackend.Controllers
                     Terms = card.Terms ?? string.Empty,
                     SuggestedRate = card.SuggestedRate,
                     Notes = card.Notes ?? string.Empty,
-                    CreatedAt = card.CreatedAt
+                    CreatedAt = card.CreatedAt,
                 });
                 return Ok(result);
             }
@@ -65,7 +64,8 @@ namespace ValuationBackend.Controllers
         }
 
         // GET: api/DomesticRatingCard/5
-        [HttpGet("{id}")]
+[HttpGet("{id:int}", Name = "GetDomesticRatingCardById")]
+
         public async Task<ActionResult<DomesticRatingCardDto>> GetById(int id)
         {
             try
@@ -103,7 +103,7 @@ namespace ValuationBackend.Controllers
                     Terms = card.Terms ?? string.Empty,
                     SuggestedRate = card.SuggestedRate,
                     Notes = card.Notes ?? string.Empty,
-                    CreatedAt = card.CreatedAt
+                    CreatedAt = card.CreatedAt,
                 };
                 return Ok(result);
             }
@@ -118,8 +118,11 @@ namespace ValuationBackend.Controllers
         }
 
         // GET: api/DomesticRatingCard/asset/5
-        [HttpGet("asset/{assetId}")]
-        public async Task<ActionResult<IEnumerable<DomesticRatingCardDto>>> GetByAssetId(int assetId)
+
+[HttpGet("asset/{assetId:int}", Name = "GetDomesticRatingCardsByAssetId")]
+        public async Task<ActionResult<IEnumerable<DomesticRatingCardDto>>> GetByAssetId(
+            int assetId
+        )
         {
             try
             {
@@ -151,7 +154,7 @@ namespace ValuationBackend.Controllers
                     Terms = card.Terms ?? string.Empty,
                     SuggestedRate = card.SuggestedRate,
                     Notes = card.Notes ?? string.Empty,
-                    CreatedAt = card.CreatedAt
+                    CreatedAt = card.CreatedAt,
                 });
                 return Ok(result);
             }
@@ -163,7 +166,9 @@ namespace ValuationBackend.Controllers
 
         // POST: api/DomesticRatingCard
         [HttpPost]
-        public async Task<ActionResult<DomesticRatingCardDto>> Create(CreateDomesticRatingCardDto dto)
+        public async Task<ActionResult<DomesticRatingCardDto>> Create(
+            CreateDomesticRatingCardDto dto
+        )
         {
             try
             {
@@ -192,11 +197,11 @@ namespace ValuationBackend.Controllers
                     RentPM = dto.RentPM,
                     Terms = dto.Terms,
                     SuggestedRate = dto.SuggestedRate,
-                    Notes = dto.Notes
+                    Notes = dto.Notes,
                 };
 
                 var createdCard = await _service.CreateAsync(domesticRatingCard);
-                
+
                 // Convert entity to DTO for response
                 var responseDto = new DomesticRatingCardDto
                 {
@@ -225,9 +230,9 @@ namespace ValuationBackend.Controllers
                     Terms = createdCard.Terms ?? string.Empty,
                     SuggestedRate = createdCard.SuggestedRate,
                     Notes = createdCard.Notes ?? string.Empty,
-                    CreatedAt = createdCard.CreatedAt
+                    CreatedAt = createdCard.CreatedAt,
                 };
-                
+
                 return CreatedAtAction(nameof(GetById), new { id = createdCard.Id }, responseDto);
             }
             catch (ArgumentException ex)
@@ -242,7 +247,10 @@ namespace ValuationBackend.Controllers
 
         // PUT: api/DomesticRatingCard/5
         [HttpPut("{id}")]
-        public async Task<ActionResult<DomesticRatingCardDto>> Update(int id, UpdateDomesticRatingCardDto dto)
+        public async Task<ActionResult<DomesticRatingCardDto>> Update(
+            int id,
+            UpdateDomesticRatingCardDto dto
+        )
         {
             if (id != dto.Id)
             {
@@ -280,7 +288,7 @@ namespace ValuationBackend.Controllers
                 existingCard.Notes = dto.Notes;
 
                 var updatedCard = await _service.UpdateAsync(existingCard);
-                
+
                 // Convert entity to DTO for response
                 var responseDto = new DomesticRatingCardDto
                 {
@@ -309,9 +317,9 @@ namespace ValuationBackend.Controllers
                     Terms = updatedCard.Terms ?? string.Empty,
                     SuggestedRate = updatedCard.SuggestedRate,
                     Notes = updatedCard.Notes ?? string.Empty,
-                    CreatedAt = updatedCard.CreatedAt
+                    CreatedAt = updatedCard.CreatedAt,
                 };
-                
+
                 return Ok(responseDto);
             }
             catch (ArgumentException ex)
@@ -340,6 +348,34 @@ namespace ValuationBackend.Controllers
                     return NotFound($"Domestic Rating Card with ID {id} not found.");
                 }
                 return NoContent();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Internal server error: {ex.Message}");
+            }
+        }
+
+        // GET: api/DomesticRatingCard/autofill/{assetId}
+[HttpGet("autofill/{assetId:int}", Name = "GetAutofillData")]
+        public async Task<ActionResult<AutofillDataDto>> GetAutofillData(int assetId)
+        {
+            try
+            {
+                var asset = await _service.GetAssetByIdAsync(assetId);
+                if (asset == null)
+                {
+                    return NotFound($"Asset with ID {assetId} not found.");
+                }
+                var newNumber = await _service.GenerateNewNumberAsync(assetId);
+
+                var autofillData = new AutofillDataDto
+                {
+                    Owner = asset.Owner,
+                    Description = asset.Description.ToString(),
+                    NewNumber = newNumber,
+                };
+
+                return Ok(autofillData);
             }
             catch (Exception ex)
             {
