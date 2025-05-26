@@ -48,6 +48,7 @@ namespace ValuationBackend.Repositories
             var baseQuery = _context.LandAquisitionMasterFiles
                 .Where(f =>
                     f.MasterFileNo.ToString().Contains(query) ||
+                    f.MasterFilesRefNo.ToLower().Contains(query) ||
                     f.PlanNo.ToLower().Contains(query) ||
                     f.PlanType.ToLower().Contains(query) ||
                     f.RequestingAuthorityReferenceNo.ToLower().Contains(query) ||
