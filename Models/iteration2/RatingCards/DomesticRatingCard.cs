@@ -70,10 +70,8 @@ namespace ValuationBackend.Models
 
         public string? Terms { get; set; }
 
-        public decimal? SuggestedRate { get; set; }
+        public decimal? SuggestedRate { get; set; }        public string? Notes { get; set; }
 
-        public string? Notes { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.UtcNow;
+        public DateTime CreatedAt { get; set; } = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
     }
 }
