@@ -37,8 +37,13 @@ namespace ValuationBackend.Data
             // Initialize Assets
             InitializeAssets(context);
 
-            // Initialize Property Categories
+           
+            
+             // Initialize Property Categories
             InitializePropertyCategories(context);
+            
+            // Initialize Asset Divisions
+            InitializeAssetDivisions(context);
             
             // Initialize Domestic Rating Cards
             DomesticRatingCardInitializer.InitializeDomesticRatingCards(context);
@@ -801,6 +806,66 @@ namespace ValuationBackend.Data
             context.PropertyCategories.AddRange(propertyCategories);
             context.SaveChanges();
             Console.WriteLine("Property categories seeded.");
+        }
+
+        private static void InitializeAssetDivisions(AppDbContext context)
+        {
+            // If there's any data, stop
+            if (context.AssetDivisions.Any())
+                return;
+
+            // Add dummy records
+            var assetDivisions = new AssetDivision[]
+            {
+                new AssetDivision
+                {
+                    AssetId = 1,
+                    NewAssetNo = "ASSET-001-A",
+                    Area = 1500.50M,
+                    LandType = "Residential",
+                    Description = "North portion of original asset",
+                    CreatedAt = DateTime.UtcNow.AddDays(-30)
+                },
+                new AssetDivision
+                {
+                    AssetId = 1,
+                    NewAssetNo = "ASSET-001-B",
+                    Area = 1200.75M,
+                    LandType = "Commercial",
+                    Description = "South portion of original asset",
+                    CreatedAt = DateTime.UtcNow.AddDays(-30)
+                },
+                new AssetDivision
+                {
+                    AssetId = 2,
+                    NewAssetNo = "ASSET-002-A",
+                    Area = 800.25M,
+                    LandType = "Agricultural",
+                    Description = "Eastern division of farmland",
+                    CreatedAt = DateTime.UtcNow.AddDays(-15)
+                },
+                new AssetDivision
+                {
+                    AssetId = 2,
+                    NewAssetNo = "ASSET-002-B",
+                    Area = 750.00M,
+                    LandType = "Agricultural",
+                    Description = "Western division of farmland",
+                    CreatedAt = DateTime.UtcNow.AddDays(-15)
+                },
+                new AssetDivision
+                {
+                    AssetId = 3,
+                    NewAssetNo = "ASSET-003-A",
+                    Area = 2000.00M,
+                    LandType = "Industrial",
+                    Description = "Factory zone partition",
+                    CreatedAt = DateTime.UtcNow.AddDays(-7)
+                }
+            };
+
+            context.AssetDivisions.AddRange(assetDivisions);
+            context.SaveChanges();
         }
     }
 }
