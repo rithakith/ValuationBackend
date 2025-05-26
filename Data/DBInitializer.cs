@@ -5,8 +5,7 @@ using ValuationBackend.Models;
 namespace ValuationBackend.Data
 {
     public static class DbInitializer
-    {
-        public static void Initialize(AppDbContext context)
+    {        public static void Initialize(AppDbContext context)
         {
             // Ensure DB is created
             context.Database.EnsureCreated();
@@ -23,15 +22,31 @@ namespace ValuationBackend.Data
             InitializeUserTasks(context);
 
             // Initialize Master Data
-            InitializeMasterData(context);
+            InitializeMasterData(context); // Initialize Land Aquisition Master Files
+            InitializeLandAquisitionMasterFiles(context);
 
-            // Initialize Land Aquisition Master Files
-            InitializeLandAquisitionMasterFiles(context); // Initialize Reports
-            InitializeReports(context);            // Initialize Request Types
+            // Initialize Reports
+            InitializeReports(context);
+
+            // Initialize Request Types
             InitializeRequestTypes(context);
 
             // Initialize Requests
-            InitializeRequests(context);
+            InitializeRequests(context); 
+            
+            // Initialize Assets
+            InitializeAssets(context);
+
+           
+            
+             // Initialize Property Categories
+            InitializePropertyCategories(context);
+            
+            // Initialize Asset Divisions
+            InitializeAssetDivisions(context);
+            
+            // Initialize Domestic Rating Cards
+            DomesticRatingCardInitializer.InitializeDomesticRatingCards(context);
         }
 
         private static void InitializeRatingRequests(AppDbContext context)
@@ -512,7 +527,8 @@ namespace ValuationBackend.Data
                 new RequestType { Code = "ra", Name = "Rating Assessment" },
                 new RequestType { Code = "rb", Name = "Rating Building" },
                 new RequestType { Code = "ro", Name = "Rating Object" },
-            };            context.RequestTypes.AddRange(requestTypes);
+            };
+            context.RequestTypes.AddRange(requestTypes);
             context.SaveChanges();
             Console.WriteLine("Request types seeded.");
         }
@@ -544,7 +560,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-30),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-25)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
                 },
                 new Request
                 {
@@ -554,7 +570,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = false, // pending
                     CreatedAt = DateTime.UtcNow.AddDays(-20),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-15)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-15),
                 },
                 new Request
                 {
@@ -564,7 +580,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-15),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-10)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
                 },
                 new Request
                 {
@@ -574,7 +590,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2023,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-50),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-45)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-45),
                 },
                 new Request
                 {
@@ -584,7 +600,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = false, // pending
                     CreatedAt = DateTime.UtcNow.AddDays(-10),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-5)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
                 },
                 new Request
                 {
@@ -594,13 +610,262 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2023,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-60),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-55)
-                }
+                    UpdatedAt = DateTime.UtcNow.AddDays(-55),
+                },
             };
-
             context.Requests.AddRange(requests);
             context.SaveChanges();
             Console.WriteLine("Requests seeded.");
+        }
+
+        private static void InitializeAssets(AppDbContext context)
+        {
+            // If there's any data, stop
+            if (context.Assets.Any())
+                return;
+
+            Console.WriteLine("Seeding assets...");
+
+            // Get requests for foreign key references
+            var requests = context.Requests.ToList();
+            if (!requests.Any())
+            {
+                Console.WriteLine("No requests found. Assets seeding skipped.");
+                return;
+            }
+
+            // Add sample assets
+            var assets = new Asset[]
+            {
+                new Asset
+                {
+                    RequestId = requests[0].Id,
+                    AssetNo = "AST-001-2024",
+                    Ward = "Ward 01",
+                    RdSt = "Galle Road",
+                    Description = PropertyType.CommercialProperty,
+                    Owner = "John Doe",
+                    IsRatingCard = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-25),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-20),
+                },
+                new Asset
+                {
+                    RequestId = requests[0].Id,
+                    AssetNo = "AST-002-2024",
+                    Ward = "Ward 01",
+                    RdSt = "Main Street",
+                    Description = PropertyType.ResidentialProperty,
+                    Owner = "Jane Smith",
+                    IsRatingCard = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-25),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-20),
+                },
+                new Asset
+                {
+                    RequestId = requests[1].Id,
+                    AssetNo = "AST-003-2024",
+                    Ward = "Ward 02",
+                    RdSt = "Temple Road",
+                    Description = PropertyType.CommercialProperty,
+                    Owner = "ABC Company Ltd",
+                    IsRatingCard = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-15),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
+                },
+                new Asset
+                {
+                    RequestId = requests[1].Id,
+                    AssetNo = "AST-004-2024",
+                    Ward = "Ward 02",
+                    RdSt = "Park Avenue",
+                    Description = PropertyType.ResidentialProperty,
+                    Owner = "Michael Johnson",
+                    IsRatingCard = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-15),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
+                },
+                new Asset
+                {
+                    RequestId = requests[2].Id,
+                    AssetNo = "AST-005-2024",
+                    Ward = "Ward 03",
+                    RdSt = "Hill Street",
+                    Description = PropertyType.CommercialProperty,
+                    Owner = "XYZ Holdings",
+                    IsRatingCard = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-10),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
+                },
+                new Asset
+                {
+                    RequestId = requests[2].Id,
+                    AssetNo = "AST-006-2024",
+                    Ward = "Ward 03",
+                    RdSt = "Lake Road",
+                    Description = PropertyType.ResidentialProperty,
+                    Owner = "Sarah Williams",
+                    IsRatingCard = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-10),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
+                },
+                new Asset
+                {
+                    RequestId = requests[3].Id,
+                    AssetNo = "AST-007-2023",
+                    Ward = "Ward 04",
+                    RdSt = "Beach Road",
+                    Description = PropertyType.CommercialProperty,
+                    Owner = "Seaside Resort Ltd",
+                    IsRatingCard = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-45),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-40),
+                },
+                new Asset
+                {
+                    RequestId = requests[3].Id,
+                    AssetNo = "AST-008-2023",
+                    Ward = "Ward 04",
+                    RdSt = "Coconut Grove",
+                    Description = PropertyType.ResidentialProperty,
+                    Owner = "David Brown",
+                    IsRatingCard = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-45),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-40),
+                },
+                new Asset
+                {
+                    RequestId = requests[4].Id,
+                    AssetNo = "AST-009-2024",
+                    Ward = "Ward 05",
+                    RdSt = "Market Street",
+                    Description = PropertyType.CommercialProperty,
+                    Owner = "Central Market Corp",
+                    IsRatingCard = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-5),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-2),
+                },
+                new Asset
+                {
+                    RequestId = requests[4].Id,
+                    AssetNo = "AST-010-2024",
+                    Ward = "Ward 05",
+                    RdSt = "Garden Lane",
+                    Description = PropertyType.ResidentialProperty,
+                    Owner = "Lisa Anderson",
+                    IsRatingCard = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-5),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-2),
+                },
+                new Asset
+                {
+                    RequestId = requests[5].Id,
+                    AssetNo = "AST-011-2023",
+                    Ward = "Ward 06",
+                    RdSt = "School Road",
+                    Description = PropertyType.CommercialProperty,
+                    Owner = "Education Center Ltd",
+                    IsRatingCard = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-55),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-50),
+                },
+                new Asset
+                {
+                    RequestId = requests[5].Id,
+                    AssetNo = "AST-012-2023",
+                    Ward = "Ward 06",
+                    RdSt = "Flower Street",
+                    Description = PropertyType.ResidentialProperty,
+                    Owner = "Robert Wilson",
+                    IsRatingCard = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-55),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-50),
+                },
+            };
+            context.Assets.AddRange(assets);
+            context.SaveChanges();
+            Console.WriteLine("Assets seeded.");
+        }
+
+        private static void InitializePropertyCategories(AppDbContext context)
+        {
+            // If there's any data, stop
+            if (context.PropertyCategories.Any())
+                return;
+
+            Console.WriteLine("Seeding property categories..."); // Add the specified property categories
+            var propertyCategories = new PropertyCategory[]
+            {
+                new PropertyCategory { Name = "Domestic" },
+                new PropertyCategory { Name = "Offices" },
+                new PropertyCategory { Name = "Shops" },
+                new PropertyCategory { Name = "Agriculture" },
+                new PropertyCategory { Name = "Special" },
+            };
+
+            context.PropertyCategories.AddRange(propertyCategories);
+            context.SaveChanges();
+            Console.WriteLine("Property categories seeded.");
+        }
+
+        private static void InitializeAssetDivisions(AppDbContext context)
+        {
+            // If there's any data, stop
+            if (context.AssetDivisions.Any())
+                return;
+
+            // Add dummy records
+            var assetDivisions = new AssetDivision[]
+            {
+                new AssetDivision
+                {
+                    AssetId = 1,
+                    NewAssetNo = "ASSET-001-A",
+                    Area = 1500.50M,
+                    LandType = "Residential",
+                    Description = "North portion of original asset",
+                    CreatedAt = DateTime.UtcNow.AddDays(-30)
+                },
+                new AssetDivision
+                {
+                    AssetId = 1,
+                    NewAssetNo = "ASSET-001-B",
+                    Area = 1200.75M,
+                    LandType = "Commercial",
+                    Description = "South portion of original asset",
+                    CreatedAt = DateTime.UtcNow.AddDays(-30)
+                },
+                new AssetDivision
+                {
+                    AssetId = 2,
+                    NewAssetNo = "ASSET-002-A",
+                    Area = 800.25M,
+                    LandType = "Agricultural",
+                    Description = "Eastern division of farmland",
+                    CreatedAt = DateTime.UtcNow.AddDays(-15)
+                },
+                new AssetDivision
+                {
+                    AssetId = 2,
+                    NewAssetNo = "ASSET-002-B",
+                    Area = 750.00M,
+                    LandType = "Agricultural",
+                    Description = "Western division of farmland",
+                    CreatedAt = DateTime.UtcNow.AddDays(-15)
+                },
+                new AssetDivision
+                {
+                    AssetId = 3,
+                    NewAssetNo = "ASSET-003-A",
+                    Area = 2000.00M,
+                    LandType = "Industrial",
+                    Description = "Factory zone partition",
+                    CreatedAt = DateTime.UtcNow.AddDays(-7)
+                }
+            };
+
+            context.AssetDivisions.AddRange(assetDivisions);
+            context.SaveChanges();
         }
     }
 }
