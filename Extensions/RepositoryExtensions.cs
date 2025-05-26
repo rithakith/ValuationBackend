@@ -13,6 +13,12 @@ namespace ValuationBackend.Extensions
             services.AddScoped<ISalesEvidenceLARepository, SalesEvidenceLARepository>();
             services.AddScoped<IInspectionReportRepository, InspectionReportRepository>();
             services.AddScoped<ILandMiscellaneousRepository, LandMiscellaneousRepository>();
+            services.AddScoped<ILMBuildingRatesRepository, LMBuildingRatesRepository>();
+            services.AddScoped<ILMPastValuationRepository, LMPastValuationRepository>();
+            services.AddScoped<ILMRentalEvidenceRepository, LMRentalEvidenceRepository>();
+            services.AddScoped<ILMSalesEvidenceRepository, LMSalesEvidenceRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddScoped<IAssetNumberChangeRepository, AssetNumberChangeRepository>();
             // Add other repository registrations here
             return services;
         }

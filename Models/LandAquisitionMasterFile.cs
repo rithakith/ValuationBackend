@@ -13,9 +13,3 @@ public class LAQueryRequest
 {
     public string Query { get; set; } = string.Empty;
 }
-
-
-public class LAMasterfileResponse
-{
-    public List<LandAquisitionMasterFile> MasterFiles { get; set; } = new();
-}
