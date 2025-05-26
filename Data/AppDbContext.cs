@@ -13,6 +13,8 @@ namespace ValuationBackend.Data
 
         public DbSet<AssetNumberChange> AssetNumberChanges { get; set; }
 
+        public DbSet<AssetDivision> AssetDivisions { get; set; }
+
         public DbSet<User> Users { get; set; }
 
         public DbSet<UserTask> UserTasks { get; set; }
