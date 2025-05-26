@@ -18,8 +18,9 @@ namespace ValuationBackend.Controllers
         public DomesticRatingCardController(IDomesticRatingCardService service)
         {
             _service = service;
-        } // GET: api/DomesticRatingCard
+        }
 
+        // GET: api/DomesticRatingCard
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DomesticRatingCardDto>>> GetAll()
         {
@@ -64,8 +65,7 @@ namespace ValuationBackend.Controllers
         }
 
         // GET: api/DomesticRatingCard/5
-[HttpGet("{id:int}", Name = "GetDomesticRatingCardById")]
-
+        [HttpGet("{id:int}", Name = "GetDomesticRatingCardById")]
         public async Task<ActionResult<DomesticRatingCardDto>> GetById(int id)
         {
             try
@@ -118,11 +118,8 @@ namespace ValuationBackend.Controllers
         }
 
         // GET: api/DomesticRatingCard/asset/5
-
-[HttpGet("asset/{assetId:int}", Name = "GetDomesticRatingCardsByAssetId")]
-        public async Task<ActionResult<IEnumerable<DomesticRatingCardDto>>> GetByAssetId(
-            int assetId
-        )
+        [HttpGet("asset/{assetId:int}", Name = "GetDomesticRatingCardsByAssetId")]
+        public async Task<ActionResult<IEnumerable<DomesticRatingCardDto>>> GetByAssetId(int assetId)
         {
             try
             {
@@ -164,9 +161,10 @@ namespace ValuationBackend.Controllers
             }
         }
 
-        // POST: api/DomesticRatingCard
-        [HttpPost]
+        // POST: api/DomesticRatingCard/asset/{assetId}
+        [HttpPost("asset/{assetId:int}")]
         public async Task<ActionResult<DomesticRatingCardDto>> Create(
+            int assetId,
             CreateDomesticRatingCardDto dto
         )
         {
@@ -175,7 +173,7 @@ namespace ValuationBackend.Controllers
                 // Convert DTO to entity
                 var domesticRatingCard = new DomesticRatingCard
                 {
-                    AssetId = dto.AssetId,
+                    AssetId = assetId, // Use the assetId from the route parameter
                     NewNumber = string.Empty, // Will be auto-generated in service
                     Owner = string.Empty, // Will be auto-filled in service
                     Description = string.Empty, // Will be auto-filled in service
@@ -356,7 +354,7 @@ namespace ValuationBackend.Controllers
         }
 
         // GET: api/DomesticRatingCard/autofill/{assetId}
-[HttpGet("autofill/{assetId:int}", Name = "GetAutofillData")]
+        [HttpGet("autofill/{assetId:int}", Name = "GetAutofillData")]
         public async Task<ActionResult<AutofillDataDto>> GetAutofillData(int assetId)
         {
             try

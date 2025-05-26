@@ -132,7 +132,7 @@ namespace ValuationBackend.Services
             }
             
             // Validate date is not in the future
-            if (domesticRatingCard.Date.HasValue && domesticRatingCard.Date.Value > DateTime.Now)
+            if (domesticRatingCard.Date.HasValue && domesticRatingCard.Date.Value > DateTime.UtcNow)
             {
                 throw new ArgumentException("Date cannot be in the future.");
             }

@@ -61,7 +61,7 @@ namespace ValuationBackend.Repositories
             }
 
             // Set creation date
-            domesticRatingCard.CreatedAt = DateTime.Now;
+            domesticRatingCard.CreatedAt = DateTime.UtcNow;
 
             _context.DomesticRatingCards.Add(domesticRatingCard);
             await _context.SaveChangesAsync();
