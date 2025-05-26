@@ -31,13 +31,14 @@ namespace ValuationBackend.Repositories
         public List<LandAquisitionMasterFile> Search(string query)
         {
             query = query.ToLower();
-            return _context.LandAquisitionMasterFiles
-                .Where(f =>
-                    f.MasterFileNo.ToString().Contains(query) ||
-                    f.PlanNo.ToLower().Contains(query) ||
-                    f.PlanType.ToLower().Contains(query) ||
-                    f.RequestingAuthorityReferenceNo.ToLower().Contains(query) ||
-                    f.Status.ToLower().Contains(query))
+            return _context
+                .LandAquisitionMasterFiles.Where(f =>
+                    f.MasterFileNo.ToString().Contains(query)
+                    || f.PlanNo.ToLower().Contains(query)
+                    || f.PlanType.ToLower().Contains(query)
+                    || f.RequestingAuthorityReferenceNo.ToLower().Contains(query)
+                    || f.Status.ToLower().Contains(query)
+                )
                 .ToList();
         }
 
