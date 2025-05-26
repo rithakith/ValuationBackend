@@ -5,8 +5,7 @@ using ValuationBackend.Models;
 namespace ValuationBackend.Data
 {
     public static class DbInitializer
-    {
-        public static void Initialize(AppDbContext context)
+    {        public static void Initialize(AppDbContext context)
         {
             // Ensure DB is created
             context.Database.EnsureCreated();
@@ -23,21 +22,26 @@ namespace ValuationBackend.Data
             InitializeUserTasks(context);
 
             // Initialize Master Data
-            InitializeMasterData(context);            // Initialize Land Aquisition Master Files
+            InitializeMasterData(context); // Initialize Land Aquisition Master Files
             InitializeLandAquisitionMasterFiles(context);
-            
+
             // Initialize Reports
             InitializeReports(context);
-            
+
             // Initialize Request Types
             InitializeRequestTypes(context);
 
             // Initialize Requests
-            InitializeRequests(context);            // Initialize Assets
-            InitializeAssets(context);
+            InitializeRequests(context); 
             
+            // Initialize Assets
+            InitializeAssets(context);
+
             // Initialize Property Categories
             InitializePropertyCategories(context);
+            
+            // Initialize Domestic Rating Cards
+            DomesticRatingCardInitializer.InitializeDomesticRatingCards(context);
         }
 
         private static void InitializeRatingRequests(AppDbContext context)
@@ -518,7 +522,8 @@ namespace ValuationBackend.Data
                 new RequestType { Code = "ra", Name = "Rating Assessment" },
                 new RequestType { Code = "rb", Name = "Rating Building" },
                 new RequestType { Code = "ro", Name = "Rating Object" },
-            };            context.RequestTypes.AddRange(requestTypes);
+            };
+            context.RequestTypes.AddRange(requestTypes);
             context.SaveChanges();
             Console.WriteLine("Request types seeded.");
         }
@@ -550,7 +555,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-30),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-25)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
                 },
                 new Request
                 {
@@ -560,7 +565,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = false, // pending
                     CreatedAt = DateTime.UtcNow.AddDays(-20),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-15)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-15),
                 },
                 new Request
                 {
@@ -570,7 +575,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-15),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-10)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
                 },
                 new Request
                 {
@@ -580,7 +585,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2023,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-50),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-45)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-45),
                 },
                 new Request
                 {
@@ -590,7 +595,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = false, // pending
                     CreatedAt = DateTime.UtcNow.AddDays(-10),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-5)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
                 },
                 new Request
                 {
@@ -600,9 +605,10 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2023,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-60),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-55)
-                }
-            };            context.Requests.AddRange(requests);
+                    UpdatedAt = DateTime.UtcNow.AddDays(-55),
+                },
+            };
+            context.Requests.AddRange(requests);
             context.SaveChanges();
             Console.WriteLine("Requests seeded.");
         }
@@ -636,7 +642,7 @@ namespace ValuationBackend.Data
                     Owner = "John Doe",
                     IsRatingCard = true,
                     CreatedAt = DateTime.UtcNow.AddDays(-25),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-20)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-20),
                 },
                 new Asset
                 {
@@ -648,7 +654,7 @@ namespace ValuationBackend.Data
                     Owner = "Jane Smith",
                     IsRatingCard = false,
                     CreatedAt = DateTime.UtcNow.AddDays(-25),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-20)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-20),
                 },
                 new Asset
                 {
@@ -660,7 +666,7 @@ namespace ValuationBackend.Data
                     Owner = "ABC Company Ltd",
                     IsRatingCard = true,
                     CreatedAt = DateTime.UtcNow.AddDays(-15),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-10)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
                 },
                 new Asset
                 {
@@ -672,7 +678,7 @@ namespace ValuationBackend.Data
                     Owner = "Michael Johnson",
                     IsRatingCard = false,
                     CreatedAt = DateTime.UtcNow.AddDays(-15),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-10)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
                 },
                 new Asset
                 {
@@ -684,7 +690,7 @@ namespace ValuationBackend.Data
                     Owner = "XYZ Holdings",
                     IsRatingCard = true,
                     CreatedAt = DateTime.UtcNow.AddDays(-10),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-5)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
                 },
                 new Asset
                 {
@@ -696,7 +702,7 @@ namespace ValuationBackend.Data
                     Owner = "Sarah Williams",
                     IsRatingCard = false,
                     CreatedAt = DateTime.UtcNow.AddDays(-10),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-5)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
                 },
                 new Asset
                 {
@@ -708,7 +714,7 @@ namespace ValuationBackend.Data
                     Owner = "Seaside Resort Ltd",
                     IsRatingCard = true,
                     CreatedAt = DateTime.UtcNow.AddDays(-45),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-40)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-40),
                 },
                 new Asset
                 {
@@ -720,7 +726,7 @@ namespace ValuationBackend.Data
                     Owner = "David Brown",
                     IsRatingCard = false,
                     CreatedAt = DateTime.UtcNow.AddDays(-45),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-40)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-40),
                 },
                 new Asset
                 {
@@ -732,7 +738,7 @@ namespace ValuationBackend.Data
                     Owner = "Central Market Corp",
                     IsRatingCard = true,
                     CreatedAt = DateTime.UtcNow.AddDays(-5),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-2)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-2),
                 },
                 new Asset
                 {
@@ -744,7 +750,7 @@ namespace ValuationBackend.Data
                     Owner = "Lisa Anderson",
                     IsRatingCard = false,
                     CreatedAt = DateTime.UtcNow.AddDays(-5),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-2)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-2),
                 },
                 new Asset
                 {
@@ -756,7 +762,7 @@ namespace ValuationBackend.Data
                     Owner = "Education Center Ltd",
                     IsRatingCard = true,
                     CreatedAt = DateTime.UtcNow.AddDays(-55),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-50)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-50),
                 },
                 new Asset
                 {
@@ -768,9 +774,10 @@ namespace ValuationBackend.Data
                     Owner = "Robert Wilson",
                     IsRatingCard = false,
                     CreatedAt = DateTime.UtcNow.AddDays(-55),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-50)
-                }
-            };            context.Assets.AddRange(assets);
+                    UpdatedAt = DateTime.UtcNow.AddDays(-50),
+                },
+            };
+            context.Assets.AddRange(assets);
             context.SaveChanges();
             Console.WriteLine("Assets seeded.");
         }
@@ -781,7 +788,7 @@ namespace ValuationBackend.Data
             if (context.PropertyCategories.Any())
                 return;
 
-            Console.WriteLine("Seeding property categories...");            // Add the specified property categories
+            Console.WriteLine("Seeding property categories..."); // Add the specified property categories
             var propertyCategories = new PropertyCategory[]
             {
                 new PropertyCategory { Name = "Domestic" },
