@@ -42,7 +42,6 @@ namespace ValuationBackend.Controllers
                 TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
             });
         }
-
         [HttpGet("search")]
         public async Task<ActionResult> Search(
             [FromQuery] string searchTerm = "",
@@ -54,14 +53,10 @@ namespace ValuationBackend.Controllers
 
             var (records, totalCount) = await _landMiscellaneousService.SearchAsync(searchTerm, pageNumber, pageSize);
 
-            if (records == null || !records.Any())
-            {
-                return NotFound($"No land miscellaneous files found with search term: {searchTerm}");
-            }
-
+            // Always return the same format, even when no records are found
             return Ok(new
             {
-                Records = records,
+                Records = records ?? new List<LandMiscellaneousMasterFile>(),
                 TotalCount = totalCount,
                 PageNumber = pageNumber,
                 PageSize = pageSize,
