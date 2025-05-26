@@ -6,8 +6,8 @@ namespace ValuationBackend.Services
 {
     public interface ILandMiscellaneousService
     {
+        Task<(List<LandMiscellaneousMasterFile> Records, int TotalCount)> GetPaginatedAsync(int pageNumber, int pageSize);
         Task<List<LandMiscellaneousMasterFile>> GetAllAsync();
-        Task<LandMiscellaneousMasterFile?> GetByIdAsync(int id);
-        Task<List<LandMiscellaneousMasterFile>> SearchByMasterFileNoAsync(int masterFileNo);
+        Task<(List<LandMiscellaneousMasterFile> Records, int TotalCount)> SearchAsync(string searchTerm, int pageNumber, int pageSize);
     }
 }

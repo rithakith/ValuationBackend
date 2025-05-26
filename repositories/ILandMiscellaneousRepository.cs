@@ -6,8 +6,12 @@ namespace ValuationBackend.Repositories
 {
     public interface ILandMiscellaneousRepository
     {
+        // Add to ILandMiscellaneousRepository.cs
+        Task<List<LandMiscellaneousMasterFile>> GetPaginatedAsync(int pageNumber, int pageSize);
+        Task<int> GetTotalCountAsync();
         Task<List<LandMiscellaneousMasterFile>> GetAllAsync();
-        Task<LandMiscellaneousMasterFile?> GetByIdAsync(int id);
-        Task<List<LandMiscellaneousMasterFile>> SearchByMasterFileNoAsync(int masterFileNo);
+
+        Task<List<LandMiscellaneousMasterFile>> SearchAsync(string searchTerm, int pageNumber, int pageSize);
+        Task<int> GetSearchCountAsync(string searchTerm);
     }
 }

@@ -13,20 +13,25 @@ namespace ValuationBackend.Services
         {
             _repository = repository;
         }
-
         public async Task<List<LandMiscellaneousMasterFile>> GetAllAsync()
         {
             return await _repository.GetAllAsync();
         }
 
-        public async Task<LandMiscellaneousMasterFile?> GetByIdAsync(int id)
+        public async Task<(List<LandMiscellaneousMasterFile> Records, int TotalCount)> GetPaginatedAsync(int pageNumber, int pageSize)
         {
-            return await _repository.GetByIdAsync(id);
+            var records = await _repository.GetPaginatedAsync(pageNumber, pageSize);
+            var totalCount = await _repository.GetTotalCountAsync();
+
+            return (records, totalCount);
         }
 
-        public async Task<List<LandMiscellaneousMasterFile>> SearchByMasterFileNoAsync(int masterFileNo)
+        public async Task<(List<LandMiscellaneousMasterFile> Records, int TotalCount)> SearchAsync(string searchTerm, int pageNumber, int pageSize)
         {
-            return await _repository.SearchByMasterFileNoAsync(masterFileNo);
+            var records = await _repository.SearchAsync(searchTerm, pageNumber, pageSize);
+            var totalCount = await _repository.GetSearchCountAsync(searchTerm);
+
+            return (records, totalCount);
         }
     }
 }

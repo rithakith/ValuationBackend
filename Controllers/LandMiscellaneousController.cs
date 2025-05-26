@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Mvc;
 using ValuationBackend.Models;
 using ValuationBackend.Services; // Added for the service layer
+using System;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using System.Linq; // Added for Any()
+using System;
 
 namespace ValuationBackend.Controllers
 {
@@ -11,9 +13,7 @@ namespace ValuationBackend.Controllers
     [Route("api/[controller]")]
     public class LandMiscellaneousController : ControllerBase
     {
-        private readonly ILandMiscellaneousService _landMiscellaneousService;
-
-        public LandMiscellaneousController(ILandMiscellaneousService landMiscellaneousService)
+        private readonly ILandMiscellaneousService _landMiscellaneousService; public LandMiscellaneousController(ILandMiscellaneousService landMiscellaneousService)
         {
             _landMiscellaneousService = landMiscellaneousService;
         }
@@ -25,30 +25,49 @@ namespace ValuationBackend.Controllers
             return Ok(landMiscellaneousList);
         }
 
-        [HttpGet("{id}")]
-        public async Task<ActionResult<LandMiscellaneousMasterFile>> GetById(int id)
+        [HttpGet("paginated")]
+        public async Task<ActionResult> GetPaginated([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
-            var landMiscellaneous = await _landMiscellaneousService.GetByIdAsync(id);
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
 
-            if (landMiscellaneous == null)
+            var (records, totalCount) = await _landMiscellaneousService.GetPaginatedAsync(pageNumber, pageSize);
+
+            return Ok(new
             {
-                return NotFound();
-            }
-
-            return Ok(landMiscellaneous);
+                Records = records,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize)
+            });
         }
 
-        [HttpGet("search/masterfileno/{masterFileNo}")]
-        public async Task<ActionResult<IEnumerable<LandMiscellaneousMasterFile>>> SearchByMasterFileNo(int masterFileNo)
+        [HttpGet("search")]
+        public async Task<ActionResult> Search(
+            [FromQuery] string searchTerm = "",
+            [FromQuery] int pageNumber = 1,
+            [FromQuery] int pageSize = 10)
         {
-            var results = await _landMiscellaneousService.SearchByMasterFileNoAsync(masterFileNo);
+            if (pageNumber < 1) pageNumber = 1;
+            if (pageSize < 1) pageSize = 10;
 
-            if (results == null || !results.Any())
+            var (records, totalCount) = await _landMiscellaneousService.SearchAsync(searchTerm, pageNumber, pageSize);
+
+            if (records == null || !records.Any())
             {
-                return NotFound($"No land miscellaneous files found with Master File No: {masterFileNo}");
+                return NotFound($"No land miscellaneous files found with search term: {searchTerm}");
             }
 
-            return Ok(results);
+            return Ok(new
+            {
+                Records = records,
+                TotalCount = totalCount,
+                PageNumber = pageNumber,
+                PageSize = pageSize,
+                TotalPages = (int)Math.Ceiling(totalCount / (double)pageSize),
+                SearchTerm = searchTerm
+            });
         }
     }
 }
