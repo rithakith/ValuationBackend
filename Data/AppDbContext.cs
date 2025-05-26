@@ -12,6 +12,8 @@ namespace ValuationBackend.Data
         
         public DbSet<LandMiscellaneousMasterFile> LandMiscellaneousMasterFiles { get; set; }
 
+        public DbSet<Reconciliation> Reconciliations { get; set; }
+
         public DbSet<AssetNumberChange> AssetNumberChanges { get; set; }
 
         public DbSet<AssetDivision> AssetDivisions { get; set; }
@@ -64,6 +66,10 @@ namespace ValuationBackend.Data
             // Configure entity table names explicitly
             modelBuilder.Entity<RentalEvidenceLA>().ToTable("RentalEvidencesLA");
             modelBuilder.Entity<SalesEvidenceLA>().ToTable("SalesEvidencesLA");
+            modelBuilder.Entity<Reconciliation>()
+    .HasOne(r => r.Asset)
+    .WithMany()
+    .HasForeignKey(r => r.AssetId);
         }
     }
 }
