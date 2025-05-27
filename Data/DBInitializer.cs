@@ -5,7 +5,8 @@ using ValuationBackend.Models;
 namespace ValuationBackend.Data
 {
     public static class DbInitializer
-    {        public static void Initialize(AppDbContext context)
+    {
+        public static void Initialize(AppDbContext context)
         {
             try
             {
@@ -34,14 +35,14 @@ namespace ValuationBackend.Data
                 InitializeRequestTypes(context);
 
                 // Initialize Requests
-                InitializeRequests(context); 
-                
+                InitializeRequests(context);
+
                 // Initialize Assets
                 InitializeAssets(context);
 
                 // Initialize Property Categories
                 InitializePropertyCategories(context);
-                
+
                 // Initialize Domestic Rating Cards
                 DomesticRatingCardInitializer.InitializeDomesticRatingCards(context);
             }
