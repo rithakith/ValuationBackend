@@ -26,6 +26,7 @@ builder.Services.AddScoped<ValuationBackend.Repositories.ISalesEvidenceLAReposit
 builder.Services.AddScoped<ValuationBackend.Repositories.ILAMasterfileRepository, ValuationBackend.Repositories.LAMasterfileRepository>();
 builder.Services.AddScoped<ValuationBackend.Repositories.IRequestTypeRepository, ValuationBackend.Repositories.RequestTypeRepository>();
 builder.Services.AddScoped<ValuationBackend.Repositories.IRequestRepository, ValuationBackend.Repositories.RequestRepository>();
+builder.Services.AddScoped<ValuationBackend.Repositories.IAssetRepository, ValuationBackend.Repositories.AssetRepository>();
 
 // Register services
 builder.Services.AddScoped<ValuationBackend.Services.IConditionReportService, ValuationBackend.Services.ConditionReportService>();
@@ -36,6 +37,7 @@ builder.Services.AddScoped<ValuationBackend.Services.ISalesEvidenceLAService, Va
 builder.Services.AddScoped<ValuationBackend.Services.ILAMasterfileService, ValuationBackend.Services.LAMasterfileService>();
 builder.Services.AddScoped<ValuationBackend.Services.IRequestTypeService, ValuationBackend.Services.RequestTypeService>();
 builder.Services.AddScoped<ValuationBackend.Services.IRequestService, ValuationBackend.Services.RequestService>();
+builder.Services.AddScoped<ValuationBackend.Services.IAssetService, ValuationBackend.Services.AssetService>();
 
 // Register repositories and services using extension methods
 builder.Services.AddRepositories();

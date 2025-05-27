@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526084535_CreatePropertyCategoriesTable")]
+    partial class CreatePropertyCategoriesTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -106,89 +109,6 @@ namespace ValuationBackend.Migrations
                     b.HasIndex("RequestId");
 
                     b.ToTable("Assets");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.AssetDivision", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal>("Area")
-                        .HasColumnType("numeric");
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
-
-                    b.Property<string>("LandType")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.Property<string>("NewAssetNo")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.ToTable("AssetDivisions");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.AssetNumberChange", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<DateTime?>("ChangedDate")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime>("DateOfChange")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .HasMaxLength(255)
-                        .HasColumnType("character varying(255)");
-
-                    b.Property<string>("FieldSize")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("FieldType")
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("NewAssetNo")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("OldAssetNo")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("Reason")
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("AssetNumberChanges");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.BuildingRatesLA", b =>
@@ -411,96 +331,6 @@ namespace ValuationBackend.Migrations
                     b.HasIndex("ReportId");
 
                     b.ToTable("ConditionReports");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.DomesticRatingCard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Access")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("Age")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Condition")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("Conveniences")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("Floor")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("NewNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Occupier")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ParkingSpace")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Plantations")
-                        .HasColumnType("text");
-
-                    b.Property<int>("PropertySubCategory")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("PropertyType")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal?>("RentPM")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("RoadName")
-                        .HasColumnType("text");
-
-                    b.Property<int>("SelectWalls")
-                        .HasColumnType("integer");
-
-                    b.Property<decimal?>("SuggestedRate")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Terms")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TsBop")
-                        .HasColumnType("text");
-
-                    b.Property<string>("WardNumber")
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.ToTable("DomesticRatingCards");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.ImageData", b =>
@@ -1124,42 +954,6 @@ namespace ValuationBackend.Migrations
                     b.ToTable("RatingRequests");
                 });
 
-            modelBuilder.Entity("ValuationBackend.Models.Reconciliation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("NewNo")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("ObsoleteNo")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.ToTable("Reconciliations");
-                });
-
             modelBuilder.Entity("ValuationBackend.Models.RentalEvidenceLA", b =>
                 {
                     b.Property<int>("Id")
@@ -1503,17 +1297,6 @@ namespace ValuationBackend.Migrations
                     b.Navigation("Request");
                 });
 
-            modelBuilder.Entity("ValuationBackend.Models.AssetDivision", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Asset");
-                });
-
             modelBuilder.Entity("ValuationBackend.Models.BuildingRatesLA", b =>
                 {
                     b.HasOne("ValuationBackend.Models.Report", "Report")
@@ -1534,17 +1317,6 @@ namespace ValuationBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("Report");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.DomesticRatingCard", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.InspectionBuilding", b =>
@@ -1622,17 +1394,6 @@ namespace ValuationBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("Report");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.Reconciliation", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.RentalEvidenceLA", b =>
