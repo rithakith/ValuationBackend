@@ -23,6 +23,7 @@ namespace ValuationBackend.Extensions
             services.AddScoped<ILAMasterfileRepository, LAMasterfileRepository>();
             services.AddScoped<IRequestTypeRepository, RequestTypeRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
+            services.AddScoped<IAssetRepository, AssetRepository>();
 
 
             return services;
