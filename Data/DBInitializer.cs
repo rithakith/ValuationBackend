@@ -5,50 +5,57 @@ using ValuationBackend.Models;
 namespace ValuationBackend.Data
 {
     public static class DbInitializer
-    {        public static void Initialize(AppDbContext context)
+    {
+        public static void Initialize(AppDbContext context)
         {
-            // Ensure DB is created
-            context.Database.EnsureCreated();
+            try
+            {
+                // Ensure DB is created
+                context.Database.EnsureCreated();
 
-            // Initialize Rating Requests
-            InitializeRatingRequests(context);
-            // Initialize Land Miscellaneous Master Files
-            InitializeLandMiscellaneousMasterFiles(context);
+                // Initialize Rating Requests
+                InitializeRatingRequests(context);
+                // Initialize Land Miscellaneous Master Files
+                InitializeLandMiscellaneousMasterFiles(context);
 
-            // Initialize Users
-            InitializeUsers(context);
+                // Initialize Users
+                InitializeUsers(context);
 
-            // Initialize User Tasks
-            InitializeUserTasks(context);
+                // Initialize User Tasks
+                InitializeUserTasks(context);
 
-            // Initialize Master Data
-            InitializeMasterData(context); // Initialize Land Aquisition Master Files
-            InitializeLandAquisitionMasterFiles(context);
+                // Initialize Master Data
+                InitializeMasterData(context); // Initialize Land Aquisition Master Files
+                InitializeLandAquisitionMasterFiles(context);
 
-            // Initialize Reports
-            InitializeReports(context);
+                // Initialize Reports
+                InitializeReports(context);
 
-            // Initialize Request Types
-            InitializeRequestTypes(context);
+                // Initialize Request Types
+                InitializeRequestTypes(context);
 
-            // Initialize Requests
-            InitializeRequests(context); 
-            
-            // Initialize Assets
-            InitializeAssets(context);
+                // Initialize Requests
+                InitializeRequests(context); 
+                  // Initialize Assets
+                InitializeAssets(context);
 
-           
-            
-             // Initialize Property Categories
-            InitializePropertyCategories(context);
-              // Initialize Asset Divisions
-            InitializeAssetDivisions(context);
-            
-            // Initialize Reconciliations
-            InitializeReconciliations(context);
-            
-            // Initialize Domestic Rating Cards
-            DomesticRatingCardInitializer.InitializeDomesticRatingCards(context);
+                // Initialize Property Categories
+                InitializePropertyCategories(context);
+                
+                // Initialize Asset Divisions
+                InitializeAssetDivisions(context);
+                
+                // Initialize Reconciliations
+                InitializeReconciliations(context);
+                
+                // Initialize Domestic Rating Cards
+                DomesticRatingCardInitializer.InitializeDomesticRatingCards(context);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database initialization error: {ex.Message}");
+                throw; // Re-throw to let the caller handle it
+            }
         }
 
         private static void InitializeRatingRequests(AppDbContext context)
@@ -809,12 +816,14 @@ namespace ValuationBackend.Data
             context.SaveChanges();
             Console.WriteLine("Property categories seeded.");
         }
-
+        
         private static void InitializeAssetDivisions(AppDbContext context)
         {
             // If there's any data, stop
             if (context.AssetDivisions.Any())
                 return;
+
+            Console.WriteLine("Seeding asset divisions...");
 
             // Add dummy records
             var assetDivisions = new AssetDivision[]
@@ -868,6 +877,7 @@ namespace ValuationBackend.Data
 
             context.AssetDivisions.AddRange(assetDivisions);
             context.SaveChanges();
+            Console.WriteLine("Asset divisions seeded.");
         }
 
         private static void InitializeReconciliations(AppDbContext context)

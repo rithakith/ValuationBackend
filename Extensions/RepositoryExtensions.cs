@@ -21,6 +21,7 @@ namespace ValuationBackend.Extensions
             services.AddScoped<IAssetNumberChangeRepository, AssetNumberChangeRepository>();
             services.AddScoped<IAssetDivisionRepository, AssetDivisionRepository>();
             services.AddScoped<IReconciliationRepository, ReconciliationRepository>();
+            services.AddScoped<IDomesticRatingCardRepository, DomesticRatingCardRepository>();
             services.AddScoped<ILAMasterfileRepository, LAMasterfileRepository>();
             services.AddScoped<IRequestTypeRepository, RequestTypeRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
