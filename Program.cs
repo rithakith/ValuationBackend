@@ -24,6 +24,7 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 // Register repositories
+builder.Services.AddScoped<ValuationBackend.Repositories.IAuthRepository, ValuationBackend.Repositories.AuthRepository>();
 builder.Services.AddScoped<ValuationBackend.Repositories.IConditionReportRepository, ValuationBackend.Repositories.ConditionReportRepository>();
 builder.Services.AddScoped<ValuationBackend.Repositories.IBuildingRatesLARepository, ValuationBackend.Repositories.BuildingRatesLARepository>();
 builder.Services.AddScoped<ValuationBackend.Repositories.IPastValuationsLARepository, ValuationBackend.Repositories.PastValuationsLARepository>();
@@ -35,6 +36,7 @@ builder.Services.AddScoped<ValuationBackend.Repositories.IRequestRepository, Val
 builder.Services.AddScoped<ValuationBackend.Repositories.IAssetRepository, ValuationBackend.Repositories.AssetRepository>();
 
 // Register services
+builder.Services.AddScoped<ValuationBackend.Services.IAuthService, ValuationBackend.Services.AuthService>();
 builder.Services.AddScoped<ValuationBackend.Services.IConditionReportService, ValuationBackend.Services.ConditionReportService>();
 builder.Services.AddScoped<ValuationBackend.Services.IBuildingRatesLAService, ValuationBackend.Services.BuildingRatesLAService>();
 builder.Services.AddScoped<ValuationBackend.Services.IPastValuationsLAService, ValuationBackend.Services.PastValuationsLAService>();
