@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250526150939_AddAssetDivisions")]
+    partial class AddAssetDivisions
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,13 +130,11 @@ namespace ValuationBackend.Migrations
 
                     b.Property<string>("Description")
                         .IsRequired()
-                        .HasMaxLength(500)
-                        .HasColumnType("character varying(500)");
+                        .HasColumnType("text");
 
                     b.Property<string>("LandType")
                         .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("character varying(100)");
+                        .HasColumnType("text");
 
                     b.Property<string>("NewAssetNo")
                         .IsRequired()
@@ -1124,42 +1125,6 @@ namespace ValuationBackend.Migrations
                     b.ToTable("RatingRequests");
                 });
 
-            modelBuilder.Entity("ValuationBackend.Models.Reconciliation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("NewNo")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("ObsoleteNo")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("character varying(50)");
-
-                    b.Property<string>("StreetName")
-                        .IsRequired()
-                        .HasMaxLength(200)
-                        .HasColumnType("character varying(200)");
-
-                    b.Property<DateTime>("UpdatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.ToTable("Reconciliations");
-                });
-
             modelBuilder.Entity("ValuationBackend.Models.RentalEvidenceLA", b =>
                 {
                     b.Property<int>("Id")
@@ -1622,17 +1587,6 @@ namespace ValuationBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("Report");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.Reconciliation", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.RentalEvidenceLA", b =>
