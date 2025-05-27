@@ -17,12 +17,14 @@ namespace ValuationBackend.Extensions
             services.AddScoped<ILMRentalEvidenceService, LMRentalEvidenceService>();
             services.AddScoped<ILMSalesEvidenceService, LMSalesEvidenceService>();
             services.AddScoped<IReportService, ReportService>();
-            services.AddScoped<IAssetNumberChangeService, AssetNumberChangeService>(); services.AddScoped<IAssetDivisionService, AssetDivisionService>();
+            services.AddScoped<IAssetNumberChangeService, AssetNumberChangeService>();
+            services.AddScoped<IAssetDivisionService, AssetDivisionService>();
             services.AddScoped<IReconciliationService, ReconciliationService>();
             services.AddScoped<ILAMasterfileService, LAMasterfileService>();
             services.AddScoped<IRequestTypeService, RequestTypeService>();
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IAssetService, AssetService>();
+            services.AddScoped<IAuthService, AuthService>();
 
             return services;
         }
