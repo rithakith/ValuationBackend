@@ -16,9 +16,11 @@ namespace ValuationBackend.Controllers
         }
 
         [HttpGet]
-        public ActionResult<LAMasterfileResponse> GetAll()
+        public ActionResult<LAMasterfileResponse> GetAll([FromQuery] int pageNumber = 0, [FromQuery] int pageSize = 15)
         {
-            return Ok(_service.GetAll());
+            // Adjust pageNumber to be 1-based for internal logic
+            var page = pageNumber + 1;
+            return Ok(_service.GetPaged(page, pageSize));
         }
 
         [HttpGet("paged")]

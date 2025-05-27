@@ -58,10 +58,8 @@ namespace ValuationBackend.Repositories
             if (string.IsNullOrEmpty(domesticRatingCard.NewNumber))
             {
                 domesticRatingCard.NewNumber = await GenerateNewNumberAsync(domesticRatingCard.AssetId);
-            }
-
-            // Set creation date
-            domesticRatingCard.CreatedAt = DateTime.Now;
+            }            // Set creation date
+            domesticRatingCard.CreatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
 
             _context.DomesticRatingCards.Add(domesticRatingCard);
             await _context.SaveChangesAsync();
