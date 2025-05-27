@@ -22,7 +22,13 @@ namespace ValuationBackend.Extensions
             services.AddScoped<IAssetDivisionRepository, AssetDivisionRepository>();
             services.AddScoped<IReconciliationRepository, ReconciliationRepository>();
             services.AddScoped<IDomesticRatingCardRepository, DomesticRatingCardRepository>();
-            // Add other repository registrations here
+            services.AddScoped<ILAMasterfileRepository, LAMasterfileRepository>();
+            services.AddScoped<IRequestTypeRepository, RequestTypeRepository>();
+            services.AddScoped<IRequestRepository, RequestRepository>();
+            services.AddScoped<IAssetRepository, AssetRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+
+
             return services;
         }
     }
