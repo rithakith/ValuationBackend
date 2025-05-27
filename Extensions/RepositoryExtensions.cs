@@ -18,8 +18,8 @@ namespace ValuationBackend.Extensions
             services.AddScoped<ILMRentalEvidenceRepository, LMRentalEvidenceRepository>();
             services.AddScoped<ILMSalesEvidenceRepository, LMSalesEvidenceRepository>();
             services.AddScoped<IReportRepository, ReportRepository>();
-            services.AddScoped<IAssetNumberChangeRepository, AssetNumberChangeRepository>();
-            services.AddScoped<IAssetDivisionRepository, AssetDivisionRepository>();
+            services.AddScoped<IAssetNumberChangeRepository, AssetNumberChangeRepository>(); services.AddScoped<IAssetDivisionRepository, AssetDivisionRepository>();
+            services.AddScoped<IReconciliationRepository, ReconciliationRepository>();
             services.AddScoped<ILAMasterfileRepository, LAMasterfileRepository>();
             services.AddScoped<IRequestTypeRepository, RequestTypeRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
