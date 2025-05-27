@@ -31,24 +31,28 @@ namespace ValuationBackend.Controllers
             if (change == null)
                 return NotFound();
             return change;
-        }
-
-        // POST: api/AssetNumberChanges
+        }        // POST: api/AssetNumberChanges
         [HttpPost]
         public async Task<ActionResult<AssetNumberChange>> CreateChange(AssetNumberChange change)
         {
             change.ChangedDate = DateTime.UtcNow;
+            change.DateOfChange = DateTime.UtcNow;
             _context.AssetNumberChanges.Add(change);
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetChange), new { id = change.Id }, change);
-        }
-
-        // PUT: api/AssetNumberChanges/5
+        }        // PUT: api/AssetNumberChanges/5
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateChange(int id, AssetNumberChange change)
         {
             if (id != change.Id)
                 return BadRequest();
+
+            // Ensure UTC timestamps
+            if (change.ChangedDate.HasValue && change.ChangedDate.Value.Kind != DateTimeKind.Utc)
+                change.ChangedDate = DateTime.SpecifyKind(change.ChangedDate.Value, DateTimeKind.Utc);
+            
+            if (change.DateOfChange.Kind != DateTimeKind.Utc)
+                change.DateOfChange = DateTime.SpecifyKind(change.DateOfChange, DateTimeKind.Utc);
 
             _context.Entry(change).State = EntityState.Modified;
             await _context.SaveChangesAsync();

@@ -18,15 +18,6 @@ namespace ValuationBackend.Models
         [StringLength(100)]
         public string? Reason { get; set; }
 
-        [StringLength(255)]
-        public string? Description { get; set; }
-
-        [StringLength(50)]
-        public string? FieldType { get; set; }
-
-        [StringLength(50)]
-        public string? FieldSize { get; set; }
-
         public DateTime? ChangedDate { get; set; }
 
 

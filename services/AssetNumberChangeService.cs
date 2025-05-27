@@ -45,14 +45,19 @@ namespace ValuationBackend.Services
             }
 
             return await _repository.CreateAsync(assetNumberChange);
-        }
-
-        public async Task<AssetNumberChange> UpdateAssetNumberChangeAsync(int id, AssetNumberChange assetNumberChange)
+        }        public async Task<AssetNumberChange> UpdateAssetNumberChangeAsync(int id, AssetNumberChange assetNumberChange)
         {
             if (!await _repository.ExistsAsync(id))
             {
                 throw new KeyNotFoundException($"Asset number change with ID {id} not found.");
             }
+
+            // Ensure UTC timestamps
+            if (assetNumberChange.ChangedDate.HasValue && assetNumberChange.ChangedDate.Value.Kind != DateTimeKind.Utc)
+                assetNumberChange.ChangedDate = DateTime.SpecifyKind(assetNumberChange.ChangedDate.Value, DateTimeKind.Utc);
+            
+            if (assetNumberChange.DateOfChange.Kind != DateTimeKind.Utc)
+                assetNumberChange.DateOfChange = DateTime.SpecifyKind(assetNumberChange.DateOfChange, DateTimeKind.Utc);
 
             assetNumberChange.Id = id;
             return await _repository.UpdateAsync(assetNumberChange);
