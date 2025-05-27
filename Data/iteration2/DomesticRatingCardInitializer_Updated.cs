@@ -42,7 +42,9 @@ namespace ValuationBackend.Data
                 return;
             }
 
-            var ratingCards = new List<DomesticRatingCard>();            // Helper function to create a rating card with comprehensive details
+            var ratingCards = new List<DomesticRatingCard>();
+
+            // Helper function to create a rating card with comprehensive details
             void AddRatingCard(
                 Asset asset,
                 string? wallType,
@@ -67,6 +69,7 @@ namespace ValuationBackend.Data
                 // Generate new number
                 string newNumber = $"DRC-{asset.AssetNo}-001";
 
+                // Check if we need to increment the number for multiple cards on same asset
                 var existingCount = ratingCards.Count(rc => rc.AssetId == asset.Id);
                 if (existingCount > 0)
                 {
@@ -116,14 +119,14 @@ namespace ValuationBackend.Data
                 {
                     AddRatingCard(
                         asset,
-                        WallType.Brick,
-                        FloorType.Tile,
-                        ConvenienceType.Modern,
-                        ConditionType.Good,
+                        "Brick",
+                        "Tile",
+                        "Modern",
+                        "Good",
                         10,
-                        AccessType.Road,
-                        PropertySubCategory.SingleFamily,
-                        ResidentialPropertyType.Residential,
+                        "Road",
+                        "SingleFamily",
+                        "Residential",
                         1500.00m,
                         2000.00m,
                         "Small garden with ornamental plants",
@@ -140,14 +143,14 @@ namespace ValuationBackend.Data
                     {
                         AddRatingCard(
                             asset,
-                            WallType.Brick,
-                            FloorType.Tile,
-                            ConvenienceType.Luxury,
-                            ConditionType.Good,
+                            "Brick",
+                            "Tile",
+                            "Luxury",
+                            "Good",
                             8,
-                            AccessType.Road,
-                            PropertySubCategory.SingleFamily,
-                            ResidentialPropertyType.MixedUse,
+                            "Road",
+                            "SingleFamily",
+                            "MixedUse",
                             2800.00m,
                             3500.00m,
                             "Large landscaped garden",
@@ -166,14 +169,14 @@ namespace ValuationBackend.Data
                 {
                     AddRatingCard(
                         asset,
-                        WallType.Concrete,
-                        FloorType.Tile,
-                        ConvenienceType.Modern,
-                        ConditionType.Good,
+                        "Concrete",
+                        "Tile",
+                        "Modern",
+                        "Good",
                         5,
-                        AccessType.Road,
-                        PropertySubCategory.Apartment,
-                        ResidentialPropertyType.Residential,
+                        "Road",
+                        "Apartment",
+                        "Residential",
                         1800.00m,
                         2200.00m,
                         "Communal garden area",
@@ -191,14 +194,14 @@ namespace ValuationBackend.Data
                 {
                     AddRatingCard(
                         asset,
-                        WallType.Concrete,
-                        FloorType.Wood,
-                        ConvenienceType.Luxury,
-                        ConditionType.Good,
+                        "Concrete",
+                        "Wood",
+                        "Luxury",
+                        "Good",
                         3,
-                        AccessType.Road,
-                        PropertySubCategory.Townhouse,
-                        ResidentialPropertyType.Residential,
+                        "Road",
+                        "Townhouse",
+                        "Residential",
                         2200.00m,
                         2700.00m,
                         "Small private garden",
@@ -213,14 +216,14 @@ namespace ValuationBackend.Data
                     // Add a second card for townhouse with different condition
                     AddRatingCard(
                         asset,
-                        WallType.Wood,
-                        FloorType.Wood,
-                        ConvenienceType.Basic,
-                        ConditionType.Fair,
+                        "Wood",
+                        "Wood",
+                        "Basic",
+                        "Fair",
                         15,
-                        AccessType.Lane,
-                        PropertySubCategory.Townhouse,
-                        ResidentialPropertyType.MixedUse,
+                        "Lane",
+                        "Townhouse",
+                        "MixedUse",
                         1200.00m,
                         1500.00m,
                         "Neglected garden area",
@@ -241,14 +244,14 @@ namespace ValuationBackend.Data
 
                 AddRatingCard(
                     detailedAsset,
-                    WallType.Concrete,
-                    FloorType.Tile,
-                    ConvenienceType.Luxury,
-                    ConditionType.Good,
+                    "Concrete",
+                    "Tile",
+                    "Luxury",
+                    "Good",
                     7,
-                    AccessType.Road,
-                    PropertySubCategory.SingleFamily,
-                    ResidentialPropertyType.Residential,
+                    "Road",
+                    "SingleFamily",
+                    "Residential",
                     2500.00m,
                     3200.00m,
                     "Extensive landscaped garden with mature trees and koi pond",
@@ -269,14 +272,14 @@ namespace ValuationBackend.Data
                 // Poor condition property
                 AddRatingCard(
                     conditionAsset,
-                    WallType.Wood,
-                    FloorType.Concrete,
-                    ConvenienceType.Basic,
-                    ConditionType.Poor,
+                    "Wood",
+                    "Concrete",
+                    "Basic",
+                    "Poor",
                     25,
-                    AccessType.Path,
-                    PropertySubCategory.SingleFamily,
-                    ResidentialPropertyType.Residential,
+                    "Path",
+                    "SingleFamily",
+                    "Residential",
                     800.00m,
                     1000.00m,
                     "Overgrown garden with invasive species",
@@ -287,7 +290,7 @@ namespace ValuationBackend.Data
                     "Previously month-to-month",
                     "Property requires complete renovation. Structural issues evident. Damp problems throughout."
                 );
-            } // Add more comprehensive examples to showcase different property types
+            }
 
             // Add luxury penthouse
             if (assets.Any(a => a.AssetNo.Contains("011")))
@@ -296,14 +299,14 @@ namespace ValuationBackend.Data
 
                 AddRatingCard(
                     luxuryAsset,
-                    WallType.Concrete,
-                    FloorType.Wood,
-                    ConvenienceType.Luxury,
-                    ConditionType.Good,
+                    "Concrete",
+                    "Wood",
+                    "Luxury",
+                    "Good",
                     3,
-                    AccessType.Road,
-                    PropertySubCategory.Apartment,
-                    ResidentialPropertyType.Residential,
+                    "Road",
+                    "Apartment",
+                    "Residential",
                     5000.00m,
                     6200.00m,
                     "Rooftop garden with exotic plants and irrigation system",
@@ -323,14 +326,14 @@ namespace ValuationBackend.Data
 
                 AddRatingCard(
                     heritageAsset,
-                    WallType.Brick,
-                    FloorType.Wood,
-                    ConvenienceType.Modern,
-                    ConditionType.Good,
+                    "Brick",
+                    "Wood",
+                    "Modern",
+                    "Good",
                     120,
-                    AccessType.Lane,
-                    PropertySubCategory.SingleFamily,
-                    ResidentialPropertyType.Residential,
+                    "Lane",
+                    "SingleFamily",
+                    "Residential",
                     3200.00m,
                     4000.00m,
                     "Heritage garden with protected ancient trees",
@@ -350,14 +353,14 @@ namespace ValuationBackend.Data
 
                 AddRatingCard(
                     mixedUseAsset,
-                    WallType.Concrete,
-                    FloorType.Tile,
-                    ConvenienceType.Modern,
-                    ConditionType.Good,
+                    "Concrete",
+                    "Tile",
+                    "Modern",
+                    "Good",
                     15,
-                    AccessType.Road,
-                    PropertySubCategory.Townhouse,
-                    ResidentialPropertyType.MixedUse,
+                    "Road",
+                    "Townhouse",
+                    "MixedUse",
                     4500.00m,
                     5200.00m,
                     "Small courtyard garden with seating area",
@@ -377,14 +380,14 @@ namespace ValuationBackend.Data
 
                 AddRatingCard(
                     improvementAsset,
-                    WallType.Brick,
-                    FloorType.Wood,
-                    ConvenienceType.Basic,
-                    ConditionType.Fair,
+                    "Brick",
+                    "Wood",
+                    "Basic",
+                    "Fair",
                     45,
-                    AccessType.Road,
-                    PropertySubCategory.SingleFamily,
-                    ResidentialPropertyType.Residential,
+                    "Road",
+                    "SingleFamily",
+                    "Residential",
                     1200.00m,
                     1600.00m,
                     "Overgrown garden with potential for improvement",
@@ -399,14 +402,14 @@ namespace ValuationBackend.Data
                 // Add second rating card for same property with improvement suggestions
                 AddRatingCard(
                     improvementAsset,
-                    WallType.Brick,
-                    FloorType.Wood,
-                    ConvenienceType.Modern,
-                    ConditionType.Good,
+                    "Brick",
+                    "Wood",
+                    "Modern",
+                    "Good",
                     45,
-                    AccessType.Road,
-                    PropertySubCategory.SingleFamily,
-                    ResidentialPropertyType.Residential,
+                    "Road",
+                    "SingleFamily",
+                    "Residential",
                     2000.00m,
                     2400.00m,
                     "Landscaped garden with new patio area",
@@ -426,14 +429,14 @@ namespace ValuationBackend.Data
 
                 AddRatingCard(
                     studentAsset,
-                    WallType.Brick,
-                    FloorType.Tile,
-                    ConvenienceType.Basic,
-                    ConditionType.Fair,
+                    "Brick",
+                    "Tile",
+                    "Basic",
+                    "Fair",
                     60,
-                    AccessType.Road,
-                    PropertySubCategory.SingleFamily,
-                    ResidentialPropertyType.Residential,
+                    "Road",
+                    "SingleFamily",
+                    "Residential",
                     3600.00m,
                     4000.00m,
                     "Low maintenance paved garden",
@@ -453,14 +456,14 @@ namespace ValuationBackend.Data
 
                 AddRatingCard(
                     accessibleAsset,
-                    WallType.Brick,
-                    FloorType.Tile,
-                    ConvenienceType.Modern,
-                    ConditionType.Good,
+                    "Brick",
+                    "Tile",
+                    "Modern",
+                    "Good",
                     10,
-                    AccessType.Road,
-                    PropertySubCategory.SingleFamily,
-                    ResidentialPropertyType.Residential,
+                    "Road",
+                    "SingleFamily",
+                    "Residential",
                     1800.00m,
                     2200.00m,
                     "Level access garden with raised beds",

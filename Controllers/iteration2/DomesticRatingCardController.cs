@@ -489,9 +489,7 @@ namespace ValuationBackend.Controllers
             if (!string.IsNullOrEmpty(dto.Occupier) && dto.Occupier.Length > 200)
             {
                 result.Errors.Add("Occupier cannot exceed 200 characters.");
-            }
-
-            if (!string.IsNullOrEmpty(dto.Terms) && dto.Terms.Length > 500)
+            }            if (!string.IsNullOrEmpty(dto.Terms) && dto.Terms.Length > 500)
             {
                 result.Errors.Add("Terms cannot exceed 500 characters.");
             }
@@ -501,36 +499,9 @@ namespace ValuationBackend.Controllers
                 result.Errors.Add("Notes cannot exceed 2000 characters.");
             }
 
-            // Validate enum values are within valid ranges
-            if (!Enum.IsDefined(typeof(ValuationBackend.Models.Enums.WallType), dto.SelectWalls))
-            {
-                result.Errors.Add("SelectWalls must be a valid wall type (Brick, Concrete, Wood).");
-            }
-
-            if (!Enum.IsDefined(typeof(ValuationBackend.Models.Enums.FloorType), dto.Floor))
-            {
-                result.Errors.Add("Floor must be a valid floor type (Tile, Concrete, Wood).");
-            }            if (!Enum.IsDefined(typeof(ValuationBackend.Models.Enums.ConvenienceType), dto.Conveniences))
-            {
-                result.Errors.Add("Conveniences must be a valid convenience type (Basic, Modern, Luxury).");
-            }
-
-            if (!Enum.IsDefined(typeof(ValuationBackend.Models.Enums.ConditionType), dto.Condition))
-            {
-                result.Errors.Add("Condition must be a valid condition type (Good, Fair, Poor).");
-            }
-
-            if (!Enum.IsDefined(typeof(ValuationBackend.Models.Enums.AccessType), dto.Access))
-            {
-                result.Errors.Add("Access must be a valid access type (Road, Lane, Path).");
-            }            if (!Enum.IsDefined(typeof(ValuationBackend.Models.Enums.PropertySubCategory), dto.PropertySubCategory))
-            {
-                result.Errors.Add("PropertySubCategory must be a valid property sub-category (SingleFamily, Apartment, Townhouse).");
-            }            if (!Enum.IsDefined(typeof(ValuationBackend.Models.Enums.ResidentialPropertyType), dto.PropertyType))
-            {
-                result.Errors.Add("PropertyType must be a valid residential property type (MixedUse, Residential).");
-            }
-
+            // String properties are now optional and can contain any valid string values
+            // Additional validation for specific values can be added here if needed
+            
             return result;
         }
 

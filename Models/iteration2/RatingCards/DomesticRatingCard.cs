@@ -1,6 +1,5 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ValuationBackend.Models.Enums;
 
 namespace ValuationBackend.Models
 {
@@ -34,27 +33,25 @@ namespace ValuationBackend.Models
         [Required]
         public required string Description { get; set; }
 
-        /// </summary>
-        public WallType SelectWalls { get; set; }
+        public string? SelectWalls { get; set; }
 
-        public FloorType Floor { get; set; }
+        public string? Floor { get; set; }
 
-        public ConvenienceType Conveniences { get; set; }
+        public string? Conveniences { get; set; }
 
-        public ConditionType Condition { get; set; }
+        public string? Condition { get; set; }
 
         public int? Age { get; set; }
 
-        public AccessType Access { get; set; }
+        public string? Access { get; set; }
+        
         public string? TsBop { get; set; }
 
         public string? ParkingSpace { get; set; }
 
-        [Required]
-        public PropertySubCategory PropertySubCategory { get; set; }
+        public string? PropertySubCategory { get; set; }
 
-        [Required]
-        public ResidentialPropertyType PropertyType { get; set; }
+        public string? PropertyType { get; set; }
 
         public string? Plantations { get; set; }
 
@@ -70,8 +67,8 @@ namespace ValuationBackend.Models
 
         public string? Terms { get; set; }
 
-        public decimal? SuggestedRate { get; set; }        public string? Notes { get; set; }
-
-        public DateTime CreatedAt { get; set; } = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+        public decimal? SuggestedRate { get; set; }
+        
+        public string? Notes { get; set; }        public DateTime CreatedAt { get; set; } = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
     }
 }
