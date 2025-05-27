@@ -16,10 +16,19 @@ namespace ValuationBackend.Extensions
             services.AddScoped<ILMBuildingRatesRepository, LMBuildingRatesRepository>();
             services.AddScoped<ILMPastValuationRepository, LMPastValuationRepository>();
             services.AddScoped<ILMRentalEvidenceRepository, LMRentalEvidenceRepository>();
-            services.AddScoped<ILMSalesEvidenceRepository, LMSalesEvidenceRepository>();            services.AddScoped<IReportRepository, ReportRepository>();            services.AddScoped<IAssetNumberChangeRepository, AssetNumberChangeRepository>();            services.AddScoped<IAssetDivisionRepository, AssetDivisionRepository>();
+            services.AddScoped<ILMSalesEvidenceRepository, LMSalesEvidenceRepository>();
+            services.AddScoped<IReportRepository, ReportRepository>();
+            services.AddScoped<IAssetNumberChangeRepository, AssetNumberChangeRepository>();
+            services.AddScoped<IAssetDivisionRepository, AssetDivisionRepository>();
             services.AddScoped<IReconciliationRepository, ReconciliationRepository>();
             services.AddScoped<IDomesticRatingCardRepository, DomesticRatingCardRepository>();
-            // Add other repository registrations here
+            services.AddScoped<ILAMasterfileRepository, LAMasterfileRepository>();
+            services.AddScoped<IRequestTypeRepository, RequestTypeRepository>();
+            services.AddScoped<IRequestRepository, RequestRepository>();
+            services.AddScoped<IAssetRepository, AssetRepository>();
+            services.AddScoped<IAuthRepository, AuthRepository>();
+
+
             return services;
         }
     }

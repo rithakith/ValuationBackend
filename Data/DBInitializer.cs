@@ -832,46 +832,41 @@ namespace ValuationBackend.Data
                 {
                     AssetId = 1,
                     NewAssetNo = "ASSET-001-A",
-                    Area = 1500.50M,
-                    LandType = "Residential",
+                    Area = 1500.50M,                    LandType = "Residential",
                     Description = "North portion of original asset",
-                    CreatedAt = DateTime.UtcNow.AddDays(-30)
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
                 },
                 new AssetDivision
                 {
                     AssetId = 1,
                     NewAssetNo = "ASSET-001-B",
-                    Area = 1200.75M,
-                    LandType = "Commercial",
+                    Area = 1200.75M,                    LandType = "Commercial",
                     Description = "South portion of original asset",
-                    CreatedAt = DateTime.UtcNow.AddDays(-30)
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
                 },
                 new AssetDivision
                 {
                     AssetId = 2,
                     NewAssetNo = "ASSET-002-A",
-                    Area = 800.25M,
-                    LandType = "Agricultural",
+                    Area = 800.25M,                    LandType = "Agricultural",
                     Description = "Eastern division of farmland",
-                    CreatedAt = DateTime.UtcNow.AddDays(-15)
+                    CreatedAt = DateTime.UtcNow.AddDays(-15),
                 },
                 new AssetDivision
                 {
                     AssetId = 2,
                     NewAssetNo = "ASSET-002-B",
                     Area = 750.00M,
-                    LandType = "Agricultural",
-                    Description = "Western division of farmland",
-                    CreatedAt = DateTime.UtcNow.AddDays(-15)
+                    LandType = "Agricultural",                    Description = "Western division of farmland",
+                    CreatedAt = DateTime.UtcNow.AddDays(-15),
                 },
                 new AssetDivision
                 {
                     AssetId = 3,
                     NewAssetNo = "ASSET-003-A",
-                    Area = 2000.00M,
-                    LandType = "Industrial",
+                    Area = 2000.00M,                    LandType = "Industrial",
                     Description = "Factory zone partition",
-                    CreatedAt = DateTime.UtcNow.AddDays(-7)
+                    CreatedAt = DateTime.UtcNow.AddDays(-7),
                 }
             };
 
@@ -893,42 +888,37 @@ namespace ValuationBackend.Data
                 new Reconciliation
                 {
                     AssetId = 1, // References AST-001-2024
-                    StreetName = "Galle Road",
-                    ObsoleteNo = "123/A",
+                    StreetName = "Galle Road",                    ObsoleteNo = "123/A",
                     NewNo = "456/B",
-                    UpdatedAt = DateTime.UtcNow.AddDays(-20)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-20),
                 },
                 new Reconciliation
                 {
                     AssetId = 2, // References AST-002-2024
-                    StreetName = "Main Street",
-                    ObsoleteNo = "45",
+                    StreetName = "Main Street",                    ObsoleteNo = "45",
                     NewNo = "45/1",
-                    UpdatedAt = DateTime.UtcNow.AddDays(-18)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-18),
                 },
                 new Reconciliation
                 {
                     AssetId = 3, // References AST-003-2024
-                    StreetName = "Temple Road",
-                    ObsoleteNo = "78/B",
+                    StreetName = "Temple Road",                    ObsoleteNo = "78/B",
                     NewNo = "78/B/1",
-                    UpdatedAt = DateTime.UtcNow.AddDays(-15)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-15),
                 },
                 new Reconciliation
                 {
                     AssetId = 5, // References AST-005-2024
-                    StreetName = "Hill Street",
-                    ObsoleteNo = "25",
+                    StreetName = "Hill Street",                    ObsoleteNo = "25",
                     NewNo = "25A",
-                    UpdatedAt = DateTime.UtcNow.AddDays(-10)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
                 },
                 new Reconciliation
                 {
                     AssetId = 7, // References AST-007-2023
-                    StreetName = "Beach Road",
-                    ObsoleteNo = "100",
+                    StreetName = "Beach Road",                    ObsoleteNo = "100",
                     NewNo = "100/1-A",
-                    UpdatedAt = DateTime.UtcNow.AddDays(-5)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
                 }
             };
 
