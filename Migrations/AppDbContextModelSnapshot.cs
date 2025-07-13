@@ -160,6 +160,18 @@ namespace ValuationBackend.Migrations
                     b.Property<DateTime>("DateOfChange")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("character varying(255)");
+
+                    b.Property<string>("FieldSize")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("FieldType")
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
                     b.Property<string>("NewAssetNo")
                         .IsRequired()
                         .HasMaxLength(50)
