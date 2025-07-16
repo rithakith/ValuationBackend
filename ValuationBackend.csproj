@@ -22,10 +22,6 @@
   <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.10.0" />
 </ItemGroup>
 
-<ItemGroup>
-  <Compile Remove="ValuationBackend.Tests\**" />
-  <EmbeddedResource Remove="ValuationBackend.Tests\**" />
-  <None Remove="ValuationBackend.Tests\**" />
-</ItemGroup>
+
 
 </Project>

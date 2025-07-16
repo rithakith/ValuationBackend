@@ -4,8 +4,6 @@ VisualStudioVersion = 17.5.2.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValuationBackend", "ValuationBackend.csproj", "{3207FC41-7A70-8C3B-C44A-5ED4767ADA3A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ValuationBackend.Tests", "ValuationBackend.Tests\ValuationBackend.Tests.csproj", "{27021F8A-C6AD-4E70-8302-95549EF9DE94}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -16,10 +14,6 @@ Global
 		{3207FC41-7A70-8C3B-C44A-5ED4767ADA3A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3207FC41-7A70-8C3B-C44A-5ED4767ADA3A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3207FC41-7A70-8C3B-C44A-5ED4767ADA3A}.Release|Any CPU.Build.0 = Release|Any CPU
-		{27021F8A-C6AD-4E70-8302-95549EF9DE94}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{27021F8A-C6AD-4E70-8302-95549EF9DE94}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{27021F8A-C6AD-4E70-8302-95549EF9DE94}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{27021F8A-C6AD-4E70-8302-95549EF9DE94}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
