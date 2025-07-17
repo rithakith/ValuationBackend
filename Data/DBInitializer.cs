@@ -25,6 +25,15 @@ namespace ValuationBackend.Data
                 // Initialize User Tasks
                 InitializeUserTasks(context);
 
+                // Update existing UserTasks with work item assignments
+                UpdateUserTaskAssignments(context);
+
+                // Update UserTasks with correct User IDs
+                UpdateUserTaskUserIds(context);
+
+                // Remove UserTasks that are not LM (Land Miscellaneous)
+                RemoveNonLMUserTasks(context);
+
                 // Initialize Master Data
                 InitializeMasterData(context); // Initialize Land Aquisition Master Files
                 InitializeLandAquisitionMasterFiles(context);
@@ -385,50 +394,202 @@ namespace ValuationBackend.Data
             Console.WriteLine("Seeding user tasks...");
             var tasks = new List<UserTask>();
 
-            void AddTask(string username, string type, bool completed, string date)
+            void AddTask(string username, string type, bool completed, string date,
+                        int? requestId = null, int? landAcquisitionId = null, int? landMiscellaneousId = null,
+                        string? description = null, string? referenceNumber = null)
             {
+                // Map usernames to specific User IDs
+                var userId = username switch
+                {
+                    "Jalina" => 1,
+                    "Akith" => 2,
+                    "Dulmini" => 3,
+                    "Vishwa" => 4,
+                    "Rithara" => 5,
+                    _ => 0 // Default for unknown users
+                };
+
                 tasks.Add(
                     new UserTask
                     {
                         Username = username,
+                        UserId = userId,
                         TaskType = type,
                         IsCompleted = completed,
                         AssignedDate = DateTime.SpecifyKind(
                             DateTime.ParseExact(date, "yyyyMMdd", null),
                             DateTimeKind.Utc
                         ),
+                        RequestId = requestId,
+                        LandAcquisitionId = landAcquisitionId,
+                        LandMiscellaneousId = landMiscellaneousId,
+                        WorkItemDescription = description,
+                        ReferenceNumber = referenceNumber
                     }
                 );
             }
 
-            AddTask("Jalina", "LA", true, "20250105");
-            AddTask("Jalina", "MR", true, "20250115");
-            AddTask("Jalina", "LM", false, "20250210");
-            AddTask("Jalina", "LA", true, "20250301");
+            // Jalina's tasks
+            AddTask("Jalina", "LA", true, "20250105", landAcquisitionId: 1, description: "Land acquisition survey for Highway Project", referenceNumber: "LA-2025-001");
+            AddTask("Jalina", "MR", true, "20250115", requestId: 1, description: "Mass rating assessment - Colombo MC", referenceNumber: "MR-2025-001");
+            AddTask("Jalina", "LM", false, "20250210", landMiscellaneousId: 1, description: "Plan verification - PP type", referenceNumber: "LM-2025-001");
+            AddTask("Jalina", "LA", true, "20250301", landAcquisitionId: 2, description: "Land acquisition for Bridge Project", referenceNumber: "LA-2025-002");
 
-            AddTask("Akith", "MR", true, "20250120");
-            AddTask("Akith", "LM", true, "20250212");
-            AddTask("Akith", "LA", false, "20250225");
-            AddTask("Akith", "LM", false, "20250303");
+            // Akith's tasks
+            AddTask("Akith", "MR", true, "20250120", requestId: 2, description: "Rating assessment - Galle MC", referenceNumber: "MR-2025-002");
+            AddTask("Akith", "LM", true, "20250212", landMiscellaneousId: 2, description: "Cadaster plan review", referenceNumber: "LM-2025-002");
+            AddTask("Akith", "LA", false, "20250225", landAcquisitionId: 3, description: "Land acquisition survey", referenceNumber: "LA-2025-003");
+            AddTask("Akith", "LM", false, "20250303", landMiscellaneousId: 3, description: "FVP plan verification", referenceNumber: "LM-2025-003");
 
-            AddTask("Dulmini", "LA", true, "20250110");
-            AddTask("Dulmini", "MR", true, "20250112");
-            AddTask("Dulmini", "MR", false, "20250302");
-            AddTask("Dulmini", "LM", true, "20250310");
+            // Dulmini's tasks
+            AddTask("Dulmini", "LA", true, "20250110", landAcquisitionId: 4, description: "Land acquisition documentation", referenceNumber: "LA-2025-004");
+            AddTask("Dulmini", "MR", true, "20250112", requestId: 3, description: "Rating building assessment", referenceNumber: "MR-2025-003");
+            AddTask("Dulmini", "MR", false, "20250302", requestId: 1, description: "Follow-up rating assessment", referenceNumber: "MR-2025-004");
+            AddTask("Dulmini", "LM", true, "20250310", landMiscellaneousId: 4, description: "PP plan processing", referenceNumber: "LM-2025-004");
 
-            AddTask("Vishwa", "LA", true, "20250101");
-            AddTask("Vishwa", "LA", true, "20250215");
-            AddTask("Vishwa", "LM", false, "20250305");
-            AddTask("Vishwa", "MR", true, "20250318");
+            // Vishwa's tasks
+            AddTask("Vishwa", "LA", true, "20250101", landAcquisitionId: 5, description: "Land acquisition initial survey", referenceNumber: "LA-2025-005");
+            AddTask("Vishwa", "LA", true, "20250215", landAcquisitionId: 6, description: "Land acquisition follow-up", referenceNumber: "LA-2025-006");
+            AddTask("Vishwa", "LM", false, "20250305", landMiscellaneousId: 5, description: "Cadaster plan verification", referenceNumber: "LM-2025-005");
+            AddTask("Vishwa", "MR", true, "20250318", requestId: 2, description: "Additional rating assessment", referenceNumber: "MR-2025-005");
 
-            AddTask("Rithara", "MR", true, "20250118");
-            AddTask("Rithara", "LM", true, "20250222");
-            AddTask("Rithara", "LA", false, "20250311");
-            AddTask("Rithara", "LM", false, "20250330");
+            // Rithara's tasks
+            AddTask("Rithara", "MR", true, "20250118", requestId: 3, description: "Building rating review", referenceNumber: "MR-2025-006");
+            AddTask("Rithara", "LM", true, "20250222", landMiscellaneousId: 6, description: "FVP plan review", referenceNumber: "LM-2025-006");
+            AddTask("Rithara", "LA", false, "20250311", landAcquisitionId: 7, description: "Land acquisition assessment", referenceNumber: "LA-2025-007");
+            AddTask("Rithara", "LM", false, "20250330", landMiscellaneousId: 7, description: "PP plan verification", referenceNumber: "LM-2025-007");
 
             context.UserTasks.AddRange(tasks);
             context.SaveChanges();
             Console.WriteLine("User tasks seeded.");
+        }
+
+        private static void UpdateUserTaskAssignments(AppDbContext context)
+        {
+            // Check if any UserTasks have null reference fields (meaning they need to be updated)
+            var unassignedTasks = context.UserTasks
+                .Where(ut => ut.RequestId == null && ut.LandAcquisitionId == null && ut.LandMiscellaneousId == null)
+                .ToList();
+
+            if (!unassignedTasks.Any())
+            {
+                Console.WriteLine("All UserTasks already have work item assignments.");
+                return;
+            }
+
+            Console.WriteLine($"Updating {unassignedTasks.Count} UserTask assignments...");
+
+            // Get available work items
+            var landAcquisitionIds = context.LandAquisitionMasterFiles.Select(la => la.Id).ToList();
+            var landMiscellaneousIds = context.LandMiscellaneousMasterFiles.Select(lm => lm.Id).ToList();
+            var requestIds = context.Requests.Select(r => r.Id).ToList();
+
+            Console.WriteLine($"Available IDs - LA: {landAcquisitionIds.Count}, LM: {landMiscellaneousIds.Count}, Requests: {requestIds.Count}");
+
+            // Counters for round-robin assignment
+            int laIndex = 0, lmIndex = 0, mrIndex = 0;
+
+            foreach (var task in unassignedTasks)
+            {
+                switch (task.TaskType)
+                {
+                    case "LA":
+                        if (landAcquisitionIds.Any() && laIndex < landAcquisitionIds.Count)
+                        {
+                            task.LandAcquisitionId = landAcquisitionIds[laIndex];
+                            task.WorkItemDescription = $"Land acquisition task for LA ID {landAcquisitionIds[laIndex]}";
+                            task.ReferenceNumber = $"LA-2025-{(laIndex + 1):D3}";
+                            laIndex++;
+                        }
+                        break;
+
+                    case "LM":
+                        if (landMiscellaneousIds.Any() && lmIndex < landMiscellaneousIds.Count)
+                        {
+                            task.LandMiscellaneousId = landMiscellaneousIds[lmIndex];
+                            task.WorkItemDescription = $"Land miscellaneous task for LM ID {landMiscellaneousIds[lmIndex]}";
+                            task.ReferenceNumber = $"LM-2025-{(lmIndex + 1):D3}";
+                            lmIndex++;
+                        }
+                        break;
+
+                    case "MR":
+                        if (requestIds.Any() && mrIndex < requestIds.Count)
+                        {
+                            task.RequestId = requestIds[mrIndex];
+                            task.WorkItemDescription = $"Mass rating task for Request ID {requestIds[mrIndex]}";
+                            task.ReferenceNumber = $"MR-2025-{(mrIndex + 1):D3}";
+                            mrIndex++;
+                        }
+                        break;
+                }
+            }
+
+            context.SaveChanges();
+            Console.WriteLine("UserTask assignments updated successfully.");
+        }
+
+        private static void UpdateUserTaskUserIds(AppDbContext context)
+        {
+            // Check if any UserTasks have incorrect User IDs
+            var allUserTasks = context.UserTasks.ToList();
+            var tasksToUpdate = new List<UserTask>();
+
+            foreach (var task in allUserTasks)
+            {
+                var correctUserId = task.Username switch
+                {
+                    "Jalina" => 1,
+                    "Akith" => 2,
+                    "Dulmini" => 3,
+                    "Vishwa" => 4,
+                    "Rithara" => 5,
+                    _ => 0
+                };
+
+                if (task.UserId != correctUserId)
+                {
+                    task.UserId = correctUserId;
+                    tasksToUpdate.Add(task);
+                }
+            }
+
+            if (tasksToUpdate.Any())
+            {
+                Console.WriteLine($"Updating {tasksToUpdate.Count} UserTask User IDs...");
+                context.SaveChanges();
+                Console.WriteLine("UserTask User IDs updated successfully.");
+            }
+            else
+            {
+                Console.WriteLine("All UserTasks already have correct User IDs.");
+            }
+        }
+
+        private static void RemoveNonLMUserTasks(AppDbContext context)
+        {
+            // Get all UserTasks that are not LM (Land Miscellaneous)
+            var nonLMTasks = context.UserTasks
+                .Where(ut => ut.TaskType != "LM")
+                .ToList();
+
+            if (!nonLMTasks.Any())
+            {
+                Console.WriteLine("No non-LM UserTasks found to remove.");
+                return;
+            }
+
+            Console.WriteLine($"Removing {nonLMTasks.Count} UserTask entries with TaskType other than 'LM'...");
+
+            // Log the tasks being removed for transparency
+            foreach (var task in nonLMTasks)
+            {
+                Console.WriteLine($"Removing UserTask: Username={task.Username}, TaskType={task.TaskType}, Description={task.WorkItemDescription}");
+            }
+
+            context.UserTasks.RemoveRange(nonLMTasks);
+            context.SaveChanges();
+            Console.WriteLine("Non-LM UserTasks removed successfully.");
         }
 
         private static void InitializeMasterData(AppDbContext context)
@@ -755,7 +916,7 @@ namespace ValuationBackend.Data
             {
                 // Determine number of assets for this request (randomly between 3-5)
                 var numAssets = 3 + (assetCounter % 3);
-                
+
                 for (int i = 0; i < numAssets; i++)
                 {
                     assets.Add(new Asset
@@ -800,7 +961,7 @@ namespace ValuationBackend.Data
         private static string GetStreetName(int index)
         {
             var streets = new[] {
-                "Galle Road", "Main Street", "Temple Road", "Park Avenue", 
+                "Galle Road", "Main Street", "Temple Road", "Park Avenue",
                 "Hill Street", "Lake Road", "Beach Road", "Coconut Grove",
                 "Market Street", "Garden Lane", "School Road", "Flower Street",
                 "Station Road", "Church Street", "Hospital Road", "Bank Street",
@@ -823,7 +984,7 @@ namespace ValuationBackend.Data
                 "ABC Company Ltd", "XYZ Holdings", "Central Market Corp", "Education Center Ltd",
                 "Tech Solutions Inc", "Global Traders", "Prime Investments", "Urban Developers"
             };
-            
+
             // 60% individual owners, 40% companies
             if (index % 5 < 3)
             {
