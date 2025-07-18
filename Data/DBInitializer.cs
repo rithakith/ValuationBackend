@@ -266,7 +266,7 @@ namespace ValuationBackend.Data
 
         private static void InitializeUsers(AppDbContext context)
         {
-            //if (context.Users.Any()) return;
+            if (context.Users.Any()) return;
 
             Console.WriteLine("Seeding users...");
 
