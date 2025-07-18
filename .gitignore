@@ -74,6 +74,10 @@ BenchmarkDotNet.Artifacts/
 project.lock.json
 project.fragment.lock.json
 artifacts/
+*.nuget.dgspec.json
+*.nuget.props
+*.nuget.targets
+.nuget/
 
 # ASP.NET Scaffolding
 ScaffoldingReadMe.txt
@@ -226,6 +230,13 @@ PublishScripts/
 *.nuget.props
 *.nuget.targets
 
+# Entity Framework migrations (if you want to ignore them)
+# Migrations/
+
+# Rider IDE
+.idea/
+*.sln.iml
+
 # Local SQLite database
 *.db
 *.sqlite
@@ -241,6 +252,12 @@ appsettings.*.json
 *.key
 *.crt
 *.publishsettings
+connectionstrings.json
+secrets.json
+
+# Logs
+logs/
+*.log
 
 # Azure
 csx/

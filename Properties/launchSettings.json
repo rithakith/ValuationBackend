@@ -16,7 +16,10 @@
       "launchUrl": "swagger",
       "applicationUrl": "http://localhost:5221",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JWT_SECRET_KEY": "skdjfh2938rfjw98r9ufdj3928urjf2938rj",
+        "JWT_ISSUER": "ValuationBackend",
+        "JWT_AUDIENCE": "ValuationBackendUsers"
       }
     },
     "https": {
@@ -26,7 +29,10 @@
       "launchUrl": "swagger",
       "applicationUrl": "https://localhost:7009;http://localhost:5221",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JWT_SECRET_KEY": "skdjfh2938rfjw98r9ufdj3928urjf2938rj",
+        "JWT_ISSUER": "ValuationBackend",
+        "JWT_AUDIENCE": "ValuationBackendUsers"
       }
     },
     "IIS Express": {
@@ -34,7 +40,10 @@
       "launchBrowser": true,
       "launchUrl": "swagger",
       "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development"
+        "ASPNETCORE_ENVIRONMENT": "Development",
+        "JWT_SECRET_KEY": "skdjfh2938rfjw98r9ufdj3928urjf2938rj",
+        "JWT_ISSUER": "ValuationBackend",
+        "JWT_AUDIENCE": "ValuationBackendUsers"
       }
     }
   }

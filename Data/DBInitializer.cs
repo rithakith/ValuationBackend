@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using ValuationBackend.Models;
 
 namespace ValuationBackend.Data
@@ -8,30 +9,54 @@ namespace ValuationBackend.Data
     {
         public static void Initialize(AppDbContext context)
         {
-            // Ensure DB is created
-            context.Database.EnsureCreated();
+            try
+            {
+                // Ensure DB is created
+                context.Database.EnsureCreated();
 
-            // Initialize Rating Requests
-            InitializeRatingRequests(context);
-            // Initialize Land Miscellaneous Master Files
-            InitializeLandMiscellaneousMasterFiles(context);
+                // Initialize Rating Requests
+                InitializeRatingRequests(context);
+                // Initialize Land Miscellaneous Master Files
+                InitializeLandMiscellaneousMasterFiles(context);
 
-            // Initialize Users
-            InitializeUsers(context);
+                // Initialize Users
+                InitializeUsers(context);
 
-            // Initialize User Tasks
-            InitializeUserTasks(context);
+                // Initialize User Tasks
+                InitializeUserTasks(context);
 
-            // Initialize Master Data
-            InitializeMasterData(context);
+                // Initialize Master Data
+                InitializeMasterData(context); // Initialize Land Aquisition Master Files
+                InitializeLandAquisitionMasterFiles(context);
 
-            // Initialize Land Aquisition Master Files
-            InitializeLandAquisitionMasterFiles(context); // Initialize Reports
-            InitializeReports(context);            // Initialize Request Types
-            InitializeRequestTypes(context);
+                // Initialize Reports
+                InitializeReports(context);
 
-            // Initialize Requests
-            InitializeRequests(context);
+                // Initialize Request Types
+                InitializeRequestTypes(context);
+
+                // Initialize Requests
+                InitializeRequests(context);
+                // Initialize Assets
+                InitializeAssets(context);
+
+                // Initialize Property Categories
+                InitializePropertyCategories(context);
+
+                // Initialize Asset Divisions
+                InitializeAssetDivisions(context);
+
+                // Initialize Reconciliations
+                InitializeReconciliations(context);
+
+                // Initialize Domestic Rating Cards
+                DomesticRatingCardInitializer.InitializeDomesticRatingCards(context);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Database initialization error: {ex.Message}");
+                throw; // Re-throw to let the caller handle it
+            }
         }
 
         private static void InitializeRatingRequests(AppDbContext context)
@@ -512,16 +537,20 @@ namespace ValuationBackend.Data
                 new RequestType { Code = "ra", Name = "Rating Assessment" },
                 new RequestType { Code = "rb", Name = "Rating Building" },
                 new RequestType { Code = "ro", Name = "Rating Object" },
-            };            context.RequestTypes.AddRange(requestTypes);
+            };
+            context.RequestTypes.AddRange(requestTypes);
             context.SaveChanges();
             Console.WriteLine("Request types seeded.");
         }
 
         private static void InitializeRequests(AppDbContext context)
         {
-            // If there's any data, stop
+            // Clear existing data to allow reseeding
             if (context.Requests.Any())
-                return;
+            {
+                context.Requests.RemoveRange(context.Requests);
+                context.SaveChanges();
+            }
 
             Console.WriteLine("Seeding requests...");
 
@@ -534,7 +563,7 @@ namespace ValuationBackend.Data
             }
 
             // Add sample requests
-            var requests = new Request[]
+            var requests = new List<Request>
             {
                 new Request
                 {
@@ -544,7 +573,47 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-30),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-25)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2025-001",
+                    LocalAuthority = "Kelaniya Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2024-010",
+                    LocalAuthority = "Colombo Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2023-002",
+                    LocalAuthority = "Kandy Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2024-101",
+                    LocalAuthority = "Gampaha Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
                 },
                 new Request
                 {
@@ -554,7 +623,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = false, // pending
                     CreatedAt = DateTime.UtcNow.AddDays(-20),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-15)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-15),
                 },
                 new Request
                 {
@@ -564,7 +633,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-15),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-10)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
                 },
                 new Request
                 {
@@ -574,7 +643,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2023,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-50),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-45)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-45),
                 },
                 new Request
                 {
@@ -584,7 +653,7 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2024,
                     Status = false, // pending
                     CreatedAt = DateTime.UtcNow.AddDays(-10),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-5)
+                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
                 },
                 new Request
                 {
@@ -594,13 +663,317 @@ namespace ValuationBackend.Data
                     YearOfRevision = 2023,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-60),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-55)
-                }
+                    UpdatedAt = DateTime.UtcNow.AddDays(-55),
+                },
+                // Additional dummy requests
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "rb").Id,
+                    RatingReferenceNo = "RB-2023-002",
+                    LocalAuthority = "Kurunegala Municipal Council",
+                    YearOfRevision = 2023,
+                    Status = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-40),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-35),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2022-003",
+                    LocalAuthority = "Jaffna Municipal Council",
+                    YearOfRevision = 2022,
+                    Status = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-80),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-75),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "ra").Id,
+                    RatingReferenceNo = "RA-2025-004",
+                    LocalAuthority = "Batticaloa Municipal Council",
+                    YearOfRevision = 2025,
+                    Status = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-5),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-2),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "ro").Id,
+                    RatingReferenceNo = "RO-2023-005",
+                    LocalAuthority = "Anuradhapura Municipal Council",
+                    YearOfRevision = 2023,
+                    Status = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-100),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-90),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2025-006",
+                    LocalAuthority = "Badulla Municipal Council",
+                    YearOfRevision = 2025,
+                    Status = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-3),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-1),
+                },
             };
-
             context.Requests.AddRange(requests);
             context.SaveChanges();
             Console.WriteLine("Requests seeded.");
+            context.SaveChanges();
+            Console.WriteLine("Requests seeded.");
+        }
+
+        private static void InitializeAssets(AppDbContext context)
+        {
+            // Clear existing data to allow reseeding
+            if (context.Assets.Any())
+            {
+                context.Assets.RemoveRange(context.Assets);
+                context.SaveChanges();
+            }
+
+            Console.WriteLine("Seeding assets...");
+
+            // Get all requests
+            var allRequests = context.Requests.Include(r => r.RequestType).ToList();
+            if (!allRequests.Any())
+            {
+                Console.WriteLine("No requests found. Assets seeding skipped.");
+                return;
+            }
+
+            // Get Mass Rating requests specifically
+            var massRatingRequests = allRequests.Where(r => r.RequestType.Code == "mr").OrderBy(r => r.Id).ToList();
+            var otherRequests = allRequests.Where(r => r.RequestType.Code != "mr").OrderBy(r => r.Id).ToList();
+
+            var assets = new List<Asset>();
+            var assetCounter = 1;
+
+            // Create assets for each Mass Rating request (3-5 assets per request)
+            foreach (var mrRequest in massRatingRequests)
+            {
+                // Determine number of assets for this request (randomly between 3-5)
+                var numAssets = 3 + (assetCounter % 3);
+                
+                for (int i = 0; i < numAssets; i++)
+                {
+                    assets.Add(new Asset
+                    {
+                        RequestId = mrRequest.Id,
+                        AssetNo = $"AST-{assetCounter:D3}-{mrRequest.YearOfRevision}",
+                        Ward = $"Ward {(assetCounter % 10) + 1:D2}",
+                        RdSt = GetStreetName(assetCounter),
+                        Description = (PropertyType)(assetCounter % 2),
+                        Owner = GetOwnerName(assetCounter),
+                        IsRatingCard = assetCounter % 3 != 0,
+                        CreatedAt = mrRequest.CreatedAt.AddDays(2),
+                        UpdatedAt = mrRequest.UpdatedAt,
+                    });
+                    assetCounter++;
+                }
+            }
+
+            // Create a few assets for other request types
+            foreach (var otherRequest in otherRequests.Take(3))
+            {
+                assets.Add(new Asset
+                {
+                    RequestId = otherRequest.Id,
+                    AssetNo = $"AST-{assetCounter:D3}-{otherRequest.YearOfRevision}",
+                    Ward = $"Ward {(assetCounter % 10) + 1:D2}",
+                    RdSt = GetStreetName(assetCounter),
+                    Description = PropertyType.CommercialProperty,
+                    Owner = GetOwnerName(assetCounter),
+                    IsRatingCard = true,
+                    CreatedAt = otherRequest.CreatedAt.AddDays(2),
+                    UpdatedAt = otherRequest.UpdatedAt,
+                });
+                assetCounter++;
+            }
+
+            context.Assets.AddRange(assets);
+            context.SaveChanges();
+            Console.WriteLine($"Assets seeded. Total: {assets.Count} (Mass Rating: {massRatingRequests.Sum(r => assets.Count(a => a.RequestId == r.Id))})");
+        }
+
+        private static string GetStreetName(int index)
+        {
+            var streets = new[] {
+                "Galle Road", "Main Street", "Temple Road", "Park Avenue", 
+                "Hill Street", "Lake Road", "Beach Road", "Coconut Grove",
+                "Market Street", "Garden Lane", "School Road", "Flower Street",
+                "Station Road", "Church Street", "Hospital Road", "Bank Street",
+                "Queens Road", "Kings Avenue", "Princess Street", "Duke Lane"
+            };
+            return streets[index % streets.Length];
+        }
+
+        private static string GetOwnerName(int index)
+        {
+            var firstNames = new[] {
+                "John", "Jane", "Michael", "Sarah", "David", "Lisa", "Robert", "Mary",
+                "James", "Patricia", "William", "Jennifer", "Richard", "Linda", "Charles", "Elizabeth"
+            };
+            var lastNames = new[] {
+                "Doe", "Smith", "Johnson", "Williams", "Brown", "Anderson", "Wilson", "Taylor",
+                "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez"
+            };
+            var companies = new[] {
+                "ABC Company Ltd", "XYZ Holdings", "Central Market Corp", "Education Center Ltd",
+                "Tech Solutions Inc", "Global Traders", "Prime Investments", "Urban Developers"
+            };
+            
+            // 60% individual owners, 40% companies
+            if (index % 5 < 3)
+            {
+                return $"{firstNames[index % firstNames.Length]} {lastNames[index % lastNames.Length]}";
+            }
+            else
+            {
+                return companies[index % companies.Length];
+            }
+        }
+
+        private static void InitializePropertyCategories(AppDbContext context)
+        {
+            // If there's any data, stop
+            if (context.PropertyCategories.Any())
+                return;
+
+            Console.WriteLine("Seeding property categories..."); // Add the specified property categories
+            var propertyCategories = new PropertyCategory[]
+            {
+                new PropertyCategory { Name = "Domestic" },
+                new PropertyCategory { Name = "Offices" },
+                new PropertyCategory { Name = "Shops" },
+                new PropertyCategory { Name = "Agriculture" },
+                new PropertyCategory { Name = "Special" },
+            };
+
+            context.PropertyCategories.AddRange(propertyCategories);
+            context.SaveChanges();
+            Console.WriteLine("Property categories seeded.");
+        }
+
+        private static void InitializeAssetDivisions(AppDbContext context)
+        {
+            // If there's any data, stop
+            if (context.AssetDivisions.Any())
+                return;
+
+            Console.WriteLine("Seeding asset divisions...");
+
+            // Add dummy records
+            var assetDivisions = new AssetDivision[]
+            {
+                new AssetDivision
+                {
+                    AssetId = 1,
+                    NewAssetNo = "ASSET-001-A",
+                    Area = 1500.50M,
+                    LandType = "Residential",
+                    Description = "North portion of original asset",
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                },
+                new AssetDivision
+                {
+                    AssetId = 1,
+                    NewAssetNo = "ASSET-001-B",
+                    Area = 1200.75M,
+                    LandType = "Commercial",
+                    Description = "South portion of original asset",
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                },
+                new AssetDivision
+                {
+                    AssetId = 2,
+                    NewAssetNo = "ASSET-002-A",
+                    Area = 800.25M,
+                    LandType = "Agricultural",
+                    Description = "Eastern division of farmland",
+                    CreatedAt = DateTime.UtcNow.AddDays(-15),
+                },
+                new AssetDivision
+                {
+                    AssetId = 2,
+                    NewAssetNo = "ASSET-002-B",
+                    Area = 750.00M,
+                    LandType = "Agricultural",
+                    Description = "Western division of farmland",
+                    CreatedAt = DateTime.UtcNow.AddDays(-15),
+                },
+                new AssetDivision
+                {
+                    AssetId = 3,
+                    NewAssetNo = "ASSET-003-A",
+                    Area = 2000.00M,
+                    LandType = "Industrial",
+                    Description = "Factory zone partition",
+                    CreatedAt = DateTime.UtcNow.AddDays(-7),
+                },
+            };
+
+            context.AssetDivisions.AddRange(assetDivisions);
+            context.SaveChanges();
+            Console.WriteLine("Asset divisions seeded.");
+        }
+
+        private static void InitializeReconciliations(AppDbContext context)
+        {
+            // If there's any data, stop
+            if (context.Reconciliations.Any())
+                return;
+
+            Console.WriteLine("Seeding reconciliations...");
+
+            var reconciliations = new Reconciliation[]
+            {
+                new Reconciliation
+                {
+                    AssetId = 1, // References AST-001-2024
+                    StreetName = "Galle Road",
+                    ObsoleteNo = "123/A",
+                    NewNo = "456/B",
+                    UpdatedAt = DateTime.UtcNow.AddDays(-20),
+                },
+                new Reconciliation
+                {
+                    AssetId = 2, // References AST-002-2024
+                    StreetName = "Main Street",
+                    ObsoleteNo = "45",
+                    NewNo = "45/1",
+                    UpdatedAt = DateTime.UtcNow.AddDays(-18),
+                },
+                new Reconciliation
+                {
+                    AssetId = 3, // References AST-003-2024
+                    StreetName = "Temple Road",
+                    ObsoleteNo = "78/B",
+                    NewNo = "78/B/1",
+                    UpdatedAt = DateTime.UtcNow.AddDays(-15),
+                },
+                new Reconciliation
+                {
+                    AssetId = 5, // References AST-005-2024
+                    StreetName = "Hill Street",
+                    ObsoleteNo = "25",
+                    NewNo = "25A",
+                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
+                },
+                new Reconciliation
+                {
+                    AssetId = 7, // References AST-007-2023
+                    StreetName = "Beach Road",
+                    ObsoleteNo = "100",
+                    NewNo = "100/1-A",
+                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
+                },
+            };
+
+            context.Reconciliations.AddRange(reconciliations);
+            context.SaveChanges();
+            Console.WriteLine("Reconciliations seeded.");
         }
     }
 }
