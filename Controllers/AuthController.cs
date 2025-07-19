@@ -30,6 +30,7 @@ namespace ValuationBackend.Controllers
                 empName = user.EmpName,
                 empEmail = user.EmpEmail,
                 empId = user.EmpId,
+                id = user.Id,
                 position = user.Position,
                 division = user.AssignedDivision
             });

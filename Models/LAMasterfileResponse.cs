@@ -11,5 +11,7 @@ namespace ValuationBackend.Models
         public int TotalPages { get; set; }
         public bool HasPrevious => CurrentPage > 1;
         public bool HasNext => CurrentPage < TotalPages;
+        public string? SortBy { get; set; }
+        public string? SearchTerm { get; set; }
     }
 } 
