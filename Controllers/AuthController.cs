@@ -19,7 +19,7 @@ namespace ValuationBackend.Controllers
         public async Task<IActionResult> Login([FromBody] LoginRequest request)
         {
             var (user, token) = await _authService.LoginAsync(request.Username, request.Password);
-            
+
             if (user == null || token == null)
                 return Unauthorized(new { message = "Invalid credentials" });
 
