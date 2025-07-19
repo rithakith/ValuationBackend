@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250716055900_AddLotsToLandMiscellaneousMasterFile")]
+    partial class AddLotsToLandMiscellaneousMasterFile
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -971,15 +974,19 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("integer");
 
                     b.Property<string>("PlanNo")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("PlanType")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RequestingAuthorityReferenceNo")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Status")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
@@ -1478,35 +1485,15 @@ namespace ValuationBackend.Migrations
                     b.Property<bool>("IsCompleted")
                         .HasColumnType("boolean");
 
-                    b.Property<int?>("LandAcquisitionId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("LandMiscellaneousId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("ReferenceNumber")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("RequestId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("TaskType")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<int>("UserId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Username")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("WorkItemDescription")
-                        .HasColumnType("text");
-
                     b.HasKey("Id");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("UserTasks");
                 });
@@ -1685,17 +1672,6 @@ namespace ValuationBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("Report");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.UserTask", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.InspectionReport", b =>
