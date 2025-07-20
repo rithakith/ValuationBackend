@@ -1,0 +1,21 @@
+name: Deploy to EC2
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: SSH and deploy
+        uses: appleboy/ssh-action@master
+        with:
+          host: ${{ secrets.EC2_HOST }}
+          username: ${{ secrets.EC2_USER }}
+          key: ${{ secrets.EC2_KEY }}
+          script: |
+            cd /home/ec2-user/ValuationBackend
+            git pull
+            dotnet restore
+            sudo dotnet publish -c Release -o /var/app
+            sudo systemctl restart valuation-backend
