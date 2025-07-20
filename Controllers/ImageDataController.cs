@@ -19,7 +19,7 @@ namespace ValuationBackend.Controllers
         [HttpPost]
         public IActionResult SendImageData([FromBody] SendImageDataRequest request)
         {
-            if (string.IsNullOrWhiteSpace(request.ReportId) || request.Images == null || !request.Images.Any())
+            if (request.ReportId <= 0 || request.Images == null || !request.Images.Any())
             {
                 return BadRequest("Missing reportId or images.");
             }
@@ -38,9 +38,9 @@ namespace ValuationBackend.Controllers
 
         // ✅ 2. Accept actual image files via form-data
         [HttpPost("upload")]
-        public async Task<IActionResult> UploadImages([FromForm] string reportId, [FromForm] List<IFormFile> files)
+        public async Task<IActionResult> UploadImages([FromForm] int reportId, [FromForm] List<IFormFile> files)
         {
-            if (string.IsNullOrWhiteSpace(reportId) || files == null || !files.Any())
+            if (reportId <= 0 || files == null || !files.Any())
                 return BadRequest("Missing reportId or files.");
 
             foreach (var file in files)
