@@ -25,6 +25,15 @@ namespace ValuationBackend.Data
                 // Initialize User Tasks
                 InitializeUserTasks(context);
 
+                // Update existing UserTasks with work item assignments
+                UpdateUserTaskAssignments(context);
+
+                // Update UserTasks with correct User IDs
+                UpdateUserTaskUserIds(context);
+
+                // Remove UserTasks that are not LM (Land Miscellaneous)
+                RemoveNonLMUserTasks(context);
+
                 // Initialize Master Data
                 InitializeMasterData(context); // Initialize Land Aquisition Master Files
                 InitializeLandAquisitionMasterFiles(context);
@@ -100,9 +109,16 @@ namespace ValuationBackend.Data
 
         private static void InitializeLandMiscellaneousMasterFiles(AppDbContext context)
         {
-            // If there's any data, stop
-            if (context.LandMiscellaneousMasterFiles.Any())
+            // Check if we already have the new records (we expect 98 total records)
+            if (context.LandMiscellaneousMasterFiles.Count() >= 98)
                 return;
+
+            // Remove all existing records to ensure clean seeding
+            if (context.LandMiscellaneousMasterFiles.Any())
+            {
+                context.LandMiscellaneousMasterFiles.RemoveRange(context.LandMiscellaneousMasterFiles);
+                context.SaveChanges();
+            }
 
             // Add dummy records
             var masterFiles = new LandMiscellaneousMasterFile[]
@@ -114,6 +130,7 @@ namespace ValuationBackend.Data
                     PlanNo = "pp-2023-001",
                     RequestingAuthorityReferenceNo = "12341234-A-01",
                     Status = "Success",
+                    Lots = 3
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -122,6 +139,7 @@ namespace ValuationBackend.Data
                     PlanNo = "CAD-2023-045",
                     RequestingAuthorityReferenceNo = "12341234-A-02",
                     Status = "Pending",
+                    Lots = 2
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -130,6 +148,7 @@ namespace ValuationBackend.Data
                     PlanNo = "FVP-2022-123",
                     RequestingAuthorityReferenceNo = "12341234-A-03",
                     Status = "Success",
+                    Lots = 1
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -138,6 +157,7 @@ namespace ValuationBackend.Data
                     PlanNo = "PP-2021-078",
                     RequestingAuthorityReferenceNo = "12341234-A-04",
                     Status = "Pending",
+                    Lots = 4
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -146,6 +166,7 @@ namespace ValuationBackend.Data
                     PlanNo = "CAD-2023-099",
                     RequestingAuthorityReferenceNo = "12341234-A-05",
                     Status = "Success",
+                    Lots = 2
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -154,6 +175,7 @@ namespace ValuationBackend.Data
                     PlanNo = "FVP-2023-102",
                     RequestingAuthorityReferenceNo = "12341234-A-06",
                     Status = "Pending",
+                    Lots = 3
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -162,6 +184,7 @@ namespace ValuationBackend.Data
                     PlanNo = "PP-2022-233",
                     RequestingAuthorityReferenceNo = "12341234-A-07",
                     Status = "Success",
+                    Lots = 1
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -170,6 +193,7 @@ namespace ValuationBackend.Data
                     PlanNo = "CAD-2023-145",
                     RequestingAuthorityReferenceNo = "12341234-A-08",
                     Status = "Pending",
+                    Lots = 5
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -178,6 +202,7 @@ namespace ValuationBackend.Data
                     PlanNo = "FVP-2022-323",
                     RequestingAuthorityReferenceNo = "12341234-A-09",
                     Status = "Success",
+                    Lots = 2
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -186,6 +211,7 @@ namespace ValuationBackend.Data
                     PlanNo = "PP-2023-178",
                     RequestingAuthorityReferenceNo = "12341234-A-10",
                     Status = "Pending",
+                    Lots = 3
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -194,6 +220,7 @@ namespace ValuationBackend.Data
                     PlanNo = "CAD-2022-299",
                     RequestingAuthorityReferenceNo = "12341234-A-11",
                     Status = "Success",
+                    Lots = 1
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -202,6 +229,7 @@ namespace ValuationBackend.Data
                     PlanNo = "FVP-2023-202",
                     RequestingAuthorityReferenceNo = "12341234-A-12",
                     Status = "Pending",
+                    Lots = 4
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -210,6 +238,7 @@ namespace ValuationBackend.Data
                     PlanNo = "PP-2022-333",
                     RequestingAuthorityReferenceNo = "12341234-A-13",
                     Status = "Success",
+                    Lots = 2
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -218,6 +247,7 @@ namespace ValuationBackend.Data
                     PlanNo = "CAD-2023-245",
                     RequestingAuthorityReferenceNo = "12341234-A-14",
                     Status = "Pending",
+                    Lots = 3
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -226,6 +256,7 @@ namespace ValuationBackend.Data
                     PlanNo = "FVP-2022-423",
                     RequestingAuthorityReferenceNo = "12341234-A-15",
                     Status = "Success",
+                    Lots = 1
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -234,6 +265,7 @@ namespace ValuationBackend.Data
                     PlanNo = "PP-2023-278",
                     RequestingAuthorityReferenceNo = "12341234-A-16",
                     Status = "Pending",
+                    Lots = 5
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -242,6 +274,7 @@ namespace ValuationBackend.Data
                     PlanNo = "CAD-2022-399",
                     RequestingAuthorityReferenceNo = "12341234-A-17",
                     Status = "Success",
+                    Lots = 2
                 },
                 new LandMiscellaneousMasterFile
                 {
@@ -250,6 +283,730 @@ namespace ValuationBackend.Data
                     PlanNo = "FVP-2023-302",
                     RequestingAuthorityReferenceNo = "12341234-A-18",
                     Status = "Pending",
+                    Lots = 3
+                },
+                // Additional 30 records for users 1-5
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52430,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-401",
+                    RequestingAuthorityReferenceNo = "12341234-A-19",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52431,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-402",
+                    RequestingAuthorityReferenceNo = "12341234-A-20",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52432,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-403",
+                    RequestingAuthorityReferenceNo = "12341234-A-21",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52433,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-404",
+                    RequestingAuthorityReferenceNo = "12341234-A-22",
+                    Status = "Success",
+                    Lots = 4
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52434,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-405",
+                    RequestingAuthorityReferenceNo = "12341234-A-23",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52435,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-406",
+                    RequestingAuthorityReferenceNo = "12341234-A-24",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52436,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-407",
+                    RequestingAuthorityReferenceNo = "12341234-A-25",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52437,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-408",
+                    RequestingAuthorityReferenceNo = "12341234-A-26",
+                    Status = "Success",
+                    Lots = 5
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52438,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-409",
+                    RequestingAuthorityReferenceNo = "12341234-A-27",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52439,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-410",
+                    RequestingAuthorityReferenceNo = "12341234-A-28",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52440,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-411",
+                    RequestingAuthorityReferenceNo = "12341234-A-29",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52441,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-412",
+                    RequestingAuthorityReferenceNo = "12341234-A-30",
+                    Status = "Success",
+                    Lots = 4
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52442,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-413",
+                    RequestingAuthorityReferenceNo = "12341234-A-31",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52443,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-414",
+                    RequestingAuthorityReferenceNo = "12341234-A-32",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52444,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-415",
+                    RequestingAuthorityReferenceNo = "12341234-A-33",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52445,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-416",
+                    RequestingAuthorityReferenceNo = "12341234-A-34",
+                    Status = "Success",
+                    Lots = 5
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52446,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-417",
+                    RequestingAuthorityReferenceNo = "12341234-A-35",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52447,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-418",
+                    RequestingAuthorityReferenceNo = "12341234-A-36",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52448,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-419",
+                    RequestingAuthorityReferenceNo = "12341234-A-37",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52449,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-420",
+                    RequestingAuthorityReferenceNo = "12341234-A-38",
+                    Status = "Success",
+                    Lots = 4
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52450,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-421",
+                    RequestingAuthorityReferenceNo = "12341234-A-39",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52451,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-422",
+                    RequestingAuthorityReferenceNo = "12341234-A-40",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52452,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-423",
+                    RequestingAuthorityReferenceNo = "12341234-A-41",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52453,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-424",
+                    RequestingAuthorityReferenceNo = "12341234-A-42",
+                    Status = "Success",
+                    Lots = 5
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52454,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-425",
+                    RequestingAuthorityReferenceNo = "12341234-A-43",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52455,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-426",
+                    RequestingAuthorityReferenceNo = "12341234-A-44",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52456,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-427",
+                    RequestingAuthorityReferenceNo = "12341234-A-45",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52457,
+                    PlanType = "PP",
+                    PlanNo = "PP-2023-428",
+                    RequestingAuthorityReferenceNo = "12341234-A-46",
+                    Status = "Success",
+                    Lots = 4
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52458,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2023-429",
+                    RequestingAuthorityReferenceNo = "12341234-A-47",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52459,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2023-430",
+                    RequestingAuthorityReferenceNo = "12341234-A-48",
+                    Status = "Success",
+                    Lots = 3
+                },
+                
+                // Additional 50 records (52460-52509) for more variety
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52460,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-001",
+                    RequestingAuthorityReferenceNo = "12341234-B-01",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52461,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-002",
+                    RequestingAuthorityReferenceNo = "12341234-B-02",
+                    Status = "Success",
+                    Lots = 4
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52462,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-003",
+                    RequestingAuthorityReferenceNo = "12341234-B-03",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52463,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-004",
+                    RequestingAuthorityReferenceNo = "12341234-B-04",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52464,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-005",
+                    RequestingAuthorityReferenceNo = "12341234-B-05",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52465,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-006",
+                    RequestingAuthorityReferenceNo = "12341234-B-06",
+                    Status = "Success",
+                    Lots = 5
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52466,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-007",
+                    RequestingAuthorityReferenceNo = "12341234-B-07",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52467,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-008",
+                    RequestingAuthorityReferenceNo = "12341234-B-08",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52468,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-009",
+                    RequestingAuthorityReferenceNo = "12341234-B-09",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52469,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-010",
+                    RequestingAuthorityReferenceNo = "12341234-B-10",
+                    Status = "Success",
+                    Lots = 4
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52470,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-011",
+                    RequestingAuthorityReferenceNo = "12341234-B-11",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52471,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-012",
+                    RequestingAuthorityReferenceNo = "12341234-B-12",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52472,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-013",
+                    RequestingAuthorityReferenceNo = "12341234-B-13",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52473,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-014",
+                    RequestingAuthorityReferenceNo = "12341234-B-14",
+                    Status = "Success",
+                    Lots = 5
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52474,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-015",
+                    RequestingAuthorityReferenceNo = "12341234-B-15",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52475,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-016",
+                    RequestingAuthorityReferenceNo = "12341234-B-16",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52476,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-017",
+                    RequestingAuthorityReferenceNo = "12341234-B-17",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52477,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-018",
+                    RequestingAuthorityReferenceNo = "12341234-B-18",
+                    Status = "Success",
+                    Lots = 4
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52478,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-019",
+                    RequestingAuthorityReferenceNo = "12341234-B-19",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52479,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-020",
+                    RequestingAuthorityReferenceNo = "12341234-B-20",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52480,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-021",
+                    RequestingAuthorityReferenceNo = "12341234-B-21",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52481,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-022",
+                    RequestingAuthorityReferenceNo = "12341234-B-22",
+                    Status = "Success",
+                    Lots = 5
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52482,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-023",
+                    RequestingAuthorityReferenceNo = "12341234-B-23",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52483,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-024",
+                    RequestingAuthorityReferenceNo = "12341234-B-24",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52484,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-025",
+                    RequestingAuthorityReferenceNo = "12341234-B-25",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52485,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-026",
+                    RequestingAuthorityReferenceNo = "12341234-B-26",
+                    Status = "Success",
+                    Lots = 4
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52486,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-027",
+                    RequestingAuthorityReferenceNo = "12341234-B-27",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52487,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-028",
+                    RequestingAuthorityReferenceNo = "12341234-B-28",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52488,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-029",
+                    RequestingAuthorityReferenceNo = "12341234-B-29",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52489,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-030",
+                    RequestingAuthorityReferenceNo = "12341234-B-30",
+                    Status = "Success",
+                    Lots = 5
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52490,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-031",
+                    RequestingAuthorityReferenceNo = "12341234-B-31",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52491,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-032",
+                    RequestingAuthorityReferenceNo = "12341234-B-32",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52492,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-033",
+                    RequestingAuthorityReferenceNo = "12341234-B-33",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52493,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-034",
+                    RequestingAuthorityReferenceNo = "12341234-B-34",
+                    Status = "Success",
+                    Lots = 4
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52494,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-035",
+                    RequestingAuthorityReferenceNo = "12341234-B-35",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52495,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-036",
+                    RequestingAuthorityReferenceNo = "12341234-B-36",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52496,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-037",
+                    RequestingAuthorityReferenceNo = "12341234-B-37",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52497,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-038",
+                    RequestingAuthorityReferenceNo = "12341234-B-38",
+                    Status = "Success",
+                    Lots = 5
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52498,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-039",
+                    RequestingAuthorityReferenceNo = "12341234-B-39",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52499,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-040",
+                    RequestingAuthorityReferenceNo = "12341234-B-40",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52500,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-041",
+                    RequestingAuthorityReferenceNo = "12341234-B-41",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52501,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-042",
+                    RequestingAuthorityReferenceNo = "12341234-B-42",
+                    Status = "Success",
+                    Lots = 4
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52502,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-043",
+                    RequestingAuthorityReferenceNo = "12341234-B-43",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52503,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-044",
+                    RequestingAuthorityReferenceNo = "12341234-B-44",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52504,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-045",
+                    RequestingAuthorityReferenceNo = "12341234-B-45",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52505,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-046",
+                    RequestingAuthorityReferenceNo = "12341234-B-46",
+                    Status = "Success",
+                    Lots = 5
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52506,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-047",
+                    RequestingAuthorityReferenceNo = "12341234-B-47",
+                    Status = "Pending",
+                    Lots = 1
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52507,
+                    PlanType = "FVP",
+                    PlanNo = "FVP-2024-048",
+                    RequestingAuthorityReferenceNo = "12341234-B-48",
+                    Status = "Success",
+                    Lots = 3
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52508,
+                    PlanType = "PP",
+                    PlanNo = "PP-2024-049",
+                    RequestingAuthorityReferenceNo = "12341234-B-49",
+                    Status = "Pending",
+                    Lots = 2
+                },
+                new LandMiscellaneousMasterFile
+                {
+                    MasterFileNo = 52509,
+                    PlanType = "Cadaster",
+                    PlanNo = "CAD-2024-050",
+                    RequestingAuthorityReferenceNo = "12341234-B-50",
+                    Status = "Success",
+                    Lots = 4
                 },
             };
             context.LandMiscellaneousMasterFiles.AddRange(masterFiles);
@@ -291,7 +1048,7 @@ namespace ValuationBackend.Data
 
         private static void InitializeUsers(AppDbContext context)
         {
-            //if (context.Users.Any()) return;
+            if (context.Users.Any()) return;
 
             Console.WriteLine("Seeding users...");
 
@@ -379,56 +1136,237 @@ namespace ValuationBackend.Data
 
         private static void InitializeUserTasks(AppDbContext context)
         {
-            if (context.UserTasks.Any())
+            // Calculate expected task count: 12 LA tasks + number of LM records
+            var expectedTaskCount = 12 + context.LandMiscellaneousMasterFiles.Count();
+
+            // Check if we already have enough tasks
+            if (context.UserTasks.Count() >= expectedTaskCount)
                 return;
+
+            // Remove all existing user tasks to ensure clean seeding
+            if (context.UserTasks.Any())
+            {
+                context.UserTasks.RemoveRange(context.UserTasks);
+                context.SaveChanges();
+            }
 
             Console.WriteLine("Seeding user tasks...");
             var tasks = new List<UserTask>();
 
-            void AddTask(string username, string type, bool completed, string date)
+            void AddTask(string username, string type, bool completed, string date,
+                        int? requestId = null, int? landAcquisitionId = null, int? landMiscellaneousId = null,
+                        string? description = null, string? referenceNumber = null)
             {
+                // Map usernames to specific User IDs
+                var userId = username switch
+                {
+                    "Jalina" => 1,
+                    "Akith" => 2,
+                    "Dulmini" => 3,
+                    "Vishwa" => 4,
+                    "Rithara" => 5,
+                    _ => 0 // Default for unknown users
+                };
+
                 tasks.Add(
                     new UserTask
                     {
                         Username = username,
+                        UserId = userId,
                         TaskType = type,
                         IsCompleted = completed,
                         AssignedDate = DateTime.SpecifyKind(
                             DateTime.ParseExact(date, "yyyyMMdd", null),
                             DateTimeKind.Utc
                         ),
+                        RequestId = requestId,
+                        LandAcquisitionId = landAcquisitionId,
+                        LandMiscellaneousId = landMiscellaneousId,
+                        WorkItemDescription = description,
+                        ReferenceNumber = referenceNumber
                     }
                 );
             }
 
-            AddTask("Jalina", "LA", true, "20250105");
-            AddTask("Jalina", "MR", true, "20250115");
-            AddTask("Jalina", "LM", false, "20250210");
-            AddTask("Jalina", "LA", true, "20250301");
+            // Non-LM tasks (LA and MR tasks without referencing old LandMiscellaneous IDs)
+            // Jalina's tasks
+            AddTask("Jalina", "LA", true, "20250105", landAcquisitionId: 1, description: "Land acquisition survey for Highway Project", referenceNumber: "LA-2025-001");
+            AddTask("Jalina", "MR", true, "20250115", requestId: 1, description: "Mass rating assessment - Colombo MC", referenceNumber: "MR-2025-001");
+            AddTask("Jalina", "LA", true, "20250301", landAcquisitionId: 2, description: "Land acquisition for Bridge Project", referenceNumber: "LA-2025-002");
 
-            AddTask("Akith", "MR", true, "20250120");
-            AddTask("Akith", "LM", true, "20250212");
-            AddTask("Akith", "LA", false, "20250225");
-            AddTask("Akith", "LM", false, "20250303");
+            // Akith's tasks
+            AddTask("Akith", "MR", true, "20250120", requestId: 2, description: "Rating assessment - Galle MC", referenceNumber: "MR-2025-002");
+            AddTask("Akith", "LA", false, "20250225", landAcquisitionId: 3, description: "Land acquisition survey", referenceNumber: "LA-2025-003");
 
-            AddTask("Dulmini", "LA", true, "20250110");
-            AddTask("Dulmini", "MR", true, "20250112");
-            AddTask("Dulmini", "MR", false, "20250302");
-            AddTask("Dulmini", "LM", true, "20250310");
+            // Dulmini's tasks
+            AddTask("Dulmini", "LA", true, "20250110", landAcquisitionId: 4, description: "Land acquisition documentation", referenceNumber: "LA-2025-004");
+            AddTask("Dulmini", "MR", true, "20250112", requestId: 3, description: "Rating building assessment", referenceNumber: "MR-2025-003");
+            AddTask("Dulmini", "MR", false, "20250302", requestId: 1, description: "Follow-up rating assessment", referenceNumber: "MR-2025-004");
 
-            AddTask("Vishwa", "LA", true, "20250101");
-            AddTask("Vishwa", "LA", true, "20250215");
-            AddTask("Vishwa", "LM", false, "20250305");
-            AddTask("Vishwa", "MR", true, "20250318");
+            // Vishwa's tasks
+            AddTask("Vishwa", "LA", true, "20250101", landAcquisitionId: 5, description: "Land acquisition initial survey", referenceNumber: "LA-2025-005");
+            AddTask("Vishwa", "LA", true, "20250215", landAcquisitionId: 6, description: "Land acquisition follow-up", referenceNumber: "LA-2025-006");
+            AddTask("Vishwa", "MR", true, "20250318", requestId: 2, description: "Additional rating assessment", referenceNumber: "MR-2025-005");
 
-            AddTask("Rithara", "MR", true, "20250118");
-            AddTask("Rithara", "LM", true, "20250222");
-            AddTask("Rithara", "LA", false, "20250311");
-            AddTask("Rithara", "LM", false, "20250330");
+            // Rithara's tasks
+            AddTask("Rithara", "MR", true, "20250118", requestId: 3, description: "Building rating review", referenceNumber: "MR-2025-006");
+            AddTask("Rithara", "LA", false, "20250311", landAcquisitionId: 7, description: "Land acquisition assessment", referenceNumber: "LA-2025-007");
+
+            // LM tasks for all current land miscellaneous records - randomly distributed
+            var users = new[] { "Jalina", "Akith", "Dulmini", "Vishwa", "Rithara" };
+            var planTypes = new[] { "PP", "Cadaster", "FVP" };
+            var random = new Random(42); // Fixed seed for consistent results
+
+            // Get all actual LandMiscellaneous records from database to use their real IDs
+            var landMiscRecords = context.LandMiscellaneousMasterFiles.OrderBy(lm => lm.MasterFileNo).ToList();
+
+            // Create tasks for each actual LandMiscellaneous record
+            for (int i = 0; i < landMiscRecords.Count; i++)
+            {
+                var record = landMiscRecords[i];
+                var randomUser = users[random.Next(users.Length)];
+                var randomPlanType = planTypes[random.Next(planTypes.Length)];
+                var isCompleted = random.Next(100) < 30; // 30% chance of being completed
+                var randomDays = random.Next(1, 120); // Random date within last 120 days
+                var assignedDate = DateTime.Today.AddDays(-randomDays).ToString("yyyyMMdd");
+
+                AddTask(randomUser, "LM", isCompleted, assignedDate,
+                    landMiscellaneousId: record.Id, // Use the actual database ID
+                    description: $"{randomPlanType} plan verification for {record.MasterFileNo}",
+                    referenceNumber: $"LM-2025-{(i + 1):D3}");
+            }
 
             context.UserTasks.AddRange(tasks);
             context.SaveChanges();
             Console.WriteLine("User tasks seeded.");
+        }
+
+        private static void UpdateUserTaskAssignments(AppDbContext context)
+        {
+            // Check if any UserTasks have null reference fields (meaning they need to be updated)
+            var unassignedTasks = context.UserTasks
+                .Where(ut => ut.RequestId == null && ut.LandAcquisitionId == null && ut.LandMiscellaneousId == null)
+                .ToList();
+
+            if (!unassignedTasks.Any())
+            {
+                Console.WriteLine("All UserTasks already have work item assignments.");
+                return;
+            }
+
+            Console.WriteLine($"Updating {unassignedTasks.Count} UserTask assignments...");
+
+            // Get available work items
+            var landAcquisitionIds = context.LandAquisitionMasterFiles.Select(la => la.Id).ToList();
+            var landMiscellaneousIds = context.LandMiscellaneousMasterFiles.Select(lm => lm.Id).ToList();
+            var requestIds = context.Requests.Select(r => r.Id).ToList();
+
+            Console.WriteLine($"Available IDs - LA: {landAcquisitionIds.Count}, LM: {landMiscellaneousIds.Count}, Requests: {requestIds.Count}");
+
+            // Counters for round-robin assignment
+            int laIndex = 0, lmIndex = 0, mrIndex = 0;
+
+            foreach (var task in unassignedTasks)
+            {
+                switch (task.TaskType)
+                {
+                    case "LA":
+                        if (landAcquisitionIds.Any() && laIndex < landAcquisitionIds.Count)
+                        {
+                            task.LandAcquisitionId = landAcquisitionIds[laIndex];
+                            task.WorkItemDescription = $"Land acquisition task for LA ID {landAcquisitionIds[laIndex]}";
+                            task.ReferenceNumber = $"LA-2025-{(laIndex + 1):D3}";
+                            laIndex++;
+                        }
+                        break;
+
+                    case "LM":
+                        if (landMiscellaneousIds.Any() && lmIndex < landMiscellaneousIds.Count)
+                        {
+                            task.LandMiscellaneousId = landMiscellaneousIds[lmIndex];
+                            task.WorkItemDescription = $"Land miscellaneous task for LM ID {landMiscellaneousIds[lmIndex]}";
+                            task.ReferenceNumber = $"LM-2025-{(lmIndex + 1):D3}";
+                            lmIndex++;
+                        }
+                        break;
+
+                    case "MR":
+                        if (requestIds.Any() && mrIndex < requestIds.Count)
+                        {
+                            task.RequestId = requestIds[mrIndex];
+                            task.WorkItemDescription = $"Mass rating task for Request ID {requestIds[mrIndex]}";
+                            task.ReferenceNumber = $"MR-2025-{(mrIndex + 1):D3}";
+                            mrIndex++;
+                        }
+                        break;
+                }
+            }
+
+            context.SaveChanges();
+            Console.WriteLine("UserTask assignments updated successfully.");
+        }
+
+        private static void UpdateUserTaskUserIds(AppDbContext context)
+        {
+            // Check if any UserTasks have incorrect User IDs
+            var allUserTasks = context.UserTasks.ToList();
+            var tasksToUpdate = new List<UserTask>();
+
+            foreach (var task in allUserTasks)
+            {
+                var correctUserId = task.Username switch
+                {
+                    "Jalina" => 1,
+                    "Akith" => 2,
+                    "Dulmini" => 3,
+                    "Vishwa" => 4,
+                    "Rithara" => 5,
+                    _ => 0
+                };
+
+                if (task.UserId != correctUserId)
+                {
+                    task.UserId = correctUserId;
+                    tasksToUpdate.Add(task);
+                }
+            }
+
+            if (tasksToUpdate.Any())
+            {
+                Console.WriteLine($"Updating {tasksToUpdate.Count} UserTask User IDs...");
+                context.SaveChanges();
+                Console.WriteLine("UserTask User IDs updated successfully.");
+            }
+            else
+            {
+                Console.WriteLine("All UserTasks already have correct User IDs.");
+            }
+        }
+
+        private static void RemoveNonLMUserTasks(AppDbContext context)
+        {
+            // Get all UserTasks that are not LM (Land Miscellaneous)
+            var nonLMTasks = context.UserTasks
+                .Where(ut => ut.TaskType != "LM")
+                .ToList();
+
+            if (!nonLMTasks.Any())
+            {
+                Console.WriteLine("No non-LM UserTasks found to remove.");
+                return;
+            }
+
+            Console.WriteLine($"Removing {nonLMTasks.Count} UserTask entries with TaskType other than 'LM'...");
+
+            // Log the tasks being removed for transparency
+            foreach (var task in nonLMTasks)
+            {
+                Console.WriteLine($"Removing UserTask: Username={task.Username}, TaskType={task.TaskType}, Description={task.WorkItemDescription}");
+            }
+
+            context.UserTasks.RemoveRange(nonLMTasks);
+            context.SaveChanges();
+            Console.WriteLine("Non-LM UserTasks removed successfully.");
         }
 
         private static void InitializeMasterData(AppDbContext context)
@@ -755,7 +1693,7 @@ namespace ValuationBackend.Data
             {
                 // Determine number of assets for this request (randomly between 3-5)
                 var numAssets = 3 + (assetCounter % 3);
-                
+
                 for (int i = 0; i < numAssets; i++)
                 {
                     assets.Add(new Asset
@@ -800,7 +1738,7 @@ namespace ValuationBackend.Data
         private static string GetStreetName(int index)
         {
             var streets = new[] {
-                "Galle Road", "Main Street", "Temple Road", "Park Avenue", 
+                "Galle Road", "Main Street", "Temple Road", "Park Avenue",
                 "Hill Street", "Lake Road", "Beach Road", "Coconut Grove",
                 "Market Street", "Garden Lane", "School Road", "Flower Street",
                 "Station Road", "Church Street", "Hospital Road", "Bank Street",
@@ -823,7 +1761,7 @@ namespace ValuationBackend.Data
                 "ABC Company Ltd", "XYZ Holdings", "Central Market Corp", "Education Center Ltd",
                 "Tech Solutions Inc", "Global Traders", "Prime Investments", "Urban Developers"
             };
-            
+
             // 60% individual owners, 40% companies
             if (index % 5 < 3)
             {

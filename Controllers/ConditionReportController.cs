@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -6,6 +7,7 @@ using ValuationBackend.Services;
 
 namespace ValuationBackend.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ConditionReportController : ControllerBase
