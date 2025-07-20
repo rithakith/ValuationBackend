@@ -16,33 +16,33 @@ namespace ValuationBackend.Controllers
         }
 
         [HttpGet]
-        public ActionResult<LAMasterfileResponse> GetAll([FromQuery] int pageNumber = 0, [FromQuery] int pageSize = 15)
+        public ActionResult<LAMasterfileResponse> GetAll([FromQuery] int pageNumber = 0, [FromQuery] int pageSize = 15, [FromQuery] string sortBy = "")
         {
             // Adjust pageNumber to be 1-based for internal logic
             var page = pageNumber + 1;
-            return Ok(_service.GetPaged(page, pageSize));
+            return Ok(_service.GetPaged(page, pageSize, sortBy));
         }
 
         [HttpGet("paged")]
-        public ActionResult<LAMasterfileResponse> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public ActionResult<LAMasterfileResponse> GetPaged([FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string sortBy = "")
         {
-            return Ok(_service.GetPaged(page, pageSize));
+            return Ok(_service.GetPaged(page, pageSize, sortBy));
         }
 
         [HttpPost("search")]
         [HttpPost("filter")]
-        public ActionResult<LAMasterfileResponse> Search([FromBody] LAQueryRequest request)
+        public ActionResult<LAMasterfileResponse> Search([FromBody] LAQueryRequest request, [FromQuery] string sortBy = "")
         {
             var query = request.Query.ToLower();
-            var response = _service.Search(query);
+            var response = _service.Search(query, sortBy);
             return Ok(response);
         }
 
         [HttpPost("search/paged")]
-        public ActionResult<LAMasterfileResponse> SearchPaged([FromBody] LAQueryRequest request, [FromQuery] int page = 1, [FromQuery] int pageSize = 10)
+        public ActionResult<LAMasterfileResponse> SearchPaged([FromBody] LAQueryRequest request, [FromQuery] int page = 1, [FromQuery] int pageSize = 10, [FromQuery] string sortBy = "")
         {
             var query = request.Query.ToLower();
-            var response = _service.SearchPaged(query, page, pageSize);
+            var response = _service.SearchPaged(query, page, pageSize, sortBy);
             return Ok(response);
         }
     }
