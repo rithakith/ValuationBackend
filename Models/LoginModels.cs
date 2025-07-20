@@ -13,6 +13,8 @@ namespace ValuationBackend.Models
         public required string EmpId { get; set; }
         public required string Position { get; set; }
         public required string AssignedDivision { get; set; }
+
+        public byte[]? ProfilePicture { get; set; }
     }
 
     public class LoginRequest
