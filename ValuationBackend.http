@@ -2,35 +2,3 @@
 
 GET {{ValuationBackend_HostAddress}}/weatherforecast/
 Accept: application/json
-### Login to get JWT token
-POST {{ValuationBackend_HostAddress}}/api/Auth/login
-Content-Type: application/json
-
-{
-  "username": "your_username",
-  "password": "your_password"
-}
-### Get all condition reports (requires authentication)
-@token = your_jwt_token_here
-GET {{ValuationBackend_HostAddress}}/api/ConditionReport
-Accept: application/json
-Authorization: Bearer {{token}}
-### Get condition report by ID (requires authentication)
-@token = your_jwt_token_here
-GET {{ValuationBackend_HostAddress}}/api/ConditionReport/1
-Accept: application/json
-Authorization: Bearer {{token}}
-### Create new condition report (requires authentication)
-@token = your_jwt_token_here
-POST {{ValuationBackend_HostAddress}}/api/ConditionReport
-Content-Type: application/json
-Authorization: Bearer {{token}}
-
-{
-  "reportId": 1,
-  "condition": "Good",
-  "notes": "Sample condition report"
-}
-### Test without token (should return 401 Unauthorized)
-GET {{ValuationBackend_HostAddress}}/api/ConditionReport
-Accept: application/json
