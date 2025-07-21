@@ -68,6 +68,10 @@ builder.Services.Configure<JwtSettings>(options =>
     options.ExpiryMinutes = jwtSettings.ExpiryMinutes;
 });
 
+builder.Services.AddDbContext<ValuationContext>(options =>
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+
 // Add Authentication
 var key = Encoding.UTF8.GetBytes(jwtSettings.SecretKey);
 builder.Services.AddAuthentication(options =>

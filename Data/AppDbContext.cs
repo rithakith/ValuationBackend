@@ -10,7 +10,7 @@ namespace ValuationBackend.Data
             : base(options) { }
 
         public DbSet<RatingRequest> RatingRequests { get; set; }
-        
+
         public DbSet<LandMiscellaneousMasterFile> LandMiscellaneousMasterFiles { get; set; }
 
         public DbSet<Reconciliation> Reconciliations { get; set; }
@@ -62,6 +62,8 @@ namespace ValuationBackend.Data
 
         public DbSet<PropertyCategory> PropertyCategories { get; set; }
 
+
+        public DbSet<DecisionField> DecisionFields { get; set; }
         public DbSet<PasswordReset> PasswordResets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
