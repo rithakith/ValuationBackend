@@ -1,6 +1,5 @@
 using ValuationBackend.Repositories;
-using ValuationBackend.repositories;
-using ValuationBackend.repositories.iteration2;
+using ValuationBackend.Repositories.iteration2;
 
 namespace ValuationBackend.Extensions
 {

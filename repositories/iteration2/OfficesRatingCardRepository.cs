@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using ValuationBackend.Data;
 using ValuationBackend.Models.iteration2.RatingCards;
 
-namespace ValuationBackend.repositories.iteration2
+namespace ValuationBackend.Repositories.iteration2
 {
     public class OfficesRatingCardRepository : IOfficesRatingCardRepository
     {
@@ -24,14 +24,14 @@ namespace ValuationBackend.repositories.iteration2
                 .ToListAsync();
         }
 
-        public async Task<OfficesRatingCard> GetByIdAsync(int id)
+        public async Task<OfficesRatingCard?> GetByIdAsync(int id)
         {
             return await _context.OfficesRatingCards
                 .Include(o => o.Asset)
                 .FirstOrDefaultAsync(o => o.Id == id);
         }
 
-        public async Task<OfficesRatingCard> GetByAssetIdAsync(int assetId)
+        public async Task<OfficesRatingCard?> GetByAssetIdAsync(int assetId)
         {
             return await _context.OfficesRatingCards
                 .Include(o => o.Asset)
@@ -40,7 +40,21 @@ namespace ValuationBackend.repositories.iteration2
 
         public async Task<OfficesRatingCard> CreateAsync(OfficesRatingCard officesRatingCard)
         {
+            // Ensure all DateTime values are in UTC
             officesRatingCard.CreatedAt = DateTime.UtcNow;
+            
+            // Set UpdatedBy to same as CreatedBy if not already set
+            if (string.IsNullOrEmpty(officesRatingCard.UpdatedBy))
+            {
+                officesRatingCard.UpdatedBy = officesRatingCard.CreatedBy;
+            }
+            
+            // Convert Date to UTC if it has a value
+            if (officesRatingCard.Date.HasValue && officesRatingCard.Date.Value.Kind != DateTimeKind.Utc)
+            {
+                officesRatingCard.Date = DateTime.SpecifyKind(officesRatingCard.Date.Value, DateTimeKind.Utc);
+            }
+            
             _context.OfficesRatingCards.Add(officesRatingCard);
             await _context.SaveChangesAsync();
             return officesRatingCard;
