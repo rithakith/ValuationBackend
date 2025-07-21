@@ -7,6 +7,7 @@ using ValuationBackend.Data;
 using ValuationBackend.Extensions;
 using ValuationBackend.Models;
 using DotNetEnv;
+using ValuationBackend.Services;
 
 // Load environment variables from .env file
 Env.Load();
@@ -32,6 +33,8 @@ builder.Services.AddHttpContextAccessor();
 // Register repositories and services using extension methods
 builder.Services.AddRepositories();
 builder.Services.AddServices();
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<PasswordResetService>();
 
 
 // Configure PostgreSQL
