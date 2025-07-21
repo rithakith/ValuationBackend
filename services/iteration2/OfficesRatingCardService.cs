@@ -6,10 +6,10 @@ using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using ValuationBackend.Models.iteration2.DTOs;
 using ValuationBackend.Models.iteration2.RatingCards;
-using ValuationBackend.repositories;
-using ValuationBackend.repositories.iteration2;
+using ValuationBackend.Repositories;
+using ValuationBackend.Repositories.iteration2;
 
-namespace ValuationBackend.services.iteration2
+namespace ValuationBackend.Services.iteration2
 {
     public class OfficesRatingCardService : IOfficesRatingCardService
     {
@@ -63,7 +63,7 @@ namespace ValuationBackend.services.iteration2
             }
 
             // Get asset details for auto-generation
-            var asset = await _assetRepository.GetByIdAsync(dto.AssetId);
+            var asset = _assetRepository.GetById(dto.AssetId);
             if (asset == null)
             {
                 throw new KeyNotFoundException($"Asset with ID {dto.AssetId} not found.");
@@ -73,19 +73,30 @@ namespace ValuationBackend.services.iteration2
             
             // Auto-generate fields from asset if not provided
             if (string.IsNullOrWhiteSpace(entity.NewNumber))
-                entity.NewNumber = asset.NewNumber;
+                entity.NewNumber = asset.AssetNo;
             
             if (string.IsNullOrWhiteSpace(entity.Owner))
                 entity.Owner = asset.Owner;
             
             if (string.IsNullOrWhiteSpace(entity.Description))
-                entity.Description = asset.Description;
+                entity.Description = asset.Description.ToString();
+
+            // Convert Date to UTC if it's not null
+            if (entity.Date.HasValue && entity.Date.Value.Kind != DateTimeKind.Utc)
+            {
+                entity.Date = DateTime.SpecifyKind(entity.Date.Value, DateTimeKind.Utc);
+            }
 
             // Set audit fields
             entity.CreatedBy = GetCurrentUser();
             entity.CreatedAt = DateTime.UtcNow;
 
             var created = await _repository.CreateAsync(entity);
+            
+            // Update the asset's IsRatingCard flag to true
+            asset.IsRatingCard = true;
+            _assetRepository.Update(asset);
+            
             return _mapper.Map<OfficesRatingCardDto>(created);
         }
 
@@ -107,12 +118,31 @@ namespace ValuationBackend.services.iteration2
 
         public async Task<bool> DeleteAsync(int id)
         {
-            return await _repository.DeleteAsync(id);
+            // Get the rating card to find the associated asset
+            var ratingCard = await _repository.GetByIdAsync(id);
+            if (ratingCard == null)
+                return false;
+            
+            // Delete the rating card
+            var result = await _repository.DeleteAsync(id);
+            
+            if (result)
+            {
+                // Update the asset's IsRatingCard flag to false
+                var asset = _assetRepository.GetById(ratingCard.AssetId);
+                if (asset != null)
+                {
+                    asset.IsRatingCard = false;
+                    _assetRepository.Update(asset);
+                }
+            }
+            
+            return result;
         }
 
         public async Task<OfficesRatingCardAutofillDto> GetAutofillDataAsync(int assetId)
         {
-            var asset = await _assetRepository.GetByIdAsync(assetId);
+            var asset = _assetRepository.GetById(assetId);
             if (asset == null)
             {
                 throw new KeyNotFoundException($"Asset with ID {assetId} not found.");
@@ -120,9 +150,9 @@ namespace ValuationBackend.services.iteration2
 
             return new OfficesRatingCardAutofillDto
             {
-                NewNumber = asset.NewNumber,
+                NewNumber = asset.AssetNo,
                 Owner = asset.Owner,
-                Description = asset.Description
+                Description = asset.Description.ToString()
             };
         }
 

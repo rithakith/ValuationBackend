@@ -23,6 +23,12 @@ builder.Services.AddControllers()
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Register AutoMapper
+builder.Services.AddAutoMapper(typeof(Program).Assembly);
+
+// Register HttpContextAccessor
+builder.Services.AddHttpContextAccessor();
+
 // Register repositories and services using extension methods
 builder.Services.AddRepositories();
 builder.Services.AddServices();

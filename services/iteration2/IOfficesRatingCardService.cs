@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using ValuationBackend.Models.iteration2.DTOs;
 
-namespace ValuationBackend.services.iteration2
+namespace ValuationBackend.Services.iteration2
 {
     public interface IOfficesRatingCardService
     {

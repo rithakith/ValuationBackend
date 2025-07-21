@@ -108,6 +108,6 @@ namespace ValuationBackend.Models.iteration2.RatingCards
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
         public string CreatedBy { get; set; }
-        public string UpdatedBy { get; set; }
+        public string? UpdatedBy { get; set; }
     }
 }

@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250721111435_AddOfficesRatingCardTable")]
+    partial class AddOfficesRatingCardTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +32,6 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Lots")
-                        .HasColumnType("integer");
 
                     b.Property<int>("MasterFileNo")
                         .HasColumnType("integer");
@@ -1664,6 +1664,7 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("UpdatedBy")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<decimal?>("UsableFloorArea")

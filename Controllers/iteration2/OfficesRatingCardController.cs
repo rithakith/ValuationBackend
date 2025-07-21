@@ -4,7 +4,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using ValuationBackend.Models.iteration2.DTOs;
-using ValuationBackend.services.iteration2;
+using ValuationBackend.Services.iteration2;
 
 namespace ValuationBackend.Controllers.iteration2
 {
