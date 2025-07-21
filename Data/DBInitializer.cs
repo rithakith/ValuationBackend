@@ -1,5 +1,6 @@
 using System.Security.Cryptography;
 using System.Text;
+using Microsoft.EntityFrameworkCore;
 using ValuationBackend.Models;
 
 namespace ValuationBackend.Data
@@ -544,9 +545,12 @@ namespace ValuationBackend.Data
 
         private static void InitializeRequests(AppDbContext context)
         {
-            // If there's any data, stop
+            // Clear existing data to allow reseeding
             if (context.Requests.Any())
-                return;
+            {
+                context.Requests.RemoveRange(context.Requests);
+                context.SaveChanges();
+            }
 
             Console.WriteLine("Seeding requests...");
 
@@ -559,13 +563,53 @@ namespace ValuationBackend.Data
             }
 
             // Add sample requests
-            var requests = new Request[]
+            var requests = new List<Request>
             {
                 new Request
                 {
                     RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
                     RatingReferenceNo = "MR-2024-001",
                     LocalAuthority = "Colombo Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2025-001",
+                    LocalAuthority = "Kelaniya Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2024-010",
+                    LocalAuthority = "Colombo Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2023-002",
+                    LocalAuthority = "Kandy Municipal Council",
+                    YearOfRevision = 2024,
+                    Status = true, // success
+                    CreatedAt = DateTime.UtcNow.AddDays(-30),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-25),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2024-101",
+                    LocalAuthority = "Gampaha Municipal Council",
                     YearOfRevision = 2024,
                     Status = true, // success
                     CreatedAt = DateTime.UtcNow.AddDays(-30),
@@ -621,179 +665,174 @@ namespace ValuationBackend.Data
                     CreatedAt = DateTime.UtcNow.AddDays(-60),
                     UpdatedAt = DateTime.UtcNow.AddDays(-55),
                 },
+                // Additional dummy requests
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "rb").Id,
+                    RatingReferenceNo = "RB-2023-002",
+                    LocalAuthority = "Kurunegala Municipal Council",
+                    YearOfRevision = 2023,
+                    Status = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-40),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-35),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2022-003",
+                    LocalAuthority = "Jaffna Municipal Council",
+                    YearOfRevision = 2022,
+                    Status = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-80),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-75),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "ra").Id,
+                    RatingReferenceNo = "RA-2025-004",
+                    LocalAuthority = "Batticaloa Municipal Council",
+                    YearOfRevision = 2025,
+                    Status = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-5),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-2),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "ro").Id,
+                    RatingReferenceNo = "RO-2023-005",
+                    LocalAuthority = "Anuradhapura Municipal Council",
+                    YearOfRevision = 2023,
+                    Status = true,
+                    CreatedAt = DateTime.UtcNow.AddDays(-100),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-90),
+                },
+                new Request
+                {
+                    RequestTypeId = requestTypes.First(rt => rt.Code == "mr").Id,
+                    RatingReferenceNo = "MR-2025-006",
+                    LocalAuthority = "Badulla Municipal Council",
+                    YearOfRevision = 2025,
+                    Status = false,
+                    CreatedAt = DateTime.UtcNow.AddDays(-3),
+                    UpdatedAt = DateTime.UtcNow.AddDays(-1),
+                },
             };
             context.Requests.AddRange(requests);
+            context.SaveChanges();
+            Console.WriteLine("Requests seeded.");
             context.SaveChanges();
             Console.WriteLine("Requests seeded.");
         }
 
         private static void InitializeAssets(AppDbContext context)
         {
-            // If there's any data, stop
+            // Clear existing data to allow reseeding
             if (context.Assets.Any())
-                return;
+            {
+                context.Assets.RemoveRange(context.Assets);
+                context.SaveChanges();
+            }
 
             Console.WriteLine("Seeding assets...");
 
-            // Get requests for foreign key references
-            var requests = context.Requests.ToList();
-            if (!requests.Any())
+            // Get all requests
+            var allRequests = context.Requests.Include(r => r.RequestType).ToList();
+            if (!allRequests.Any())
             {
                 Console.WriteLine("No requests found. Assets seeding skipped.");
                 return;
             }
 
-            // Add sample assets
-            var assets = new Asset[]
+            // Get Mass Rating requests specifically
+            var massRatingRequests = allRequests.Where(r => r.RequestType.Code == "mr").OrderBy(r => r.Id).ToList();
+            var otherRequests = allRequests.Where(r => r.RequestType.Code != "mr").OrderBy(r => r.Id).ToList();
+
+            var assets = new List<Asset>();
+            var assetCounter = 1;
+
+            // Create assets for each Mass Rating request (3-5 assets per request)
+            foreach (var mrRequest in massRatingRequests)
             {
-                new Asset
+                // Determine number of assets for this request (randomly between 3-5)
+                var numAssets = 3 + (assetCounter % 3);
+                
+                for (int i = 0; i < numAssets; i++)
                 {
-                    RequestId = requests[0].Id,
-                    AssetNo = "AST-001-2024",
-                    Ward = "Ward 01",
-                    RdSt = "Galle Road",
+                    assets.Add(new Asset
+                    {
+                        RequestId = mrRequest.Id,
+                        AssetNo = $"AST-{assetCounter:D3}-{mrRequest.YearOfRevision}",
+                        Ward = $"Ward {(assetCounter % 10) + 1:D2}",
+                        RdSt = GetStreetName(assetCounter),
+                        Description = (PropertyType)(assetCounter % 2),
+                        Owner = GetOwnerName(assetCounter),
+                        IsRatingCard = assetCounter % 3 != 0,
+                        CreatedAt = mrRequest.CreatedAt.AddDays(2),
+                        UpdatedAt = mrRequest.UpdatedAt,
+                    });
+                    assetCounter++;
+                }
+            }
+
+            // Create a few assets for other request types
+            foreach (var otherRequest in otherRequests.Take(3))
+            {
+                assets.Add(new Asset
+                {
+                    RequestId = otherRequest.Id,
+                    AssetNo = $"AST-{assetCounter:D3}-{otherRequest.YearOfRevision}",
+                    Ward = $"Ward {(assetCounter % 10) + 1:D2}",
+                    RdSt = GetStreetName(assetCounter),
                     Description = PropertyType.CommercialProperty,
-                    Owner = "John Doe",
+                    Owner = GetOwnerName(assetCounter),
                     IsRatingCard = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-25),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-20),
-                },
-                new Asset
-                {
-                    RequestId = requests[0].Id,
-                    AssetNo = "AST-002-2024",
-                    Ward = "Ward 01",
-                    RdSt = "Main Street",
-                    Description = PropertyType.ResidentialProperty,
-                    Owner = "Jane Smith",
-                    IsRatingCard = false,
-                    CreatedAt = DateTime.UtcNow.AddDays(-25),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-20),
-                },
-                new Asset
-                {
-                    RequestId = requests[1].Id,
-                    AssetNo = "AST-003-2024",
-                    Ward = "Ward 02",
-                    RdSt = "Temple Road",
-                    Description = PropertyType.CommercialProperty,
-                    Owner = "ABC Company Ltd",
-                    IsRatingCard = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-15),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
-                },
-                new Asset
-                {
-                    RequestId = requests[1].Id,
-                    AssetNo = "AST-004-2024",
-                    Ward = "Ward 02",
-                    RdSt = "Park Avenue",
-                    Description = PropertyType.ResidentialProperty,
-                    Owner = "Michael Johnson",
-                    IsRatingCard = false,
-                    CreatedAt = DateTime.UtcNow.AddDays(-15),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-10),
-                },
-                new Asset
-                {
-                    RequestId = requests[2].Id,
-                    AssetNo = "AST-005-2024",
-                    Ward = "Ward 03",
-                    RdSt = "Hill Street",
-                    Description = PropertyType.CommercialProperty,
-                    Owner = "XYZ Holdings",
-                    IsRatingCard = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-10),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
-                },
-                new Asset
-                {
-                    RequestId = requests[2].Id,
-                    AssetNo = "AST-006-2024",
-                    Ward = "Ward 03",
-                    RdSt = "Lake Road",
-                    Description = PropertyType.ResidentialProperty,
-                    Owner = "Sarah Williams",
-                    IsRatingCard = false,
-                    CreatedAt = DateTime.UtcNow.AddDays(-10),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-5),
-                },
-                new Asset
-                {
-                    RequestId = requests[3].Id,
-                    AssetNo = "AST-007-2023",
-                    Ward = "Ward 04",
-                    RdSt = "Beach Road",
-                    Description = PropertyType.CommercialProperty,
-                    Owner = "Seaside Resort Ltd",
-                    IsRatingCard = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-45),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-40),
-                },
-                new Asset
-                {
-                    RequestId = requests[3].Id,
-                    AssetNo = "AST-008-2023",
-                    Ward = "Ward 04",
-                    RdSt = "Coconut Grove",
-                    Description = PropertyType.ResidentialProperty,
-                    Owner = "David Brown",
-                    IsRatingCard = false,
-                    CreatedAt = DateTime.UtcNow.AddDays(-45),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-40),
-                },
-                new Asset
-                {
-                    RequestId = requests[4].Id,
-                    AssetNo = "AST-009-2024",
-                    Ward = "Ward 05",
-                    RdSt = "Market Street",
-                    Description = PropertyType.CommercialProperty,
-                    Owner = "Central Market Corp",
-                    IsRatingCard = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-5),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-2),
-                },
-                new Asset
-                {
-                    RequestId = requests[4].Id,
-                    AssetNo = "AST-010-2024",
-                    Ward = "Ward 05",
-                    RdSt = "Garden Lane",
-                    Description = PropertyType.ResidentialProperty,
-                    Owner = "Lisa Anderson",
-                    IsRatingCard = false,
-                    CreatedAt = DateTime.UtcNow.AddDays(-5),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-2),
-                },
-                new Asset
-                {
-                    RequestId = requests[5].Id,
-                    AssetNo = "AST-011-2023",
-                    Ward = "Ward 06",
-                    RdSt = "School Road",
-                    Description = PropertyType.CommercialProperty,
-                    Owner = "Education Center Ltd",
-                    IsRatingCard = true,
-                    CreatedAt = DateTime.UtcNow.AddDays(-55),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-50),
-                },
-                new Asset
-                {
-                    RequestId = requests[5].Id,
-                    AssetNo = "AST-012-2023",
-                    Ward = "Ward 06",
-                    RdSt = "Flower Street",
-                    Description = PropertyType.ResidentialProperty,
-                    Owner = "Robert Wilson",
-                    IsRatingCard = false,
-                    CreatedAt = DateTime.UtcNow.AddDays(-55),
-                    UpdatedAt = DateTime.UtcNow.AddDays(-50),
-                },
-            };
+                    CreatedAt = otherRequest.CreatedAt.AddDays(2),
+                    UpdatedAt = otherRequest.UpdatedAt,
+                });
+                assetCounter++;
+            }
+
             context.Assets.AddRange(assets);
             context.SaveChanges();
-            Console.WriteLine("Assets seeded.");
+            Console.WriteLine($"Assets seeded. Total: {assets.Count} (Mass Rating: {massRatingRequests.Sum(r => assets.Count(a => a.RequestId == r.Id))})");
+        }
+
+        private static string GetStreetName(int index)
+        {
+            var streets = new[] {
+                "Galle Road", "Main Street", "Temple Road", "Park Avenue", 
+                "Hill Street", "Lake Road", "Beach Road", "Coconut Grove",
+                "Market Street", "Garden Lane", "School Road", "Flower Street",
+                "Station Road", "Church Street", "Hospital Road", "Bank Street",
+                "Queens Road", "Kings Avenue", "Princess Street", "Duke Lane"
+            };
+            return streets[index % streets.Length];
+        }
+
+        private static string GetOwnerName(int index)
+        {
+            var firstNames = new[] {
+                "John", "Jane", "Michael", "Sarah", "David", "Lisa", "Robert", "Mary",
+                "James", "Patricia", "William", "Jennifer", "Richard", "Linda", "Charles", "Elizabeth"
+            };
+            var lastNames = new[] {
+                "Doe", "Smith", "Johnson", "Williams", "Brown", "Anderson", "Wilson", "Taylor",
+                "Thomas", "Jackson", "White", "Harris", "Martin", "Thompson", "Garcia", "Martinez"
+            };
+            var companies = new[] {
+                "ABC Company Ltd", "XYZ Holdings", "Central Market Corp", "Education Center Ltd",
+                "Tech Solutions Inc", "Global Traders", "Prime Investments", "Urban Developers"
+            };
+            
+            // 60% individual owners, 40% companies
+            if (index % 5 < 3)
+            {
+                return $"{firstNames[index % firstNames.Length]} {lastNames[index % lastNames.Length]}";
+            }
+            else
+            {
+                return companies[index % companies.Length];
+            }
         }
 
         private static void InitializePropertyCategories(AppDbContext context)
@@ -832,7 +871,8 @@ namespace ValuationBackend.Data
                 {
                     AssetId = 1,
                     NewAssetNo = "ASSET-001-A",
-                    Area = 1500.50M,                    LandType = "Residential",
+                    Area = 1500.50M,
+                    LandType = "Residential",
                     Description = "North portion of original asset",
                     CreatedAt = DateTime.UtcNow.AddDays(-30),
                 },
@@ -840,7 +880,8 @@ namespace ValuationBackend.Data
                 {
                     AssetId = 1,
                     NewAssetNo = "ASSET-001-B",
-                    Area = 1200.75M,                    LandType = "Commercial",
+                    Area = 1200.75M,
+                    LandType = "Commercial",
                     Description = "South portion of original asset",
                     CreatedAt = DateTime.UtcNow.AddDays(-30),
                 },
@@ -848,7 +889,8 @@ namespace ValuationBackend.Data
                 {
                     AssetId = 2,
                     NewAssetNo = "ASSET-002-A",
-                    Area = 800.25M,                    LandType = "Agricultural",
+                    Area = 800.25M,
+                    LandType = "Agricultural",
                     Description = "Eastern division of farmland",
                     CreatedAt = DateTime.UtcNow.AddDays(-15),
                 },
@@ -857,17 +899,19 @@ namespace ValuationBackend.Data
                     AssetId = 2,
                     NewAssetNo = "ASSET-002-B",
                     Area = 750.00M,
-                    LandType = "Agricultural",                    Description = "Western division of farmland",
+                    LandType = "Agricultural",
+                    Description = "Western division of farmland",
                     CreatedAt = DateTime.UtcNow.AddDays(-15),
                 },
                 new AssetDivision
                 {
                     AssetId = 3,
                     NewAssetNo = "ASSET-003-A",
-                    Area = 2000.00M,                    LandType = "Industrial",
+                    Area = 2000.00M,
+                    LandType = "Industrial",
                     Description = "Factory zone partition",
                     CreatedAt = DateTime.UtcNow.AddDays(-7),
-                }
+                },
             };
 
             context.AssetDivisions.AddRange(assetDivisions);
@@ -888,38 +932,43 @@ namespace ValuationBackend.Data
                 new Reconciliation
                 {
                     AssetId = 1, // References AST-001-2024
-                    StreetName = "Galle Road",                    ObsoleteNo = "123/A",
+                    StreetName = "Galle Road",
+                    ObsoleteNo = "123/A",
                     NewNo = "456/B",
                     UpdatedAt = DateTime.UtcNow.AddDays(-20),
                 },
                 new Reconciliation
                 {
                     AssetId = 2, // References AST-002-2024
-                    StreetName = "Main Street",                    ObsoleteNo = "45",
+                    StreetName = "Main Street",
+                    ObsoleteNo = "45",
                     NewNo = "45/1",
                     UpdatedAt = DateTime.UtcNow.AddDays(-18),
                 },
                 new Reconciliation
                 {
                     AssetId = 3, // References AST-003-2024
-                    StreetName = "Temple Road",                    ObsoleteNo = "78/B",
+                    StreetName = "Temple Road",
+                    ObsoleteNo = "78/B",
                     NewNo = "78/B/1",
                     UpdatedAt = DateTime.UtcNow.AddDays(-15),
                 },
                 new Reconciliation
                 {
                     AssetId = 5, // References AST-005-2024
-                    StreetName = "Hill Street",                    ObsoleteNo = "25",
+                    StreetName = "Hill Street",
+                    ObsoleteNo = "25",
                     NewNo = "25A",
                     UpdatedAt = DateTime.UtcNow.AddDays(-10),
                 },
                 new Reconciliation
                 {
                     AssetId = 7, // References AST-007-2023
-                    StreetName = "Beach Road",                    ObsoleteNo = "100",
+                    StreetName = "Beach Road",
+                    ObsoleteNo = "100",
                     NewNo = "100/1-A",
                     UpdatedAt = DateTime.UtcNow.AddDays(-5),
-                }
+                },
             };
 
             context.Reconciliations.AddRange(reconciliations);
