@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250721174110_AddPasswordResetTable")]
+    partial class AddPasswordResetTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -29,9 +32,6 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("integer");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<int>("Lots")
-                        .HasColumnType("integer");
 
                     b.Property<int>("MasterFileNo")
                         .HasColumnType("integer");
@@ -203,14 +203,12 @@ namespace ValuationBackend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("AssessmentNumber")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("ConstructedBy")
                         .HasColumnType("text");
 
                     b.Property<string>("Cost")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<DateTime>("CreatedAt")
@@ -220,7 +218,6 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("FloorAreaSQFT")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("LocationLatitude")
@@ -234,11 +231,9 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("text");
 
                     b.Property<string>("Owner")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("RatePerSQFT")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Remarks")
@@ -251,7 +246,6 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("YearOfConstruction")
-                        .IsRequired()
                         .HasColumnType("text");
 
                     b.HasKey("Id");
