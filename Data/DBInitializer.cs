@@ -32,7 +32,7 @@ namespace ValuationBackend.Data
                 UpdateUserTaskUserIds(context);
 
                 // Remove UserTasks that are not LM (Land Miscellaneous)
-                RemoveNonLMUserTasks(context);
+                // RemoveNonLMUserTasks(context);
 
                 // Initialize Master Data
                 InitializeMasterData(context); // Initialize Land Aquisition Master Files
@@ -1048,7 +1048,7 @@ namespace ValuationBackend.Data
 
         private static void InitializeUsers(AppDbContext context)
         {
-            //if (context.Users.Any()) return;
+            if (context.Users.Any()) return;
 
             Console.WriteLine("Seeding users...");
 
