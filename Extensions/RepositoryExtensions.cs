@@ -1,4 +1,6 @@
 using ValuationBackend.Repositories;
+using ValuationBackend.repositories;
+using ValuationBackend.repositories.iteration2;
 
 namespace ValuationBackend.Extensions
 {
@@ -22,6 +24,7 @@ namespace ValuationBackend.Extensions
             services.AddScoped<IAssetDivisionRepository, AssetDivisionRepository>();
             services.AddScoped<IReconciliationRepository, ReconciliationRepository>();
             services.AddScoped<IDomesticRatingCardRepository, DomesticRatingCardRepository>();
+            services.AddScoped<IOfficesRatingCardRepository, OfficesRatingCardRepository>();
             services.AddScoped<ILAMasterfileRepository, LAMasterfileRepository>();
             services.AddScoped<IRequestTypeRepository, RequestTypeRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
