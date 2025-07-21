@@ -35,19 +35,19 @@ namespace ValuationBackend.Data
                 InitializeRequestTypes(context);
 
                 // Initialize Requests
-                InitializeRequests(context); 
-                  // Initialize Assets
+                InitializeRequests(context);
+                // Initialize Assets
                 InitializeAssets(context);
 
                 // Initialize Property Categories
                 InitializePropertyCategories(context);
-                
+
                 // Initialize Asset Divisions
                 InitializeAssetDivisions(context);
-                
+
                 // Initialize Reconciliations
                 InitializeReconciliations(context);
-                
+
                 // Initialize Domestic Rating Cards
                 DomesticRatingCardInitializer.InitializeDomesticRatingCards(context);
             }
@@ -816,7 +816,7 @@ namespace ValuationBackend.Data
             context.SaveChanges();
             Console.WriteLine("Property categories seeded.");
         }
-        
+
         private static void InitializeAssetDivisions(AppDbContext context)
         {
             // If there's any data, stop
@@ -926,5 +926,7 @@ namespace ValuationBackend.Data
             context.SaveChanges();
             Console.WriteLine("Reconciliations seeded.");
         }
+        
+        
     }
 }
