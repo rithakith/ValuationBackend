@@ -95,7 +95,7 @@ namespace ValuationBackend.Services.iteration2
             
             // Update the asset's IsRatingCard flag to true
             asset.IsRatingCard = true;
-            _assetRepository.Update(asset);
+            await _assetRepository.UpdateAsync(asset);
             
             return _mapper.Map<OfficesRatingCardDto>(created);
         }
@@ -133,7 +133,7 @@ namespace ValuationBackend.Services.iteration2
                 if (asset != null)
                 {
                     asset.IsRatingCard = false;
-                    _assetRepository.Update(asset);
+                    await _assetRepository.UpdateAsync(asset);
                 }
             }
             
