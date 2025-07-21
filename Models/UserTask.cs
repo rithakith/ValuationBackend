@@ -1,5 +1,8 @@
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace ValuationBackend.Models
 {
+    [Table("UserTasks")]
     public class UserTask
     {
         public int Id { get; set; }

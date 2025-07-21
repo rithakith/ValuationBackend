@@ -32,7 +32,7 @@ namespace ValuationBackend.Data
                 UpdateUserTaskUserIds(context);
 
                 // Remove UserTasks that are not LM (Land Miscellaneous)
-                RemoveNonLMUserTasks(context);
+                // RemoveNonLMUserTasks(context);
 
                 // Initialize Master Data
                 InitializeMasterData(context); // Initialize Land Aquisition Master Files
