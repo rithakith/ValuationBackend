@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ValuationBackend.Models;
+using ValuationBackend.Models.iteration2.RatingCards;
 
 namespace ValuationBackend.Data
 {
@@ -54,6 +55,8 @@ namespace ValuationBackend.Data
         public DbSet<Request> Requests { get; set; }
 
         public DbSet<DomesticRatingCard> DomesticRatingCards { get; set; }
+
+        public DbSet<OfficesRatingCard> OfficesRatingCards { get; set; }
 
         public DbSet<Asset> Assets { get; set; }
 
