@@ -13,18 +13,18 @@ namespace ValuationBackend.Services
             _repository = repository;
         }
 
-        public LAMasterfileResponse GetAll()
+        public LAMasterfileResponse GetAll(string sortBy = "", int? assignedToUserId = null)
         {
-            var data = _repository.GetAll();
+            var data = _repository.GetAll(sortBy, assignedToUserId);
             return new LAMasterfileResponse { MasterFiles = data };
         }
 
-        public LAMasterfileResponse GetPaged(int page, int pageSize)
+        public LAMasterfileResponse GetPaged(int page, int pageSize, string sortBy = "", int? assignedToUserId = null)
         {
             if (page < 1) page = 1;
             if (pageSize < 1) pageSize = 10;
 
-            var (items, totalCount) = _repository.GetPaged(page, pageSize);
+            var (items, totalCount) = _repository.GetPaged(page, pageSize, sortBy, assignedToUserId);
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             return new LAMasterfileResponse
@@ -33,22 +33,23 @@ namespace ValuationBackend.Services
                 TotalCount = totalCount,
                 CurrentPage = page,
                 PageSize = pageSize,
-                TotalPages = totalPages
+                TotalPages = totalPages,
+                SortBy = sortBy
             };
         }
 
-        public LAMasterfileResponse Search(string query)
+        public LAMasterfileResponse Search(string query, string sortBy = "", int? assignedToUserId = null)
         {
-            var data = _repository.Search(query);
+            var data = _repository.Search(query, sortBy, assignedToUserId);
             return new LAMasterfileResponse { MasterFiles = data };
         }
 
-        public LAMasterfileResponse SearchPaged(string query, int page, int pageSize)
+        public LAMasterfileResponse SearchPaged(string query, int page, int pageSize, string sortBy = "", int? assignedToUserId = null)
         {
             if (page < 1) page = 1;
             if (pageSize < 1) pageSize = 10;
 
-            var (items, totalCount) = _repository.SearchPaged(query, page, pageSize);
+            var (items, totalCount) = _repository.SearchPaged(query, page, pageSize, sortBy, assignedToUserId);
             var totalPages = (int)Math.Ceiling(totalCount / (double)pageSize);
 
             return new LAMasterfileResponse
@@ -57,7 +58,8 @@ namespace ValuationBackend.Services
                 TotalCount = totalCount,
                 CurrentPage = page,
                 PageSize = pageSize,
-                TotalPages = totalPages
+                TotalPages = totalPages,
+                SortBy = sortBy
             };
         }
     }
