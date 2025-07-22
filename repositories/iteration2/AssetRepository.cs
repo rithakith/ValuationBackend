@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using System.Threading.Tasks;
 using ValuationBackend.Data;
 using ValuationBackend.Models;
 
@@ -91,6 +92,14 @@ namespace ValuationBackend.Repositories
             asset.UpdatedAt = DateTime.UtcNow;
             _context.Assets.Update(asset);
             _context.SaveChanges();
+            return asset;
+        }
+
+        public async Task<Asset> UpdateAsync(Asset asset)
+        {
+            asset.UpdatedAt = DateTime.UtcNow;
+            _context.Assets.Update(asset);
+            await _context.SaveChangesAsync();
             return asset;
         }
 
