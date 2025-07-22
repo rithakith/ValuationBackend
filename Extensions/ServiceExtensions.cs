@@ -24,6 +24,7 @@ namespace ValuationBackend.Extensions
             services.AddScoped<IAssetDivisionService, AssetDivisionService>();
             services.AddScoped<IReconciliationService, ReconciliationService>();
             services.AddScoped<ILAMasterfileService, LAMasterfileService>();
+            services.AddScoped<ILALotService, LALotService>();
             services.AddScoped<IRequestTypeService, RequestTypeService>();
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IAssetService, AssetService>();
