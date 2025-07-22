@@ -9,7 +9,7 @@ namespace ValuationBackend.Data
             : base(options) { }
 
         public DbSet<RatingRequest> RatingRequests { get; set; }
-        
+
         public DbSet<LandMiscellaneousMasterFile> LandMiscellaneousMasterFiles { get; set; }
 
         public DbSet<Reconciliation> Reconciliations { get; set; }
@@ -70,6 +70,18 @@ namespace ValuationBackend.Data
     .HasOne(r => r.Asset)
     .WithMany()
     .HasForeignKey(r => r.AssetId);
+
+            // NEW: Configure LMRentalEvidence relationships
+            modelBuilder.Entity<LMRentalEvidence>()
+                .HasOne(lm => lm.LandMiscellaneousMasterFile)
+                .WithMany()
+                .HasForeignKey(lm => lm.LandMiscellaneousMasterFileId)
+                .OnDelete(DeleteBehavior.SetNull);
+
+            // NEW: Add index for performance
+            modelBuilder.Entity<LMRentalEvidence>()
+                .HasIndex(lm => lm.LandMiscellaneousMasterFileId)
+                .HasDatabaseName("IX_LMRentalEvidence_LandMiscellaneousMasterFileId");
         }
     }
 }
