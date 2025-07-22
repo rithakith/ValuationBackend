@@ -8,6 +8,8 @@ namespace ValuationBackend.Repositories
     {
         Task<IEnumerable<LMPastValuation>> GetAllAsync();
         Task<LMPastValuation> GetByIdAsync(int id);
+        Task<LMPastValuation> GetByIdWithMasterFileAsync(int id);
+        Task<IEnumerable<LMPastValuation>> GetByMasterFileIdAsync(int masterFileId);
         Task<LMPastValuation> GetByReportIdAsync(int reportId);
         Task<Report> CreateReportAsync(Report report);
         Task<LMPastValuation> CreateAsync(LMPastValuation lmPastValuation);

@@ -81,5 +81,13 @@ namespace ValuationBackend.Controllers
 
             return lmBuildingRate;
         }
+
+        // GET: api/LMBuildingRates/ByMasterFile/5
+        [HttpGet("ByMasterFile/{masterFileId}")]
+        public async Task<ActionResult<IEnumerable<LMBuildingRatesResponseDto>>> GetLMBuildingRatesByMasterFileId(int masterFileId)
+        {
+            var buildingRates = await _lmBuildingRatesService.GetByMasterFileIdAsync(masterFileId);
+            return Ok(buildingRates);
+        }
     }
 }

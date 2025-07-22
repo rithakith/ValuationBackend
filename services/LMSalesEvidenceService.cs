@@ -25,8 +25,14 @@ namespace ValuationBackend.Services
 
         public async Task<LMSalesEvidenceResponseDto> GetByIdAsync(int id)
         {
-            var lmSalesEvidence = await _repository.GetByIdAsync(id);
+            var lmSalesEvidence = await _repository.GetByIdWithMasterFileAsync(id);
             return lmSalesEvidence == null ? null : MapToResponseDto(lmSalesEvidence);
+        }
+
+        public async Task<IEnumerable<LMSalesEvidenceResponseDto>> GetByMasterFileIdAsync(int masterFileId)
+        {
+            var lmSalesEvidences = await _repository.GetByMasterFileIdAsync(masterFileId);
+            return lmSalesEvidences.Select(MapToResponseDto).ToList();
         }
 
         public async Task<LMSalesEvidenceResponseDto> GetByReportIdAsync(int reportId)
@@ -72,7 +78,8 @@ namespace ValuationBackend.Services
                 LocationLatitude = dto.LocationLatitude,
                 LandRegistryReferences = dto.LandRegistryReferences,
                 Situation = dto.Situation,
-                DescriptionOfProperty = dto.DescriptionOfProperty
+                DescriptionOfProperty = dto.DescriptionOfProperty,
+                LandMiscellaneousMasterFileId = dto.LandMiscellaneousMasterFileId
             };
 
             lmSalesEvidence = await _repository.CreateAsync(lmSalesEvidence);
@@ -111,6 +118,7 @@ namespace ValuationBackend.Services
             existingLMSalesEvidence.LandRegistryReferences = dto.LandRegistryReferences;
             existingLMSalesEvidence.Situation = dto.Situation;
             existingLMSalesEvidence.DescriptionOfProperty = dto.DescriptionOfProperty;
+            existingLMSalesEvidence.LandMiscellaneousMasterFileId = dto.LandMiscellaneousMasterFileId;
 
             return await _repository.UpdateAsync(existingLMSalesEvidence);
         }
@@ -146,7 +154,26 @@ namespace ValuationBackend.Services
                 LocationLatitude = lmSalesEvidence.LocationLatitude,
                 LandRegistryReferences = lmSalesEvidence.LandRegistryReferences,
                 Situation = lmSalesEvidence.Situation,
-                DescriptionOfProperty = lmSalesEvidence.DescriptionOfProperty
+                DescriptionOfProperty = lmSalesEvidence.DescriptionOfProperty,
+                LandMiscellaneousMasterFileId = lmSalesEvidence.LandMiscellaneousMasterFileId,
+                LandMiscellaneousMasterFile = lmSalesEvidence.LandMiscellaneousMasterFile != null
+                    ? MapMasterFileToDto(lmSalesEvidence.LandMiscellaneousMasterFile)
+                    : null
+            };
+        }
+
+        private LandMiscellaneousMasterFileDto MapMasterFileToDto(LandMiscellaneousMasterFile masterFile)
+        {
+            return new LandMiscellaneousMasterFileDto
+            {
+                Id = masterFile.Id,
+                MasterFileNo = masterFile.MasterFileNo,
+                MasterFileRefNo = masterFile.MasterFileRefNo,
+                PlanType = masterFile.PlanType,
+                PlanNo = masterFile.PlanNo,
+                RequestingAuthorityReferenceNo = masterFile.RequestingAuthorityReferenceNo,
+                Status = masterFile.Status,
+                Lots = masterFile.Lots
             };
         }
     }

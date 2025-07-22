@@ -14,6 +14,7 @@ namespace ValuationBackend.Extensions
             services.AddScoped<IInspectionReportService, InspectionReportService>();
             services.AddScoped<ILandMiscellaneousService, LandMiscellaneousService>();
             services.AddScoped<ILMBuildingRatesService, LMBuildingRatesService>();
+            services.AddScoped<ILMPastValuationService, LMPastValuationService>();
             services.AddScoped<IDomesticRatingCardService, DomesticRatingCardService>();
             services.AddScoped<ILMRentalEvidenceService, LMRentalEvidenceService>();
             services.AddScoped<ILMSalesEvidenceService, LMSalesEvidenceService>();

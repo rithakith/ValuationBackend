@@ -25,8 +25,14 @@ namespace ValuationBackend.Services
 
         public async Task<LMPastValuationResponseDto> GetByIdAsync(int id)
         {
-            var lmPastValuation = await _repository.GetByIdAsync(id);
+            var lmPastValuation = await _repository.GetByIdWithMasterFileAsync(id);
             return lmPastValuation == null ? null : MapToResponseDto(lmPastValuation);
+        }
+
+        public async Task<IEnumerable<LMPastValuationResponseDto>> GetByMasterFileIdAsync(int masterFileId)
+        {
+            var lmPastValuations = await _repository.GetByMasterFileIdAsync(masterFileId);
+            return lmPastValuations.Select(MapToResponseDto).ToList();
         }
 
         public async Task<LMPastValuationResponseDto> GetByReportIdAsync(int reportId)
@@ -63,7 +69,8 @@ namespace ValuationBackend.Services
                 RateType = dto.RateType,
                 Remarks = dto.Remarks,
                 LocationLongitude = dto.LocationLongitude,
-                LocationLatitude = dto.LocationLatitude
+                LocationLatitude = dto.LocationLatitude,
+                LandMiscellaneousMasterFileId = dto.LandMiscellaneousMasterFileId
             };
 
             lmPastValuation = await _repository.CreateAsync(lmPastValuation);
@@ -93,6 +100,7 @@ namespace ValuationBackend.Services
             existingLMPastValuation.Remarks = dto.Remarks;
             existingLMPastValuation.LocationLongitude = dto.LocationLongitude;
             existingLMPastValuation.LocationLatitude = dto.LocationLatitude;
+            existingLMPastValuation.LandMiscellaneousMasterFileId = dto.LandMiscellaneousMasterFileId;
 
             return await _repository.UpdateAsync(existingLMPastValuation);
         }
@@ -119,7 +127,26 @@ namespace ValuationBackend.Services
                 RateType = lmPastValuation.RateType,
                 Remarks = lmPastValuation.Remarks,
                 LocationLongitude = lmPastValuation.LocationLongitude,
-                LocationLatitude = lmPastValuation.LocationLatitude
+                LocationLatitude = lmPastValuation.LocationLatitude,
+                LandMiscellaneousMasterFileId = lmPastValuation.LandMiscellaneousMasterFileId,
+                LandMiscellaneousMasterFile = lmPastValuation.LandMiscellaneousMasterFile != null
+                    ? MapMasterFileToDto(lmPastValuation.LandMiscellaneousMasterFile)
+                    : null
+            };
+        }
+
+        private LandMiscellaneousMasterFileDto MapMasterFileToDto(LandMiscellaneousMasterFile masterFile)
+        {
+            return new LandMiscellaneousMasterFileDto
+            {
+                Id = masterFile.Id,
+                MasterFileNo = masterFile.MasterFileNo,
+                MasterFileRefNo = masterFile.MasterFileRefNo,
+                PlanType = masterFile.PlanType,
+                PlanNo = masterFile.PlanNo,
+                RequestingAuthorityReferenceNo = masterFile.RequestingAuthorityReferenceNo,
+                Status = masterFile.Status,
+                Lots = masterFile.Lots
             };
         }
     }

@@ -31,5 +31,11 @@ namespace ValuationBackend.Models
         public string? Remarks { get; set; }
         public string? LocationLatitude { get; set; }
         public string? LocationLongitude { get; set; }
+
+        // Foreign key to LandMiscellaneousMasterFile table
+        public int? LandMiscellaneousMasterFileId { get; set; }
+
+        [ForeignKey("LandMiscellaneousMasterFileId")]
+        public virtual LandMiscellaneousMasterFile? LandMiscellaneousMasterFile { get; set; }
     }
 }
