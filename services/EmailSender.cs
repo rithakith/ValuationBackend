@@ -25,7 +25,7 @@ namespace ValuationBackend.Services
                 From = new MailAddress(gmailAddress, "Valuation Department"),
                 Subject = subject,
                 Body = body,
-                IsBodyHtml = false,
+                IsBodyHtml = true, // Enable HTML
             };
             mailMessage.To.Add(to);
 
