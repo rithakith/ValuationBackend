@@ -9,12 +9,12 @@ namespace ValuationBackend.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } // Primary Key (auto increment)
 
-        // Foreign key to PastValuationsLA table via ReportId
+        // Foreign key to PastValuationsLA table
         [Required]
-        public int ReportId { get; set; }
+        public int PastValuationId { get; set; }
 
-        [ForeignKey("ReportId")]
-        public virtual Report Report { get; set; }
+        [ForeignKey("PastValuationId")]
+        public virtual PastValuationsLA? PastValuation { get; set; }
 
         // Map coordinates from frontend (stored as JSON string)
         [Required]
@@ -31,12 +31,12 @@ namespace ValuationBackend.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } // Primary Key (auto increment)
 
-        // Foreign key to BuildingRatesLA table via ReportId
+        // Foreign key to BuildingRatesLA table
         [Required]
-        public int ReportId { get; set; }
+        public int BuildingRateId { get; set; }
 
-        [ForeignKey("ReportId")]
-        public virtual Report Report { get; set; }
+        [ForeignKey("BuildingRateId")]
+        public virtual BuildingRatesLA? BuildingRate { get; set; }
 
         // Map coordinates from frontend (stored as JSON string)
         [Required]
@@ -53,12 +53,12 @@ namespace ValuationBackend.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } // Primary Key (auto increment)
 
-        // Foreign key to SalesEvidenceLA table via ReportId
+        // Foreign key to SalesEvidenceLA table
         [Required]
-        public int ReportId { get; set; }
+        public int SalesEvidenceId { get; set; }
 
-        [ForeignKey("ReportId")]
-        public virtual Report Report { get; set; }
+        [ForeignKey("SalesEvidenceId")]
+        public virtual SalesEvidenceLA? SalesEvidence { get; set; }
 
         // Map coordinates from frontend (stored as JSON string)
         [Required]
@@ -75,12 +75,12 @@ namespace ValuationBackend.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } // Primary Key (auto increment)
 
-        // Foreign key to RentalEvidenceLA table via ReportId
+        // Foreign key to RentalEvidenceLA table
         [Required]
-        public int ReportId { get; set; }
+        public int RentalEvidenceId { get; set; }
 
-        [ForeignKey("ReportId")]
-        public virtual Report Report { get; set; }
+        [ForeignKey("RentalEvidenceId")]
+        public virtual RentalEvidenceLA? RentalEvidence { get; set; }
 
         // Map coordinates from frontend (stored as JSON string)
         [Required]

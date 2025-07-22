@@ -9,7 +9,7 @@ namespace ValuationBackend.Services
     {
         Task<IEnumerable<PastValuationsLACoordinateResponseDto>> GetAllAsync();
         Task<PastValuationsLACoordinateResponseDto> GetByIdAsync(int id);
-        Task<IEnumerable<PastValuationsLACoordinateResponseDto>> GetByReportIdAsync(int reportId);
+        Task<IEnumerable<PastValuationsLACoordinateResponseDto>> GetByPastValuationIdAsync(int pastValuationId);
         Task<PastValuationsLACoordinateResponseDto> CreateAsync(PastValuationsLACoordinateCreateDto dto);
         Task<PastValuationsLACoordinateResponseDto> UpdateAsync(int id, PastValuationsLACoordinateUpdateDto dto);
         Task<bool> DeleteAsync(int id);
@@ -20,7 +20,7 @@ namespace ValuationBackend.Services
     {
         Task<IEnumerable<BuildingRatesLACoordinateResponseDto>> GetAllAsync();
         Task<BuildingRatesLACoordinateResponseDto> GetByIdAsync(int id);
-        Task<IEnumerable<BuildingRatesLACoordinateResponseDto>> GetByReportIdAsync(int reportId);
+        Task<IEnumerable<BuildingRatesLACoordinateResponseDto>> GetByBuildingRateIdAsync(int buildingRateId);
         Task<BuildingRatesLACoordinateResponseDto> CreateAsync(BuildingRatesLACoordinateCreateDto dto);
         Task<BuildingRatesLACoordinateResponseDto> UpdateAsync(int id, BuildingRatesLACoordinateUpdateDto dto);
         Task<bool> DeleteAsync(int id);
@@ -31,7 +31,7 @@ namespace ValuationBackend.Services
     {
         Task<IEnumerable<SalesEvidenceLACoordinateResponseDto>> GetAllAsync();
         Task<SalesEvidenceLACoordinateResponseDto> GetByIdAsync(int id);
-        Task<IEnumerable<SalesEvidenceLACoordinateResponseDto>> GetByReportIdAsync(int reportId);
+        Task<IEnumerable<SalesEvidenceLACoordinateResponseDto>> GetBySalesEvidenceIdAsync(int salesEvidenceId);
         Task<SalesEvidenceLACoordinateResponseDto> CreateAsync(SalesEvidenceLACoordinateCreateDto dto);
         Task<SalesEvidenceLACoordinateResponseDto> UpdateAsync(int id, SalesEvidenceLACoordinateUpdateDto dto);
         Task<bool> DeleteAsync(int id);
@@ -42,7 +42,7 @@ namespace ValuationBackend.Services
     {
         Task<IEnumerable<RentalEvidenceLACoordinateResponseDto>> GetAllAsync();
         Task<RentalEvidenceLACoordinateResponseDto> GetByIdAsync(int id);
-        Task<IEnumerable<RentalEvidenceLACoordinateResponseDto>> GetByReportIdAsync(int reportId);
+        Task<IEnumerable<RentalEvidenceLACoordinateResponseDto>> GetByRentalEvidenceIdAsync(int rentalEvidenceId);
         Task<RentalEvidenceLACoordinateResponseDto> CreateAsync(RentalEvidenceLACoordinateCreateDto dto);
         Task<RentalEvidenceLACoordinateResponseDto> UpdateAsync(int id, RentalEvidenceLACoordinateUpdateDto dto);
         Task<bool> DeleteAsync(int id);

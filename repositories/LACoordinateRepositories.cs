@@ -20,22 +20,22 @@ namespace ValuationBackend.Repositories
         public async Task<IEnumerable<PastValuationsLACoordinate>> GetAllAsync()
         {
             return await _context.PastValuationsLACoordinates
-                .Include(c => c.Report)
+                .Include(c => c.PastValuation)
                 .ToListAsync();
         }
 
         public async Task<PastValuationsLACoordinate> GetByIdAsync(int id)
         {
             return await _context.PastValuationsLACoordinates
-                .Include(c => c.Report)
+                .Include(c => c.PastValuation)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<IEnumerable<PastValuationsLACoordinate>> GetByReportIdAsync(int reportId)
+        public async Task<IEnumerable<PastValuationsLACoordinate>> GetByPastValuationIdAsync(int pastValuationId)
         {
             return await _context.PastValuationsLACoordinates
-                .Include(c => c.Report)
-                .Where(c => c.ReportId == reportId)
+                .Include(c => c.PastValuation)
+                .Where(c => c.PastValuationId == pastValuationId)
                 .ToListAsync();
         }
 
@@ -46,7 +46,7 @@ namespace ValuationBackend.Repositories
             await _context.SaveChangesAsync();
             
             await _context.Entry(coordinate)
-                .Reference(c => c.Report)
+                .Reference(c => c.PastValuation)
                 .LoadAsync();
                 
             return coordinate;
@@ -85,9 +85,9 @@ namespace ValuationBackend.Repositories
             return await _context.PastValuationsLACoordinates.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<bool> ReportExistsAsync(int reportId)
+        public async Task<bool> PastValuationExistsAsync(int pastValuationId)
         {
-            return await _context.Reports.AnyAsync(r => r.ReportId == reportId);
+            return await _context.PastValuationsLA.AnyAsync(p => p.Id == pastValuationId);
         }
     }
 
@@ -104,22 +104,22 @@ namespace ValuationBackend.Repositories
         public async Task<IEnumerable<BuildingRatesLACoordinate>> GetAllAsync()
         {
             return await _context.BuildingRatesLACoordinates
-                .Include(c => c.Report)
+                .Include(c => c.BuildingRate)
                 .ToListAsync();
         }
 
         public async Task<BuildingRatesLACoordinate> GetByIdAsync(int id)
         {
             return await _context.BuildingRatesLACoordinates
-                .Include(c => c.Report)
+                .Include(c => c.BuildingRate)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<IEnumerable<BuildingRatesLACoordinate>> GetByReportIdAsync(int reportId)
+        public async Task<IEnumerable<BuildingRatesLACoordinate>> GetByBuildingRateIdAsync(int buildingRateId)
         {
             return await _context.BuildingRatesLACoordinates
-                .Include(c => c.Report)
-                .Where(c => c.ReportId == reportId)
+                .Include(c => c.BuildingRate)
+                .Where(c => c.BuildingRateId == buildingRateId)
                 .ToListAsync();
         }
 
@@ -130,7 +130,7 @@ namespace ValuationBackend.Repositories
             await _context.SaveChangesAsync();
             
             await _context.Entry(coordinate)
-                .Reference(c => c.Report)
+                .Reference(c => c.BuildingRate)
                 .LoadAsync();
                 
             return coordinate;
@@ -169,9 +169,9 @@ namespace ValuationBackend.Repositories
             return await _context.BuildingRatesLACoordinates.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<bool> ReportExistsAsync(int reportId)
+        public async Task<bool> BuildingRateExistsAsync(int buildingRateId)
         {
-            return await _context.Reports.AnyAsync(r => r.ReportId == reportId);
+            return await _context.BuildingRatesLA.AnyAsync(b => b.Id == buildingRateId);
         }
     }
 
@@ -188,22 +188,22 @@ namespace ValuationBackend.Repositories
         public async Task<IEnumerable<SalesEvidenceLACoordinate>> GetAllAsync()
         {
             return await _context.SalesEvidenceLACoordinates
-                .Include(c => c.Report)
+                .Include(c => c.SalesEvidence)
                 .ToListAsync();
         }
 
         public async Task<SalesEvidenceLACoordinate> GetByIdAsync(int id)
         {
             return await _context.SalesEvidenceLACoordinates
-                .Include(c => c.Report)
+                .Include(c => c.SalesEvidence)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<IEnumerable<SalesEvidenceLACoordinate>> GetByReportIdAsync(int reportId)
+        public async Task<IEnumerable<SalesEvidenceLACoordinate>> GetBySalesEvidenceIdAsync(int salesEvidenceId)
         {
             return await _context.SalesEvidenceLACoordinates
-                .Include(c => c.Report)
-                .Where(c => c.ReportId == reportId)
+                .Include(c => c.SalesEvidence)
+                .Where(c => c.SalesEvidenceId == salesEvidenceId)
                 .ToListAsync();
         }
 
@@ -214,7 +214,7 @@ namespace ValuationBackend.Repositories
             await _context.SaveChangesAsync();
             
             await _context.Entry(coordinate)
-                .Reference(c => c.Report)
+                .Reference(c => c.SalesEvidence)
                 .LoadAsync();
                 
             return coordinate;
@@ -253,9 +253,9 @@ namespace ValuationBackend.Repositories
             return await _context.SalesEvidenceLACoordinates.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<bool> ReportExistsAsync(int reportId)
+        public async Task<bool> SalesEvidenceExistsAsync(int salesEvidenceId)
         {
-            return await _context.Reports.AnyAsync(r => r.ReportId == reportId);
+            return await _context.SalesEvidencesLA.AnyAsync(s => s.Id == salesEvidenceId);
         }
     }
 
@@ -272,22 +272,22 @@ namespace ValuationBackend.Repositories
         public async Task<IEnumerable<RentalEvidenceLACoordinate>> GetAllAsync()
         {
             return await _context.RentalEvidenceLACoordinates
-                .Include(c => c.Report)
+                .Include(c => c.RentalEvidence)
                 .ToListAsync();
         }
 
         public async Task<RentalEvidenceLACoordinate> GetByIdAsync(int id)
         {
             return await _context.RentalEvidenceLACoordinates
-                .Include(c => c.Report)
+                .Include(c => c.RentalEvidence)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
-        public async Task<IEnumerable<RentalEvidenceLACoordinate>> GetByReportIdAsync(int reportId)
+        public async Task<IEnumerable<RentalEvidenceLACoordinate>> GetByRentalEvidenceIdAsync(int rentalEvidenceId)
         {
             return await _context.RentalEvidenceLACoordinates
-                .Include(c => c.Report)
-                .Where(c => c.ReportId == reportId)
+                .Include(c => c.RentalEvidence)
+                .Where(c => c.RentalEvidenceId == rentalEvidenceId)
                 .ToListAsync();
         }
 
@@ -298,7 +298,7 @@ namespace ValuationBackend.Repositories
             await _context.SaveChangesAsync();
             
             await _context.Entry(coordinate)
-                .Reference(c => c.Report)
+                .Reference(c => c.RentalEvidence)
                 .LoadAsync();
                 
             return coordinate;
@@ -337,9 +337,9 @@ namespace ValuationBackend.Repositories
             return await _context.RentalEvidenceLACoordinates.AnyAsync(c => c.Id == id);
         }
 
-        public async Task<bool> ReportExistsAsync(int reportId)
+        public async Task<bool> RentalEvidenceExistsAsync(int rentalEvidenceId)
         {
-            return await _context.Reports.AnyAsync(r => r.ReportId == reportId);
+            return await _context.RentalEvidencesLA.AnyAsync(r => r.Id == rentalEvidenceId);
         }
     }
 }

@@ -36,18 +36,18 @@ namespace ValuationBackend.Services
             return _mapper.Map<PastValuationsLACoordinateResponseDto>(coordinate);
         }
 
-        public async Task<IEnumerable<PastValuationsLACoordinateResponseDto>> GetByReportIdAsync(int reportId)
+        public async Task<IEnumerable<PastValuationsLACoordinateResponseDto>> GetByPastValuationIdAsync(int pastValuationId)
         {
-            var coordinates = await _repository.GetByReportIdAsync(reportId);
+            var coordinates = await _repository.GetByPastValuationIdAsync(pastValuationId);
             return _mapper.Map<IEnumerable<PastValuationsLACoordinateResponseDto>>(coordinates);
         }
 
         public async Task<PastValuationsLACoordinateResponseDto> CreateAsync(PastValuationsLACoordinateCreateDto dto)
         {
-            var reportExists = await _repository.ReportExistsAsync(dto.ReportId);
-            if (!reportExists)
+            var pastValuationExists = await _repository.PastValuationExistsAsync(dto.PastValuationId);
+            if (!pastValuationExists)
             {
-                throw new ArgumentException($"Report with ID {dto.ReportId} does not exist.");
+                throw new ArgumentException($"PastValuation with ID {dto.PastValuationId} does not exist.");
             }
 
             var coordinate = _mapper.Map<PastValuationsLACoordinate>(dto);
@@ -63,10 +63,10 @@ namespace ValuationBackend.Services
                 return null;
             }
 
-            var reportExists = await _repository.ReportExistsAsync(dto.ReportId);
-            if (!reportExists)
+            var pastValuationExists = await _repository.PastValuationExistsAsync(dto.PastValuationId);
+            if (!pastValuationExists)
             {
-                throw new ArgumentException($"Report with ID {dto.ReportId} does not exist.");
+                throw new ArgumentException($"PastValuation with ID {dto.PastValuationId} does not exist.");
             }
 
             _mapper.Map(dto, existingCoordinate);
@@ -116,18 +116,18 @@ namespace ValuationBackend.Services
             return _mapper.Map<BuildingRatesLACoordinateResponseDto>(coordinate);
         }
 
-        public async Task<IEnumerable<BuildingRatesLACoordinateResponseDto>> GetByReportIdAsync(int reportId)
+        public async Task<IEnumerable<BuildingRatesLACoordinateResponseDto>> GetByBuildingRateIdAsync(int buildingRateId)
         {
-            var coordinates = await _repository.GetByReportIdAsync(reportId);
+            var coordinates = await _repository.GetByBuildingRateIdAsync(buildingRateId);
             return _mapper.Map<IEnumerable<BuildingRatesLACoordinateResponseDto>>(coordinates);
         }
 
         public async Task<BuildingRatesLACoordinateResponseDto> CreateAsync(BuildingRatesLACoordinateCreateDto dto)
         {
-            var reportExists = await _repository.ReportExistsAsync(dto.ReportId);
-            if (!reportExists)
+            var buildingRateExists = await _repository.BuildingRateExistsAsync(dto.BuildingRateId);
+            if (!buildingRateExists)
             {
-                throw new ArgumentException($"Report with ID {dto.ReportId} does not exist.");
+                throw new ArgumentException($"BuildingRate with ID {dto.BuildingRateId} does not exist.");
             }
 
             var coordinate = _mapper.Map<BuildingRatesLACoordinate>(dto);
@@ -143,10 +143,10 @@ namespace ValuationBackend.Services
                 return null;
             }
 
-            var reportExists = await _repository.ReportExistsAsync(dto.ReportId);
-            if (!reportExists)
+            var buildingRateExists = await _repository.BuildingRateExistsAsync(dto.BuildingRateId);
+            if (!buildingRateExists)
             {
-                throw new ArgumentException($"Report with ID {dto.ReportId} does not exist.");
+                throw new ArgumentException($"BuildingRate with ID {dto.BuildingRateId} does not exist.");
             }
 
             _mapper.Map(dto, existingCoordinate);
@@ -196,18 +196,18 @@ namespace ValuationBackend.Services
             return _mapper.Map<SalesEvidenceLACoordinateResponseDto>(coordinate);
         }
 
-        public async Task<IEnumerable<SalesEvidenceLACoordinateResponseDto>> GetByReportIdAsync(int reportId)
+        public async Task<IEnumerable<SalesEvidenceLACoordinateResponseDto>> GetBySalesEvidenceIdAsync(int salesEvidenceId)
         {
-            var coordinates = await _repository.GetByReportIdAsync(reportId);
+            var coordinates = await _repository.GetBySalesEvidenceIdAsync(salesEvidenceId);
             return _mapper.Map<IEnumerable<SalesEvidenceLACoordinateResponseDto>>(coordinates);
         }
 
         public async Task<SalesEvidenceLACoordinateResponseDto> CreateAsync(SalesEvidenceLACoordinateCreateDto dto)
         {
-            var reportExists = await _repository.ReportExistsAsync(dto.ReportId);
-            if (!reportExists)
+            var salesEvidenceExists = await _repository.SalesEvidenceExistsAsync(dto.SalesEvidenceId);
+            if (!salesEvidenceExists)
             {
-                throw new ArgumentException($"Report with ID {dto.ReportId} does not exist.");
+                throw new ArgumentException($"SalesEvidence with ID {dto.SalesEvidenceId} does not exist.");
             }
 
             var coordinate = _mapper.Map<SalesEvidenceLACoordinate>(dto);
@@ -223,10 +223,10 @@ namespace ValuationBackend.Services
                 return null;
             }
 
-            var reportExists = await _repository.ReportExistsAsync(dto.ReportId);
-            if (!reportExists)
+            var salesEvidenceExists = await _repository.SalesEvidenceExistsAsync(dto.SalesEvidenceId);
+            if (!salesEvidenceExists)
             {
-                throw new ArgumentException($"Report with ID {dto.ReportId} does not exist.");
+                throw new ArgumentException($"SalesEvidence with ID {dto.SalesEvidenceId} does not exist.");
             }
 
             _mapper.Map(dto, existingCoordinate);
@@ -276,18 +276,18 @@ namespace ValuationBackend.Services
             return _mapper.Map<RentalEvidenceLACoordinateResponseDto>(coordinate);
         }
 
-        public async Task<IEnumerable<RentalEvidenceLACoordinateResponseDto>> GetByReportIdAsync(int reportId)
+        public async Task<IEnumerable<RentalEvidenceLACoordinateResponseDto>> GetByRentalEvidenceIdAsync(int rentalEvidenceId)
         {
-            var coordinates = await _repository.GetByReportIdAsync(reportId);
+            var coordinates = await _repository.GetByRentalEvidenceIdAsync(rentalEvidenceId);
             return _mapper.Map<IEnumerable<RentalEvidenceLACoordinateResponseDto>>(coordinates);
         }
 
         public async Task<RentalEvidenceLACoordinateResponseDto> CreateAsync(RentalEvidenceLACoordinateCreateDto dto)
         {
-            var reportExists = await _repository.ReportExistsAsync(dto.ReportId);
-            if (!reportExists)
+            var rentalEvidenceExists = await _repository.RentalEvidenceExistsAsync(dto.RentalEvidenceId);
+            if (!rentalEvidenceExists)
             {
-                throw new ArgumentException($"Report with ID {dto.ReportId} does not exist.");
+                throw new ArgumentException($"RentalEvidence with ID {dto.RentalEvidenceId} does not exist.");
             }
 
             var coordinate = _mapper.Map<RentalEvidenceLACoordinate>(dto);
@@ -303,10 +303,10 @@ namespace ValuationBackend.Services
                 return null;
             }
 
-            var reportExists = await _repository.ReportExistsAsync(dto.ReportId);
-            if (!reportExists)
+            var rentalEvidenceExists = await _repository.RentalEvidenceExistsAsync(dto.RentalEvidenceId);
+            if (!rentalEvidenceExists)
             {
-                throw new ArgumentException($"Report with ID {dto.ReportId} does not exist.");
+                throw new ArgumentException($"RentalEvidence with ID {dto.RentalEvidenceId} does not exist.");
             }
 
             _mapper.Map(dto, existingCoordinate);

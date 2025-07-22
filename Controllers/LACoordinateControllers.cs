@@ -39,11 +39,11 @@ namespace ValuationBackend.Controllers
             return Ok(coordinate);
         }
 
-        // GET: api/PastValuationsLACoordinate/report/5
-        [HttpGet("report/{reportId}")]
-        public async Task<ActionResult<IEnumerable<PastValuationsLACoordinateResponseDto>>> GetCoordinatesByReportId(int reportId)
+        // GET: api/PastValuationsLACoordinate/pastvaluation/5
+        [HttpGet("pastvaluation/{pastValuationId}")]
+        public async Task<ActionResult<IEnumerable<PastValuationsLACoordinateResponseDto>>> GetCoordinatesByPastValuationId(int pastValuationId)
         {
-            var coordinates = await _coordinateService.GetByReportIdAsync(reportId);
+            var coordinates = await _coordinateService.GetByPastValuationIdAsync(pastValuationId);
             return Ok(coordinates);
         }
 
@@ -133,11 +133,11 @@ namespace ValuationBackend.Controllers
             return Ok(coordinate);
         }
 
-        // GET: api/BuildingRatesLACoordinate/report/5
-        [HttpGet("report/{reportId}")]
-        public async Task<ActionResult<IEnumerable<BuildingRatesLACoordinateResponseDto>>> GetCoordinatesByReportId(int reportId)
+        // GET: api/BuildingRatesLACoordinate/buildingrate/5
+        [HttpGet("buildingrate/{buildingRateId}")]
+        public async Task<ActionResult<IEnumerable<BuildingRatesLACoordinateResponseDto>>> GetCoordinatesByBuildingRateId(int buildingRateId)
         {
-            var coordinates = await _coordinateService.GetByReportIdAsync(reportId);
+            var coordinates = await _coordinateService.GetByBuildingRateIdAsync(buildingRateId);
             return Ok(coordinates);
         }
 
@@ -227,11 +227,11 @@ namespace ValuationBackend.Controllers
             return Ok(coordinate);
         }
 
-        // GET: api/SalesEvidenceLACoordinate/report/5
-        [HttpGet("report/{reportId}")]
-        public async Task<ActionResult<IEnumerable<SalesEvidenceLACoordinateResponseDto>>> GetCoordinatesByReportId(int reportId)
+        // GET: api/SalesEvidenceLACoordinate/salesevidence/5
+        [HttpGet("salesevidence/{salesEvidenceId}")]
+        public async Task<ActionResult<IEnumerable<SalesEvidenceLACoordinateResponseDto>>> GetCoordinatesBySalesEvidenceId(int salesEvidenceId)
         {
-            var coordinates = await _coordinateService.GetByReportIdAsync(reportId);
+            var coordinates = await _coordinateService.GetBySalesEvidenceIdAsync(salesEvidenceId);
             return Ok(coordinates);
         }
 
@@ -321,11 +321,11 @@ namespace ValuationBackend.Controllers
             return Ok(coordinate);
         }
 
-        // GET: api/RentalEvidenceLACoordinate/report/5
-        [HttpGet("report/{reportId}")]
-        public async Task<ActionResult<IEnumerable<RentalEvidenceLACoordinateResponseDto>>> GetCoordinatesByReportId(int reportId)
+        // GET: api/RentalEvidenceLACoordinate/rentalevidence/5
+        [HttpGet("rentalevidence/{rentalEvidenceId}")]
+        public async Task<ActionResult<IEnumerable<RentalEvidenceLACoordinateResponseDto>>> GetCoordinatesByRentalEvidenceId(int rentalEvidenceId)
         {
-            var coordinates = await _coordinateService.GetByReportIdAsync(reportId);
+            var coordinates = await _coordinateService.GetByRentalEvidenceIdAsync(rentalEvidenceId);
             return Ok(coordinates);
         }
 

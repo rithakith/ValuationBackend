@@ -14,12 +14,12 @@ namespace ValuationBackend.Profiles
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.Report, opt => opt.Ignore());
+                .ForMember(dest => dest.PastValuation, opt => opt.Ignore());
             CreateMap<PastValuationsLACoordinateUpdateDto, PastValuationsLACoordinate>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.Report, opt => opt.Ignore());
+                .ForMember(dest => dest.PastValuation, opt => opt.Ignore());
 
             // BuildingRatesLA Coordinate Mappings
             CreateMap<BuildingRatesLACoordinate, BuildingRatesLACoordinateResponseDto>();
@@ -27,12 +27,12 @@ namespace ValuationBackend.Profiles
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.Report, opt => opt.Ignore());
+                .ForMember(dest => dest.BuildingRate, opt => opt.Ignore());
             CreateMap<BuildingRatesLACoordinateUpdateDto, BuildingRatesLACoordinate>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.Report, opt => opt.Ignore());
+                .ForMember(dest => dest.BuildingRate, opt => opt.Ignore());
 
             // SalesEvidenceLA Coordinate Mappings
             CreateMap<SalesEvidenceLACoordinate, SalesEvidenceLACoordinateResponseDto>();
@@ -40,12 +40,12 @@ namespace ValuationBackend.Profiles
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.Report, opt => opt.Ignore());
+                .ForMember(dest => dest.SalesEvidence, opt => opt.Ignore());
             CreateMap<SalesEvidenceLACoordinateUpdateDto, SalesEvidenceLACoordinate>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.Report, opt => opt.Ignore());
+                .ForMember(dest => dest.SalesEvidence, opt => opt.Ignore());
 
             // RentalEvidenceLA Coordinate Mappings
             CreateMap<RentalEvidenceLACoordinate, RentalEvidenceLACoordinateResponseDto>();
@@ -53,12 +53,12 @@ namespace ValuationBackend.Profiles
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.Report, opt => opt.Ignore());
+                .ForMember(dest => dest.RentalEvidence, opt => opt.Ignore());
             CreateMap<RentalEvidenceLACoordinateUpdateDto, RentalEvidenceLACoordinate>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
                 .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.Report, opt => opt.Ignore());
+                .ForMember(dest => dest.RentalEvidence, opt => opt.Ignore());
         }
     }
 }

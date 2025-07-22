@@ -6,7 +6,7 @@ namespace ValuationBackend.Models.DTOs
     public class PastValuationsLACoordinateCreateDto
     {
         [Required]
-        public int ReportId { get; set; }
+        public int PastValuationId { get; set; }
 
         [Required]
         [MinLength(1, ErrorMessage = "Coordinates cannot be empty")]
@@ -16,7 +16,7 @@ namespace ValuationBackend.Models.DTOs
     public class PastValuationsLACoordinateUpdateDto
     {
         [Required]
-        public int ReportId { get; set; }
+        public int PastValuationId { get; set; }
 
         [Required]
         [MinLength(1, ErrorMessage = "Coordinates cannot be empty")]
@@ -26,7 +26,7 @@ namespace ValuationBackend.Models.DTOs
     public class PastValuationsLACoordinateResponseDto
     {
         public int Id { get; set; }
-        public int ReportId { get; set; }
+        public int PastValuationId { get; set; }
         public string Coordinates { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -36,7 +36,7 @@ namespace ValuationBackend.Models.DTOs
     public class BuildingRatesLACoordinateCreateDto
     {
         [Required]
-        public int ReportId { get; set; }
+        public int BuildingRateId { get; set; }
 
         [Required]
         [MinLength(1, ErrorMessage = "Coordinates cannot be empty")]
@@ -46,7 +46,7 @@ namespace ValuationBackend.Models.DTOs
     public class BuildingRatesLACoordinateUpdateDto
     {
         [Required]
-        public int ReportId { get; set; }
+        public int BuildingRateId { get; set; }
 
         [Required]
         [MinLength(1, ErrorMessage = "Coordinates cannot be empty")]
@@ -56,7 +56,7 @@ namespace ValuationBackend.Models.DTOs
     public class BuildingRatesLACoordinateResponseDto
     {
         public int Id { get; set; }
-        public int ReportId { get; set; }
+        public int BuildingRateId { get; set; }
         public string Coordinates { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -66,7 +66,7 @@ namespace ValuationBackend.Models.DTOs
     public class SalesEvidenceLACoordinateCreateDto
     {
         [Required]
-        public int ReportId { get; set; }
+        public int SalesEvidenceId { get; set; }
 
         [Required]
         [MinLength(1, ErrorMessage = "Coordinates cannot be empty")]
@@ -76,7 +76,7 @@ namespace ValuationBackend.Models.DTOs
     public class SalesEvidenceLACoordinateUpdateDto
     {
         [Required]
-        public int ReportId { get; set; }
+        public int SalesEvidenceId { get; set; }
 
         [Required]
         [MinLength(1, ErrorMessage = "Coordinates cannot be empty")]
@@ -86,7 +86,7 @@ namespace ValuationBackend.Models.DTOs
     public class SalesEvidenceLACoordinateResponseDto
     {
         public int Id { get; set; }
-        public int ReportId { get; set; }
+        public int SalesEvidenceId { get; set; }
         public string Coordinates { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
@@ -96,7 +96,7 @@ namespace ValuationBackend.Models.DTOs
     public class RentalEvidenceLACoordinateCreateDto
     {
         [Required]
-        public int ReportId { get; set; }
+        public int RentalEvidenceId { get; set; }
 
         [Required]
         [MinLength(1, ErrorMessage = "Coordinates cannot be empty")]
@@ -106,7 +106,7 @@ namespace ValuationBackend.Models.DTOs
     public class RentalEvidenceLACoordinateUpdateDto
     {
         [Required]
-        public int ReportId { get; set; }
+        public int RentalEvidenceId { get; set; }
 
         [Required]
         [MinLength(1, ErrorMessage = "Coordinates cannot be empty")]
@@ -116,7 +116,7 @@ namespace ValuationBackend.Models.DTOs
     public class RentalEvidenceLACoordinateResponseDto
     {
         public int Id { get; set; }
-        public int ReportId { get; set; }
+        public int RentalEvidenceId { get; set; }
         public string Coordinates { get; set; } = string.Empty;
         public DateTime CreatedAt { get; set; }
         public DateTime? UpdatedAt { get; set; }
