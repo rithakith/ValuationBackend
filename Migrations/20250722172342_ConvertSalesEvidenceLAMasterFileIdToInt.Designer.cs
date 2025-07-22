@@ -12,8 +12,8 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20250722170959_ConvertRentalEvidenceLAMasterFileIdToInt")]
-    partial class ConvertRentalEvidenceLAMasterFileIdToInt
+    [Migration("20250722172342_ConvertSalesEvidenceLAMasterFileIdToInt")]
+    partial class ConvertSalesEvidenceLAMasterFileIdToInt
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -1543,9 +1543,8 @@ namespace ValuationBackend.Migrations
                     b.Property<string>("LotNumber")
                         .HasColumnType("text");
 
-                    b.Property<string>("MasterFileId")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("MasterFileId")
+                        .HasColumnType("integer");
 
                     b.Property<string>("MasterFileRefNo")
                         .IsRequired()
@@ -1594,6 +1593,8 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("MasterFileId");
 
                     b.HasIndex("ReportId");
 
@@ -2126,11 +2127,19 @@ namespace ValuationBackend.Migrations
 
             modelBuilder.Entity("ValuationBackend.Models.SalesEvidenceLA", b =>
                 {
+                    b.HasOne("LandAquisitionMasterFile", "MasterFile")
+                        .WithMany()
+                        .HasForeignKey("MasterFileId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("MasterFile");
 
                     b.Navigation("Report");
                 });
