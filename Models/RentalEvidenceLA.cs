@@ -17,7 +17,10 @@ namespace ValuationBackend.Models
         public Report? Report { get; set; }
         
         [Required]
-        public string MasterFileId { get; set; } = string.Empty;
+        public int MasterFileId { get; set; }
+        
+        [ForeignKey("MasterFileId")]
+        public LandAquisitionMasterFile? MasterFile { get; set; }
         
         public string? AssessmentNo { get; set; }
         
