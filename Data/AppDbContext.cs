@@ -29,6 +29,13 @@ namespace ValuationBackend.Data
 
         public DbSet<LandAquisitionMasterFile> LandAquisitionMasterFiles { get; set; }
 
+        public DbSet<LALot> LALots { get; set; }
+
+        public DbSet<PastValuationsLACoordinate> PastValuationsLACoordinates { get; set; }
+        public DbSet<BuildingRatesLACoordinate> BuildingRatesLACoordinates { get; set; }
+        public DbSet<SalesEvidenceLACoordinate> SalesEvidenceLACoordinates { get; set; }
+        public DbSet<RentalEvidenceLACoordinate> RentalEvidenceLACoordinates { get; set; }
+
         public DbSet<Report> Reports { get; set; }
 
         public DbSet<InspectionReport> InspectionReports { get; set; }

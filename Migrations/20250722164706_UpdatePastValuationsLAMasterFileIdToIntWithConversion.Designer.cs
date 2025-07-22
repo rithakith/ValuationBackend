@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250722164706_UpdatePastValuationsLAMasterFileIdToIntWithConversion")]
+    partial class UpdatePastValuationsLAMasterFileIdToIntWithConversion
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -257,8 +260,9 @@ namespace ValuationBackend.Migrations
                     b.Property<string>("LocationLongitude")
                         .HasColumnType("text");
 
-                    b.Property<int>("MasterFileId")
-                        .HasColumnType("integer");
+                    b.Property<string>("MasterFileId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("Owner")
                         .IsRequired()
@@ -282,8 +286,6 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MasterFileId");
 
                     b.HasIndex("ReportId");
 
@@ -1337,8 +1339,9 @@ namespace ValuationBackend.Migrations
                     b.Property<string>("LocationLongitude")
                         .HasColumnType("text");
 
-                    b.Property<int>("MasterFileId")
-                        .HasColumnType("integer");
+                    b.Property<string>("MasterFileId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("MasterFileRefNo")
                         .IsRequired()
@@ -1369,8 +1372,6 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("timestamp with time zone");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MasterFileId");
 
                     b.HasIndex("ReportId");
 
@@ -1540,8 +1541,9 @@ namespace ValuationBackend.Migrations
                     b.Property<string>("LotNumber")
                         .HasColumnType("text");
 
-                    b.Property<int>("MasterFileId")
-                        .HasColumnType("integer");
+                    b.Property<string>("MasterFileId")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.Property<string>("MasterFileRefNo")
                         .IsRequired()
@@ -1590,8 +1592,6 @@ namespace ValuationBackend.Migrations
                         .HasColumnType("text");
 
                     b.HasKey("Id");
-
-                    b.HasIndex("MasterFileId");
 
                     b.HasIndex("ReportId");
 
@@ -1913,19 +1913,11 @@ namespace ValuationBackend.Migrations
 
             modelBuilder.Entity("ValuationBackend.Models.BuildingRatesLA", b =>
                 {
-                    b.HasOne("LandAquisitionMasterFile", "MasterFile")
-                        .WithMany()
-                        .HasForeignKey("MasterFileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("MasterFile");
 
                     b.Navigation("Report");
                 });
@@ -2083,19 +2075,11 @@ namespace ValuationBackend.Migrations
 
             modelBuilder.Entity("ValuationBackend.Models.RentalEvidenceLA", b =>
                 {
-                    b.HasOne("LandAquisitionMasterFile", "MasterFile")
-                        .WithMany()
-                        .HasForeignKey("MasterFileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("MasterFile");
 
                     b.Navigation("Report");
                 });
@@ -2124,19 +2108,11 @@ namespace ValuationBackend.Migrations
 
             modelBuilder.Entity("ValuationBackend.Models.SalesEvidenceLA", b =>
                 {
-                    b.HasOne("LandAquisitionMasterFile", "MasterFile")
-                        .WithMany()
-                        .HasForeignKey("MasterFileId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("MasterFile");
 
                     b.Navigation("Report");
                 });
