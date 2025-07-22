@@ -62,7 +62,9 @@ namespace ValuationBackend.Data
 
         public DbSet<PropertyCategory> PropertyCategories { get; set; }
 
+
         public DbSet<DecisionField> DecisionFields { get; set; }
+        public DbSet<PasswordReset> PasswordResets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
