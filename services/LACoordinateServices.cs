@@ -44,13 +44,15 @@ namespace ValuationBackend.Services
 
         public async Task<PastValuationsLACoordinateResponseDto> CreateAsync(PastValuationsLACoordinateCreateDto dto)
         {
-            var pastValuationExists = await _repository.PastValuationExistsAsync(dto.PastValuationId);
-            if (!pastValuationExists)
+            var masterFileExists = await _repository.MasterFileExistsAsync(dto.MasterfileId);
+            if (!masterFileExists)
             {
-                throw new ArgumentException($"PastValuation with ID {dto.PastValuationId} does not exist.");
+                throw new ArgumentException($"Masterfile with ID {dto.MasterfileId} does not exist.");
             }
 
             var coordinate = _mapper.Map<PastValuationsLACoordinate>(dto);
+            // Set PastValuationId to 0 since it will be assigned later
+            coordinate.PastValuationId = 0;
             var createdCoordinate = await _repository.CreateAsync(coordinate);
             return _mapper.Map<PastValuationsLACoordinateResponseDto>(createdCoordinate);
         }
@@ -67,6 +69,12 @@ namespace ValuationBackend.Services
             if (!pastValuationExists)
             {
                 throw new ArgumentException($"PastValuation with ID {dto.PastValuationId} does not exist.");
+            }
+
+            var masterFileExists = await _repository.MasterFileExistsAsync(dto.MasterfileId);
+            if (!masterFileExists)
+            {
+                throw new ArgumentException($"Masterfile with ID {dto.MasterfileId} does not exist.");
             }
 
             _mapper.Map(dto, existingCoordinate);
@@ -124,13 +132,15 @@ namespace ValuationBackend.Services
 
         public async Task<BuildingRatesLACoordinateResponseDto> CreateAsync(BuildingRatesLACoordinateCreateDto dto)
         {
-            var buildingRateExists = await _repository.BuildingRateExistsAsync(dto.BuildingRateId);
-            if (!buildingRateExists)
+            var masterFileExists = await _repository.MasterFileExistsAsync(dto.MasterfileId);
+            if (!masterFileExists)
             {
-                throw new ArgumentException($"BuildingRate with ID {dto.BuildingRateId} does not exist.");
+                throw new ArgumentException($"Masterfile with ID {dto.MasterfileId} does not exist.");
             }
 
             var coordinate = _mapper.Map<BuildingRatesLACoordinate>(dto);
+            // Set BuildingRateId to 0 since it will be assigned later
+            coordinate.BuildingRateId = 0;
             var createdCoordinate = await _repository.CreateAsync(coordinate);
             return _mapper.Map<BuildingRatesLACoordinateResponseDto>(createdCoordinate);
         }
@@ -147,6 +157,12 @@ namespace ValuationBackend.Services
             if (!buildingRateExists)
             {
                 throw new ArgumentException($"BuildingRate with ID {dto.BuildingRateId} does not exist.");
+            }
+
+            var masterFileExists = await _repository.MasterFileExistsAsync(dto.MasterfileId);
+            if (!masterFileExists)
+            {
+                throw new ArgumentException($"Masterfile with ID {dto.MasterfileId} does not exist.");
             }
 
             _mapper.Map(dto, existingCoordinate);
@@ -204,13 +220,15 @@ namespace ValuationBackend.Services
 
         public async Task<SalesEvidenceLACoordinateResponseDto> CreateAsync(SalesEvidenceLACoordinateCreateDto dto)
         {
-            var salesEvidenceExists = await _repository.SalesEvidenceExistsAsync(dto.SalesEvidenceId);
-            if (!salesEvidenceExists)
+            var masterFileExists = await _repository.MasterFileExistsAsync(dto.MasterfileId);
+            if (!masterFileExists)
             {
-                throw new ArgumentException($"SalesEvidence with ID {dto.SalesEvidenceId} does not exist.");
+                throw new ArgumentException($"Masterfile with ID {dto.MasterfileId} does not exist.");
             }
 
             var coordinate = _mapper.Map<SalesEvidenceLACoordinate>(dto);
+            // Set SalesEvidenceId to 0 since it will be assigned later
+            coordinate.SalesEvidenceId = 0;
             var createdCoordinate = await _repository.CreateAsync(coordinate);
             return _mapper.Map<SalesEvidenceLACoordinateResponseDto>(createdCoordinate);
         }
@@ -227,6 +245,12 @@ namespace ValuationBackend.Services
             if (!salesEvidenceExists)
             {
                 throw new ArgumentException($"SalesEvidence with ID {dto.SalesEvidenceId} does not exist.");
+            }
+
+            var masterFileExists = await _repository.MasterFileExistsAsync(dto.MasterfileId);
+            if (!masterFileExists)
+            {
+                throw new ArgumentException($"Masterfile with ID {dto.MasterfileId} does not exist.");
             }
 
             _mapper.Map(dto, existingCoordinate);
@@ -284,13 +308,15 @@ namespace ValuationBackend.Services
 
         public async Task<RentalEvidenceLACoordinateResponseDto> CreateAsync(RentalEvidenceLACoordinateCreateDto dto)
         {
-            var rentalEvidenceExists = await _repository.RentalEvidenceExistsAsync(dto.RentalEvidenceId);
-            if (!rentalEvidenceExists)
+            var masterFileExists = await _repository.MasterFileExistsAsync(dto.MasterfileId);
+            if (!masterFileExists)
             {
-                throw new ArgumentException($"RentalEvidence with ID {dto.RentalEvidenceId} does not exist.");
+                throw new ArgumentException($"Masterfile with ID {dto.MasterfileId} does not exist.");
             }
 
             var coordinate = _mapper.Map<RentalEvidenceLACoordinate>(dto);
+            // Set RentalEvidenceId to 0 since it will be assigned later
+            coordinate.RentalEvidenceId = 0;
             var createdCoordinate = await _repository.CreateAsync(coordinate);
             return _mapper.Map<RentalEvidenceLACoordinateResponseDto>(createdCoordinate);
         }
@@ -307,6 +333,12 @@ namespace ValuationBackend.Services
             if (!rentalEvidenceExists)
             {
                 throw new ArgumentException($"RentalEvidence with ID {dto.RentalEvidenceId} does not exist.");
+            }
+
+            var masterFileExists = await _repository.MasterFileExistsAsync(dto.MasterfileId);
+            if (!masterFileExists)
+            {
+                throw new ArgumentException($"Masterfile with ID {dto.MasterfileId} does not exist.");
             }
 
             _mapper.Map(dto, existingCoordinate);

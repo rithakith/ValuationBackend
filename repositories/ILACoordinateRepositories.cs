@@ -15,6 +15,7 @@ namespace ValuationBackend.Repositories
         Task<bool> DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
         Task<bool> PastValuationExistsAsync(int pastValuationId);
+        Task<bool> MasterFileExistsAsync(int masterFileId);
     }
 
     // BuildingRatesLA Coordinate Repository
@@ -28,6 +29,7 @@ namespace ValuationBackend.Repositories
         Task<bool> DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
         Task<bool> BuildingRateExistsAsync(int buildingRateId);
+        Task<bool> MasterFileExistsAsync(int masterFileId);
     }
 
     // SalesEvidenceLA Coordinate Repository
@@ -41,6 +43,7 @@ namespace ValuationBackend.Repositories
         Task<bool> DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
         Task<bool> SalesEvidenceExistsAsync(int salesEvidenceId);
+        Task<bool> MasterFileExistsAsync(int masterFileId);
     }
 
     // RentalEvidenceLA Coordinate Repository
@@ -54,5 +57,6 @@ namespace ValuationBackend.Repositories
         Task<bool> DeleteAsync(int id);
         Task<bool> ExistsAsync(int id);
         Task<bool> RentalEvidenceExistsAsync(int rentalEvidenceId);
+        Task<bool> MasterFileExistsAsync(int masterFileId);
     }
 }

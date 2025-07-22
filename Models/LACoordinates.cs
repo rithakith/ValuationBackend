@@ -16,6 +16,13 @@ namespace ValuationBackend.Models
         [ForeignKey("PastValuationId")]
         public virtual PastValuationsLA? PastValuation { get; set; }
 
+        // Foreign key to LandAquisitionMasterFile table
+        [Required]
+        public int MasterfileId { get; set; }
+
+        [ForeignKey("MasterfileId")]
+        public virtual LandAquisitionMasterFile? Masterfile { get; set; }
+
         // Map coordinates from frontend (stored as JSON string)
         [Required]
         public string Coordinates { get; set; } = string.Empty;
@@ -37,6 +44,13 @@ namespace ValuationBackend.Models
 
         [ForeignKey("BuildingRateId")]
         public virtual BuildingRatesLA? BuildingRate { get; set; }
+
+        // Foreign key to LandAquisitionMasterFile table
+        [Required]
+        public int MasterfileId { get; set; }
+
+        [ForeignKey("MasterfileId")]
+        public virtual LandAquisitionMasterFile? Masterfile { get; set; }
 
         // Map coordinates from frontend (stored as JSON string)
         [Required]
@@ -60,6 +74,13 @@ namespace ValuationBackend.Models
         [ForeignKey("SalesEvidenceId")]
         public virtual SalesEvidenceLA? SalesEvidence { get; set; }
 
+        // Foreign key to LandAquisitionMasterFile table
+        [Required]
+        public int MasterfileId { get; set; }
+
+        [ForeignKey("MasterfileId")]
+        public virtual LandAquisitionMasterFile? Masterfile { get; set; }
+
         // Map coordinates from frontend (stored as JSON string)
         [Required]
         public string Coordinates { get; set; } = string.Empty;
@@ -81,6 +102,13 @@ namespace ValuationBackend.Models
 
         [ForeignKey("RentalEvidenceId")]
         public virtual RentalEvidenceLA? RentalEvidence { get; set; }
+
+        // Foreign key to LandAquisitionMasterFile table
+        [Required]
+        public int MasterfileId { get; set; }
+
+        [ForeignKey("MasterfileId")]
+        public virtual LandAquisitionMasterFile? Masterfile { get; set; }
 
         // Map coordinates from frontend (stored as JSON string)
         [Required]
