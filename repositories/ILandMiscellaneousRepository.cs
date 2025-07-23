@@ -16,5 +16,6 @@ namespace ValuationBackend.Repositories
 
         // NEW: Method for foreign key support
         Task<LandMiscellaneousMasterFile?> GetByRefNoAsync(string refNo);
+        Task<LandMiscellaneousMasterFile?> GetByIdAsync(int id);
     }
 }

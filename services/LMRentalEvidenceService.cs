@@ -90,13 +90,30 @@ namespace ValuationBackend.Services
                 Remarks = dto.Remarks
             };
 
-            // Auto-populate foreign key if not provided but string reference exists
-            if (!entity.LandMiscellaneousMasterFileId.HasValue && !string.IsNullOrEmpty(entity.MasterFileRefNo))
+            // Auto-populate or validate foreign key based on master file reference
+            if (!string.IsNullOrEmpty(entity.MasterFileRefNo))
             {
                 var masterFile = await _masterFileRepository.GetByRefNoAsync(entity.MasterFileRefNo);
                 if (masterFile != null)
                 {
+                    // Always use the correct ID from the database, regardless of what was provided
                     entity.LandMiscellaneousMasterFileId = masterFile.Id;
+                }
+                else if (entity.LandMiscellaneousMasterFileId.HasValue)
+                {
+                    // If a foreign key was provided but no matching master file exists by reference,
+                    // verify the foreign key exists in the database
+                    var masterFileById = await _masterFileRepository.GetByIdAsync(entity.LandMiscellaneousMasterFileId.Value);
+                    if (masterFileById == null)
+                    {
+                        // Set to null if the provided ID doesn't exist - this makes the relationship optional
+                        entity.LandMiscellaneousMasterFileId = null;
+                    }
+                }
+                else
+                {
+                    // No master file found by reference and no foreign key provided - keep as null (optional relationship)
+                    entity.LandMiscellaneousMasterFileId = null;
                 }
             }
 

@@ -5,9 +5,10 @@ namespace ValuationBackend.Models.DTOs
     public class LMRentalEvidenceCreateDto
     {
         [Required]
-        public string MasterFileRefNo { get; set; }
+        public required string MasterFileRefNo { get; set; }
 
-        // NEW: Optional foreign key to LandMiscellaneousMasterFile
+        // NOTE: This field is optional - the service will auto-populate it based on MasterFileRefNo
+        // Only include this if you have a specific foreign key ID that exists in LandMiscellaneousMasterFiles
         public int? LandMiscellaneousMasterFileId { get; set; }
 
         public string? AssessmentNo { get; set; }
@@ -29,7 +30,7 @@ namespace ValuationBackend.Models.DTOs
         [Required]
         public int ReportId { get; set; }
         [Required]
-        public string MasterFileRefNo { get; set; }
+        public required string MasterFileRefNo { get; set; }
 
         // NEW: Optional foreign key to LandMiscellaneousMasterFile
         public int? LandMiscellaneousMasterFileId { get; set; }
@@ -52,7 +53,7 @@ namespace ValuationBackend.Models.DTOs
     {
         public int Id { get; set; }
         public int ReportId { get; set; }
-        public string MasterFileRefNo { get; set; }
+        public required string MasterFileRefNo { get; set; }
 
         // NEW: Foreign key to LandMiscellaneousMasterFile
         public int? LandMiscellaneousMasterFileId { get; set; }

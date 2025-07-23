@@ -157,5 +157,11 @@ namespace ValuationBackend.Repositories
             return await _context.LandMiscellaneousMasterFiles
                 .FirstOrDefaultAsync(m => m.MasterFileRefNo == refNo);
         }
+
+        public async Task<LandMiscellaneousMasterFile?> GetByIdAsync(int id)
+        {
+            return await _context.LandMiscellaneousMasterFiles
+                .FirstOrDefaultAsync(m => m.Id == id);
+        }
     }
 }
