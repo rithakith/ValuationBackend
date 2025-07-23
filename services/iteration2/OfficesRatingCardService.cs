@@ -1,164 +1,134 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
-using ValuationBackend.Models.iteration2.DTOs;
-using ValuationBackend.Models.iteration2.RatingCards;
+using ValuationBackend.Models;
 using ValuationBackend.Repositories;
-using ValuationBackend.Repositories.iteration2;
 
-namespace ValuationBackend.Services.iteration2
+namespace ValuationBackend.Services
 {
     public class OfficesRatingCardService : IOfficesRatingCardService
     {
         private readonly IOfficesRatingCardRepository _repository;
-        private readonly IAssetRepository _assetRepository;
-        private readonly IMapper _mapper;
-        private readonly IHttpContextAccessor _httpContextAccessor;
+        private readonly IAssetService _assetService;
 
-        public OfficesRatingCardService(
-            IOfficesRatingCardRepository repository,
-            IAssetRepository assetRepository,
-            IMapper mapper,
-            IHttpContextAccessor httpContextAccessor)
+        public OfficesRatingCardService(IOfficesRatingCardRepository repository, IAssetService assetService)
         {
             _repository = repository;
-            _assetRepository = assetRepository;
-            _mapper = mapper;
-            _httpContextAccessor = httpContextAccessor;
+            _assetService = assetService;
         }
 
-        public async Task<IEnumerable<OfficesRatingCardDto>> GetAllAsync()
+        public async Task<List<OfficesRatingCard>> GetAllAsync()
         {
-            var entities = await _repository.GetAllAsync();
-            return _mapper.Map<IEnumerable<OfficesRatingCardDto>>(entities);
+            return await _repository.GetAllAsync();
         }
 
-        public async Task<OfficesRatingCardDto> GetByIdAsync(int id)
+        public async Task<OfficesRatingCard> GetByIdAsync(int id)
         {
-            var entity = await _repository.GetByIdAsync(id);
-            if (entity == null)
-                throw new KeyNotFoundException($"OfficesRatingCard with ID {id} not found.");
+            var card = await _repository.GetByIdAsync(id);
             
-            return _mapper.Map<OfficesRatingCardDto>(entity);
-        }
-
-        public async Task<OfficesRatingCardDto> GetByAssetIdAsync(int assetId)
-        {
-            var entity = await _repository.GetByAssetIdAsync(assetId);
-            if (entity == null)
-                throw new KeyNotFoundException($"OfficesRatingCard for Asset ID {assetId} not found.");
-            
-            return _mapper.Map<OfficesRatingCardDto>(entity);
-        }
-
-        public async Task<OfficesRatingCardDto> CreateAsync(CreateOfficesRatingCardDto dto)
-        {
-            // Check if rating card already exists for this asset
-            if (await _repository.ExistsByAssetIdAsync(dto.AssetId))
+            if (card == null)
             {
-                throw new InvalidOperationException($"OfficesRatingCard already exists for Asset ID {dto.AssetId}.");
+                throw new Exception($"Offices Rating Card with ID {id} not found.");
             }
-
-            // Get asset details for auto-generation
-            var asset = _assetRepository.GetById(dto.AssetId);
-            if (asset == null)
-            {
-                throw new KeyNotFoundException($"Asset with ID {dto.AssetId} not found.");
-            }
-
-            var entity = _mapper.Map<OfficesRatingCard>(dto);
             
-            // Auto-generate fields from asset if not provided
-            if (string.IsNullOrWhiteSpace(entity.NewNumber))
-                entity.NewNumber = asset.AssetNo;
-            
-            if (string.IsNullOrWhiteSpace(entity.Owner))
-                entity.Owner = asset.Owner;
-            
-            if (string.IsNullOrWhiteSpace(entity.Description))
-                entity.Description = asset.Description.ToString();
-
-            // Convert Date to UTC if it's not null
-            if (entity.Date.HasValue && entity.Date.Value.Kind != DateTimeKind.Utc)
-            {
-                entity.Date = DateTime.SpecifyKind(entity.Date.Value, DateTimeKind.Utc);
-            }
-
-            // Set audit fields
-            entity.CreatedBy = GetCurrentUser();
-            entity.CreatedAt = DateTime.UtcNow;
-
-            var created = await _repository.CreateAsync(entity);
-            
-            // Update the asset's IsRatingCard flag to true
-            asset.IsRatingCard = true;
-            await _assetRepository.UpdateAsync(asset);
-            
-            return _mapper.Map<OfficesRatingCardDto>(created);
+            return card;
         }
 
-        public async Task<OfficesRatingCardDto> UpdateAsync(int id, UpdateOfficesRatingCardDto dto)
+        public async Task<List<OfficesRatingCard>> GetByAssetIdAsync(int assetId)
         {
-            var entity = await _repository.GetByIdAsync(id);
-            if (entity == null)
-                throw new KeyNotFoundException($"OfficesRatingCard with ID {id} not found.");
+            return await _repository.GetByAssetIdAsync(assetId);
+        }
 
-            _mapper.Map(dto, entity);
+        public async Task<OfficesRatingCard> CreateAsync(OfficesRatingCard officesRatingCard)
+        {
+            // Validate required fields
+            ValidateOfficesRatingCard(officesRatingCard);
             
-            // Set audit fields
-            entity.UpdatedBy = GetCurrentUser();
-            entity.UpdatedAt = DateTime.UtcNow;
+            // Create the rating card
+            var createdRatingCard = await _repository.CreateAsync(officesRatingCard);
+            
+            // Update the associated Asset's IsRatingCard property to true
+            var asset = _assetService.GetAssetById(officesRatingCard.AssetId);
+            if (asset != null && !asset.IsRatingCard)
+            {
+                asset.IsRatingCard = true;
+                _assetService.UpdateAsset(asset);
+            }
+            
+            return createdRatingCard;
+        }
 
-            var updated = await _repository.UpdateAsync(entity);
-            return _mapper.Map<OfficesRatingCardDto>(updated);
+        public async Task<OfficesRatingCard> UpdateAsync(OfficesRatingCard officesRatingCard)
+        {
+            // Validate required fields
+            ValidateOfficesRatingCard(officesRatingCard);
+            
+            return await _repository.UpdateAsync(officesRatingCard);
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            // Get the rating card to find the associated asset
-            var ratingCard = await _repository.GetByIdAsync(id);
-            if (ratingCard == null)
-                return false;
-            
-            // Delete the rating card
-            var result = await _repository.DeleteAsync(id);
-            
-            if (result)
-            {
-                // Update the asset's IsRatingCard flag to false
-                var asset = _assetRepository.GetById(ratingCard.AssetId);
-                if (asset != null)
-                {
-                    asset.IsRatingCard = false;
-                    await _assetRepository.UpdateAsync(asset);
-                }
-            }
-            
-            return result;
+            return await _repository.DeleteAsync(id);
         }
 
-        public async Task<OfficesRatingCardAutofillDto> GetAutofillDataAsync(int assetId)
+        public async Task<Asset?> GetAssetByIdAsync(int assetId)
         {
-            var asset = _assetRepository.GetById(assetId);
-            if (asset == null)
-            {
-                throw new KeyNotFoundException($"Asset with ID {assetId} not found.");
-            }
-
-            return new OfficesRatingCardAutofillDto
-            {
-                NewNumber = asset.AssetNo,
-                Owner = asset.Owner,
-                Description = asset.Description.ToString()
-            };
+            return await Task.FromResult(_assetService.GetAssetById(assetId));
         }
 
-        private string GetCurrentUser()
+        public async Task<string> GenerateNewNumberAsync(int assetId)
         {
-            return _httpContextAccessor.HttpContext?.User?.Identity?.Name ?? "System";
+            return await _repository.GenerateNewNumberAsync(assetId);
+        }
+
+        private void ValidateOfficesRatingCard(OfficesRatingCard officesRatingCard)
+        {
+            // Check if AssetId is valid
+            if (officesRatingCard.AssetId <= 0)
+            {
+                throw new ArgumentException("Asset ID must be greater than 0.");
+            }
+            
+            // Validate numeric fields if they have values
+            if (officesRatingCard.Age.HasValue && officesRatingCard.Age < 0)
+            {
+                throw new ArgumentException("Age cannot be negative.");
+            }
+            
+            if (officesRatingCard.WardNumber.HasValue && officesRatingCard.WardNumber < 0)
+            {
+                throw new ArgumentException("Ward number cannot be negative.");
+            }
+            
+            if (officesRatingCard.FloorNumber.HasValue && officesRatingCard.FloorNumber < -10)
+            {
+                throw new ArgumentException("Floor number cannot be less than -10.");
+            }
+            
+            if (officesRatingCard.CeilingHeight.HasValue && officesRatingCard.CeilingHeight <= 0)
+            {
+                throw new ArgumentException("Ceiling height must be greater than 0.");
+            }
+            
+            if (officesRatingCard.TotalArea.HasValue && officesRatingCard.TotalArea <= 0)
+            {
+                throw new ArgumentException("Total area must be greater than 0.");
+            }
+            
+            if (officesRatingCard.UsableFloorArea.HasValue && officesRatingCard.UsableFloorArea <= 0)
+            {
+                throw new ArgumentException("Usable floor area must be greater than 0.");
+            }
+            
+            if (officesRatingCard.RentPM.HasValue && officesRatingCard.RentPM < 0)
+            {
+                throw new ArgumentException("Rent per month cannot be negative.");
+            }
+            
+            if (officesRatingCard.SuggestedRate.HasValue && officesRatingCard.SuggestedRate < 0)
+            {
+                throw new ArgumentException("Suggested rate cannot be negative.");
+            }
         }
     }
 }

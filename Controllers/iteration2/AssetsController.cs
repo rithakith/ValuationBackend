@@ -60,6 +60,50 @@ namespace ValuationBackend.Controllers.iteration2
             }
         }
 
+        [HttpGet("by-request/{requestId}/search")]
+        public ActionResult<ApiResponse<List<Asset>>> SearchAssets(int requestId, [FromQuery] string requestType, [FromQuery] string query)
+        {
+            try
+            {
+                // Map string requestType to PropertyType enum
+                PropertyType propertyType;
+                switch (requestType?.ToUpper())
+                {
+                    case "MR":
+                    case "RESIDENTIALPROPERTY":
+                        propertyType = PropertyType.ResidentialProperty;
+                        break;
+                    case "MC":
+                    case "COMMERCIALPROPERTY":
+                        propertyType = PropertyType.CommercialProperty;
+                        break;
+                    default:
+                        return BadRequest(ApiResponse<List<Asset>>.Failure($"Invalid requestType: {requestType}. Valid values are: MR, MC, ResidentialProperty, CommercialProperty"));
+                }
+
+                var assets = _assetService.SearchAssets(requestId, propertyType, query);
+                return Ok(ApiResponse<List<Asset>>.Success(assets, "Assets retrieved successfully"));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<List<Asset>>.Failure($"Internal server error: {ex.Message}"));
+            }
+        }
+
+        [HttpGet("search")]
+        public ActionResult<ApiResponse<List<Asset>>> SearchAllAssets([FromQuery] string query)
+        {
+            try
+            {
+                var assets = _assetService.SearchAllAssets(query);
+                return Ok(ApiResponse<List<Asset>>.Success(assets, $"Found {assets.Count} assets matching '{query}'"));
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, ApiResponse<List<Asset>>.Failure($"Internal server error: {ex.Message}"));
+            }
+        }
+
         [HttpGet("by-asset-no/{assetNo}")]
         public ActionResult<List<Asset>> GetAssetsByAssetNo(string assetNo)
         {

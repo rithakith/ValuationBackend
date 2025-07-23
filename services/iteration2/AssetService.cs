@@ -118,5 +118,18 @@ namespace ValuationBackend.Services
         {
             return _assetRepository.Exists(id);
         }
+
+        public List<Asset> SearchAssets(int requestId, PropertyType requestType, string query)
+        {
+            if (requestId <= 0)
+                return new List<Asset>();
+
+            return _assetRepository.Search(requestId, requestType, query);
+        }
+
+        public List<Asset> SearchAllAssets(string query)
+        {
+            return _assetRepository.SearchAll(query);
+        }
     }
 }

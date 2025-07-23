@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ValuationBackend.Models
 {
-    public class OfficesRatingCard
+    public class AgricultureRatingCard
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -33,8 +33,6 @@ namespace ValuationBackend.Models
         [Required]
         public required string Description { get; set; }
 
-        public string? BuildingSelection { get; set; }
-
         public string? LocalAuthority { get; set; }
 
         public string? LocalAuthorityCode { get; set; }
@@ -43,21 +41,15 @@ namespace ValuationBackend.Models
 
         public string? ObsoleteNumber { get; set; }
 
-        public string? WallType { get; set; }
+        public string? CropType { get; set; }
 
-        public string? FloorType { get; set; }
+        public string? SoilType { get; set; }
 
-        public string? Conveniences { get; set; }
+        public string? IrrigationType { get; set; }
 
-        public string? Condition { get; set; }
-
-        public int? Age { get; set; }
+        public string? TopographyType { get; set; }
 
         public string? AccessType { get; set; }
-
-        public string? OfficeGrade { get; set; }
-
-        public string? ParkingSpace { get; set; }
 
         public string? PropertySubCategory { get; set; }
 
@@ -75,15 +67,13 @@ namespace ValuationBackend.Models
 
         public string? Terms { get; set; }
 
-        public int? FloorNumber { get; set; }
+        public decimal? TotalAcreage { get; set; }
 
-        public decimal? CeilingHeight { get; set; }
+        public decimal? CultivatedArea { get; set; }
 
-        public string? OfficeSuite { get; set; }
+        public decimal? YieldPerAcre { get; set; }
 
-        public decimal? TotalArea { get; set; }
-
-        public decimal? UsableFloorArea { get; set; }
+        public string? WaterSource { get; set; }
 
         public decimal? SuggestedRate { get; set; }
 

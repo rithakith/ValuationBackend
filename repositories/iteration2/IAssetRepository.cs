@@ -18,5 +18,7 @@ namespace ValuationBackend.Repositories
         Task<Asset> UpdateAsync(Asset asset);
         bool Delete(int id);
         bool Exists(int id);
+        List<Asset> Search(int requestId, PropertyType requestType, string query);
+        List<Asset> SearchAll(string query);
     }
 }

@@ -1,12 +1,12 @@
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using ValuationBackend.Data;
-using ValuationBackend.Models.iteration2.RatingCards;
+using ValuationBackend.Models;
 
-namespace ValuationBackend.Repositories.iteration2
+namespace ValuationBackend.Repositories
 {
     public class OfficesRatingCardRepository : IOfficesRatingCardRepository
     {
@@ -17,82 +17,109 @@ namespace ValuationBackend.Repositories.iteration2
             _context = context;
         }
 
-        public async Task<IEnumerable<OfficesRatingCard>> GetAllAsync()
+        public async Task<List<OfficesRatingCard>> GetAllAsync()
         {
             return await _context.OfficesRatingCards
                 .Include(o => o.Asset)
                 .ToListAsync();
         }
 
-        public async Task<OfficesRatingCard?> GetByIdAsync(int id)
+        public async Task<OfficesRatingCard> GetByIdAsync(int id)
         {
             return await _context.OfficesRatingCards
                 .Include(o => o.Asset)
                 .FirstOrDefaultAsync(o => o.Id == id);
         }
 
-        public async Task<OfficesRatingCard?> GetByAssetIdAsync(int assetId)
+        public async Task<List<OfficesRatingCard>> GetByAssetIdAsync(int assetId)
         {
             return await _context.OfficesRatingCards
                 .Include(o => o.Asset)
-                .FirstOrDefaultAsync(o => o.AssetId == assetId);
+                .Where(o => o.AssetId == assetId)
+                .ToListAsync();
         }
 
         public async Task<OfficesRatingCard> CreateAsync(OfficesRatingCard officesRatingCard)
         {
-            // Ensure all DateTime values are in UTC
-            officesRatingCard.CreatedAt = DateTime.UtcNow;
+            // Fetch the related asset to auto-fill owner and description
+            var asset = await _context.Assets.FindAsync(officesRatingCard.AssetId);
             
-            // Set UpdatedBy to same as CreatedBy if not already set
-            if (string.IsNullOrEmpty(officesRatingCard.UpdatedBy))
+            if (asset == null)
             {
-                officesRatingCard.UpdatedBy = officesRatingCard.CreatedBy;
+                throw new Exception($"Asset with ID {officesRatingCard.AssetId} not found.");
             }
+
+            // Auto-fill owner and description from the asset
+            officesRatingCard.Owner = asset.Owner;
+            officesRatingCard.Description = asset.Description.ToString();
             
-            // Convert Date to UTC if it has a value
-            if (officesRatingCard.Date.HasValue && officesRatingCard.Date.Value.Kind != DateTimeKind.Utc)
+            // Generate new number if not provided
+            if (string.IsNullOrEmpty(officesRatingCard.NewNumber))
             {
-                officesRatingCard.Date = DateTime.SpecifyKind(officesRatingCard.Date.Value, DateTimeKind.Utc);
+                officesRatingCard.NewNumber = await GenerateNewNumberAsync(officesRatingCard.AssetId);
             }
-            
+
+            // Set creation date
+            officesRatingCard.CreatedAt = DateTime.SpecifyKind(DateTime.UtcNow, DateTimeKind.Utc);
+
             _context.OfficesRatingCards.Add(officesRatingCard);
             await _context.SaveChangesAsync();
+
             return officesRatingCard;
         }
 
         public async Task<OfficesRatingCard> UpdateAsync(OfficesRatingCard officesRatingCard)
         {
-            officesRatingCard.UpdatedAt = DateTime.UtcNow;
-            _context.Entry(officesRatingCard).State = EntityState.Modified;
+            var existingCard = await GetByIdAsync(officesRatingCard.Id);
             
-            // Don't update these fields
-            _context.Entry(officesRatingCard).Property(x => x.CreatedAt).IsModified = false;
-            _context.Entry(officesRatingCard).Property(x => x.CreatedBy).IsModified = false;
-            _context.Entry(officesRatingCard).Property(x => x.AssetId).IsModified = false;
-            
+            if (existingCard == null)
+            {
+                throw new Exception($"Offices Rating Card with ID {officesRatingCard.Id} not found.");
+            }
+
+            // Keep the original NewNumber, Owner, and Description
+            officesRatingCard.NewNumber = existingCard.NewNumber;
+            officesRatingCard.Owner = existingCard.Owner;
+            officesRatingCard.Description = existingCard.Description;
+            officesRatingCard.CreatedAt = existingCard.CreatedAt;
+
+            _context.Entry(existingCard).CurrentValues.SetValues(officesRatingCard);
             await _context.SaveChangesAsync();
+
             return officesRatingCard;
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
             var officesRatingCard = await _context.OfficesRatingCards.FindAsync(id);
+            
             if (officesRatingCard == null)
+            {
                 return false;
+            }
 
             _context.OfficesRatingCards.Remove(officesRatingCard);
             await _context.SaveChangesAsync();
+            
             return true;
         }
 
-        public async Task<bool> ExistsAsync(int id)
+        public async Task<string> GenerateNewNumberAsync(int assetId)
         {
-            return await _context.OfficesRatingCards.AnyAsync(o => o.Id == id);
-        }
+            var asset = await _context.Assets.FindAsync(assetId);
+            
+            if (asset == null)
+            {
+                throw new Exception($"Asset with ID {assetId} not found.");
+            }
 
-        public async Task<bool> ExistsByAssetIdAsync(int assetId)
-        {
-            return await _context.OfficesRatingCards.AnyAsync(o => o.AssetId == assetId);
+            // Get the existing count of offices rating cards for this asset
+            var cardCount = await _context.OfficesRatingCards
+                .Where(o => o.AssetId == assetId)
+                .CountAsync();
+
+            // Format: ORC-{AssetNo}-{Count+1}
+            return $"ORC-{asset.AssetNo}-{cardCount + 1:D3}";
         }
     }
 }

@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ValuationBackend.Models
 {
-    public class OfficesRatingCard
+    public class ShopsRatingCard
     {
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -33,8 +33,6 @@ namespace ValuationBackend.Models
         [Required]
         public required string Description { get; set; }
 
-        public string? BuildingSelection { get; set; }
-
         public string? LocalAuthority { get; set; }
 
         public string? LocalAuthorityCode { get; set; }
@@ -55,7 +53,7 @@ namespace ValuationBackend.Models
 
         public string? AccessType { get; set; }
 
-        public string? OfficeGrade { get; set; }
+        public string? ShopGrade { get; set; }
 
         public string? ParkingSpace { get; set; }
 
@@ -75,15 +73,13 @@ namespace ValuationBackend.Models
 
         public string? Terms { get; set; }
 
-        public int? FloorNumber { get; set; }
+        public string? DisplayArea { get; set; }
 
-        public decimal? CeilingHeight { get; set; }
+        public decimal? FrontageWidth { get; set; }
 
-        public string? OfficeSuite { get; set; }
+        public decimal? ShopDepth { get; set; }
 
         public decimal? TotalArea { get; set; }
-
-        public decimal? UsableFloorArea { get; set; }
 
         public decimal? SuggestedRate { get; set; }
 
