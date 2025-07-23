@@ -51,8 +51,8 @@ namespace ValuationBackend.Services
             }
 
             var coordinate = _mapper.Map<PastValuationsLACoordinate>(dto);
-            // Set PastValuationId to 0 since it will be assigned later
-            coordinate.PastValuationId = 0;
+            // Set PastValuationId to null since it will be assigned later
+            coordinate.PastValuationId = null;
             var createdCoordinate = await _repository.CreateAsync(coordinate);
             return _mapper.Map<PastValuationsLACoordinateResponseDto>(createdCoordinate);
         }
@@ -139,8 +139,8 @@ namespace ValuationBackend.Services
             }
 
             var coordinate = _mapper.Map<BuildingRatesLACoordinate>(dto);
-            // Set BuildingRateId to 0 since it will be assigned later
-            coordinate.BuildingRateId = 0;
+            // Set BuildingRateId to null since it will be assigned later
+            coordinate.BuildingRateId = null;
             var createdCoordinate = await _repository.CreateAsync(coordinate);
             return _mapper.Map<BuildingRatesLACoordinateResponseDto>(createdCoordinate);
         }
@@ -227,8 +227,8 @@ namespace ValuationBackend.Services
             }
 
             var coordinate = _mapper.Map<SalesEvidenceLACoordinate>(dto);
-            // Set SalesEvidenceId to 0 since it will be assigned later
-            coordinate.SalesEvidenceId = 0;
+            // Set SalesEvidenceId to null since it will be assigned later
+            coordinate.SalesEvidenceId = null;
             var createdCoordinate = await _repository.CreateAsync(coordinate);
             return _mapper.Map<SalesEvidenceLACoordinateResponseDto>(createdCoordinate);
         }
@@ -315,8 +315,8 @@ namespace ValuationBackend.Services
             }
 
             var coordinate = _mapper.Map<RentalEvidenceLACoordinate>(dto);
-            // Set RentalEvidenceId to 0 since it will be assigned later
-            coordinate.RentalEvidenceId = 0;
+            // Set RentalEvidenceId to null since it will be assigned later
+            coordinate.RentalEvidenceId = null;
             var createdCoordinate = await _repository.CreateAsync(coordinate);
             return _mapper.Map<RentalEvidenceLACoordinateResponseDto>(createdCoordinate);
         }
