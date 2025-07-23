@@ -10,7 +10,7 @@ namespace ValuationBackend.Data
             : base(options) { }
 
         public DbSet<RatingRequest> RatingRequests { get; set; }
-        
+
         public DbSet<LandMiscellaneousMasterFile> LandMiscellaneousMasterFiles { get; set; }
 
         public DbSet<Reconciliation> Reconciliations { get; set; }
@@ -28,6 +28,13 @@ namespace ValuationBackend.Data
         public DbSet<ImageData> ImageData { get; set; }
 
         public DbSet<LandAquisitionMasterFile> LandAquisitionMasterFiles { get; set; }
+
+        public DbSet<LALot> LALots { get; set; }
+
+        public DbSet<PastValuationsLACoordinate> PastValuationsLACoordinates { get; set; }
+        public DbSet<BuildingRatesLACoordinate> BuildingRatesLACoordinates { get; set; }
+        public DbSet<SalesEvidenceLACoordinate> SalesEvidenceLACoordinates { get; set; }
+        public DbSet<RentalEvidenceLACoordinate> RentalEvidenceLACoordinates { get; set; }
 
         public DbSet<Report> Reports { get; set; }
 
@@ -62,6 +69,8 @@ namespace ValuationBackend.Data
 
         public DbSet<PropertyCategory> PropertyCategories { get; set; }
 
+
+        public DbSet<DecisionField> DecisionFields { get; set; }
         public DbSet<PasswordReset> PasswordResets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

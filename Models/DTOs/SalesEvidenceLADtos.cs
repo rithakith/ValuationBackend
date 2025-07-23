@@ -6,7 +6,7 @@ namespace ValuationBackend.Models.DTOs
     public class SalesEvidenceLACreateDto
     {
         // Master file information
-        public string MasterFileId { get; set; } = string.Empty;
+        public int MasterFileId { get; set; }
         public string MasterFileRefNo { get; set; } = string.Empty;
         
         public string? AssetNumber { get; set; }
@@ -38,7 +38,7 @@ namespace ValuationBackend.Models.DTOs
     // Input DTO for updating an existing sales evidence
     public class SalesEvidenceLAUpdateDto
     {
-        public string MasterFileId { get; set; } = string.Empty;
+        public int MasterFileId { get; set; }
         public string MasterFileRefNo { get; set; } = string.Empty;
         
         public string? AssetNumber { get; set; }
@@ -73,7 +73,7 @@ namespace ValuationBackend.Models.DTOs
         public int Id { get; set; }
         public int ReportId { get; set; }
         
-        public string MasterFileId { get; set; } = string.Empty;
+        public int MasterFileId { get; set; }
         public string MasterFileRefNo { get; set; } = string.Empty;
         
         public string? AssetNumber { get; set; }

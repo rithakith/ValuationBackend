@@ -25,6 +25,11 @@ namespace ValuationBackend.Extensions
             services.AddScoped<IDomesticRatingCardRepository, DomesticRatingCardRepository>();
             services.AddScoped<IOfficesRatingCardRepository, OfficesRatingCardRepository>();
             services.AddScoped<ILAMasterfileRepository, LAMasterfileRepository>();
+            services.AddScoped<ILALotRepository, LALotRepository>();
+            services.AddScoped<IPastValuationsLACoordinateRepository, PastValuationsLACoordinateRepository>();
+            services.AddScoped<IBuildingRatesLACoordinateRepository, BuildingRatesLACoordinateRepository>();
+            services.AddScoped<ISalesEvidenceLACoordinateRepository, SalesEvidenceLACoordinateRepository>();
+            services.AddScoped<IRentalEvidenceLACoordinateRepository, RentalEvidenceLACoordinateRepository>();
             services.AddScoped<IRequestTypeRepository, RequestTypeRepository>();
             services.AddScoped<IRequestRepository, RequestRepository>();
             services.AddScoped<IAssetRepository, AssetRepository>();

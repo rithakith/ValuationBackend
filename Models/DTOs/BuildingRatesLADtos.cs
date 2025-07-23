@@ -6,7 +6,7 @@ namespace ValuationBackend.Models.DTOs
     public class BuildingRatesLACreateDto
     {
         // Master file information
-        public string MasterFileId { get; set; } = string.Empty;
+        public int MasterFileId { get; set; }
         
         public string? AssessmentNumber { get; set; }
         public string? Owner { get; set; }
@@ -24,7 +24,7 @@ namespace ValuationBackend.Models.DTOs
     // Input DTO for updating an existing building rate
     public class BuildingRatesLAUpdateDto
     {
-        public string MasterFileId { get; set; } = string.Empty;
+        public int MasterFileId { get; set; }
         
         public string? AssessmentNumber { get; set; }
         public string? Owner { get; set; }
@@ -45,7 +45,7 @@ namespace ValuationBackend.Models.DTOs
         public int Id { get; set; }
         public int ReportId { get; set; }
         
-        public string MasterFileId { get; set; } = string.Empty;
+        public int MasterFileId { get; set; }
         
         public string? AssessmentNumber { get; set; }
         public string? Owner { get; set; }
