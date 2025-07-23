@@ -42,6 +42,15 @@ namespace ValuationBackend.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<PastValuationsLACoordinate>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            return await _context.PastValuationsLACoordinates
+                .Include(c => c.PastValuation)
+                .Include(c => c.Masterfile)
+                .Where(c => c.MasterfileId == masterfileId)
+                .ToListAsync();
+        }
+
         public async Task<PastValuationsLACoordinate> CreateAsync(PastValuationsLACoordinate coordinate)
         {
             coordinate.CreatedAt = DateTime.UtcNow;
@@ -131,6 +140,15 @@ namespace ValuationBackend.Repositories
                 .Include(c => c.BuildingRate)
                 .Include(c => c.Masterfile)
                 .Where(c => c.BuildingRateId == buildingRateId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<BuildingRatesLACoordinate>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            return await _context.BuildingRatesLACoordinates
+                .Include(c => c.BuildingRate)
+                .Include(c => c.Masterfile)
+                .Where(c => c.MasterfileId == masterfileId)
                 .ToListAsync();
         }
 
@@ -226,6 +244,15 @@ namespace ValuationBackend.Repositories
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<SalesEvidenceLACoordinate>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            return await _context.SalesEvidenceLACoordinates
+                .Include(c => c.SalesEvidence)
+                .Include(c => c.Masterfile)
+                .Where(c => c.MasterfileId == masterfileId)
+                .ToListAsync();
+        }
+
         public async Task<SalesEvidenceLACoordinate> CreateAsync(SalesEvidenceLACoordinate coordinate)
         {
             coordinate.CreatedAt = DateTime.UtcNow;
@@ -315,6 +342,15 @@ namespace ValuationBackend.Repositories
                 .Include(c => c.RentalEvidence)
                 .Include(c => c.Masterfile)
                 .Where(c => c.RentalEvidenceId == rentalEvidenceId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<RentalEvidenceLACoordinate>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            return await _context.RentalEvidenceLACoordinates
+                .Include(c => c.RentalEvidence)
+                .Include(c => c.Masterfile)
+                .Where(c => c.MasterfileId == masterfileId)
                 .ToListAsync();
         }
 

@@ -47,6 +47,14 @@ namespace ValuationBackend.Controllers
             return Ok(coordinates);
         }
 
+        // GET: api/PastValuationsLACoordinate/masterfile/5
+        [HttpGet("masterfile/{masterfileId}")]
+        public async Task<ActionResult<IEnumerable<PastValuationsLACoordinateResponseDto>>> GetCoordinatesByMasterfileId(int masterfileId)
+        {
+            var coordinates = await _coordinateService.GetByMasterfileIdAsync(masterfileId);
+            return Ok(coordinates);
+        }
+
         // POST: api/PastValuationsLACoordinate
         [HttpPost]
         public async Task<ActionResult<PastValuationsLACoordinateResponseDto>> CreateCoordinate(PastValuationsLACoordinateCreateDto dto)
@@ -138,6 +146,14 @@ namespace ValuationBackend.Controllers
         public async Task<ActionResult<IEnumerable<BuildingRatesLACoordinateResponseDto>>> GetCoordinatesByBuildingRateId(int buildingRateId)
         {
             var coordinates = await _coordinateService.GetByBuildingRateIdAsync(buildingRateId);
+            return Ok(coordinates);
+        }
+
+        // GET: api/BuildingRatesLACoordinate/masterfile/5
+        [HttpGet("masterfile/{masterfileId}")]
+        public async Task<ActionResult<IEnumerable<BuildingRatesLACoordinateResponseDto>>> GetCoordinatesByMasterfileId(int masterfileId)
+        {
+            var coordinates = await _coordinateService.GetByMasterfileIdAsync(masterfileId);
             return Ok(coordinates);
         }
 
@@ -235,6 +251,14 @@ namespace ValuationBackend.Controllers
             return Ok(coordinates);
         }
 
+        // GET: api/SalesEvidenceLACoordinate/masterfile/5
+        [HttpGet("masterfile/{masterfileId}")]
+        public async Task<ActionResult<IEnumerable<SalesEvidenceLACoordinateResponseDto>>> GetCoordinatesByMasterfileId(int masterfileId)
+        {
+            var coordinates = await _coordinateService.GetByMasterfileIdAsync(masterfileId);
+            return Ok(coordinates);
+        }
+
         // POST: api/SalesEvidenceLACoordinate
         [HttpPost]
         public async Task<ActionResult<SalesEvidenceLACoordinateResponseDto>> CreateCoordinate(SalesEvidenceLACoordinateCreateDto dto)
@@ -326,6 +350,14 @@ namespace ValuationBackend.Controllers
         public async Task<ActionResult<IEnumerable<RentalEvidenceLACoordinateResponseDto>>> GetCoordinatesByRentalEvidenceId(int rentalEvidenceId)
         {
             var coordinates = await _coordinateService.GetByRentalEvidenceIdAsync(rentalEvidenceId);
+            return Ok(coordinates);
+        }
+
+        // GET: api/RentalEvidenceLACoordinate/masterfile/5
+        [HttpGet("masterfile/{masterfileId}")]
+        public async Task<ActionResult<IEnumerable<RentalEvidenceLACoordinateResponseDto>>> GetCoordinatesByMasterfileId(int masterfileId)
+        {
+            var coordinates = await _coordinateService.GetByMasterfileIdAsync(masterfileId);
             return Ok(coordinates);
         }
 

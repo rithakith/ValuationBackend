@@ -42,6 +42,12 @@ namespace ValuationBackend.Services
             return _mapper.Map<IEnumerable<PastValuationsLACoordinateResponseDto>>(coordinates);
         }
 
+        public async Task<IEnumerable<PastValuationsLACoordinateResponseDto>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            var coordinates = await _repository.GetByMasterfileIdAsync(masterfileId);
+            return _mapper.Map<IEnumerable<PastValuationsLACoordinateResponseDto>>(coordinates);
+        }
+
         public async Task<PastValuationsLACoordinateResponseDto> CreateAsync(PastValuationsLACoordinateCreateDto dto)
         {
             var masterFileExists = await _repository.MasterFileExistsAsync(dto.MasterfileId);
@@ -127,6 +133,12 @@ namespace ValuationBackend.Services
         public async Task<IEnumerable<BuildingRatesLACoordinateResponseDto>> GetByBuildingRateIdAsync(int buildingRateId)
         {
             var coordinates = await _repository.GetByBuildingRateIdAsync(buildingRateId);
+            return _mapper.Map<IEnumerable<BuildingRatesLACoordinateResponseDto>>(coordinates);
+        }
+
+        public async Task<IEnumerable<BuildingRatesLACoordinateResponseDto>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            var coordinates = await _repository.GetByMasterfileIdAsync(masterfileId);
             return _mapper.Map<IEnumerable<BuildingRatesLACoordinateResponseDto>>(coordinates);
         }
 
@@ -218,6 +230,12 @@ namespace ValuationBackend.Services
             return _mapper.Map<IEnumerable<SalesEvidenceLACoordinateResponseDto>>(coordinates);
         }
 
+        public async Task<IEnumerable<SalesEvidenceLACoordinateResponseDto>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            var coordinates = await _repository.GetByMasterfileIdAsync(masterfileId);
+            return _mapper.Map<IEnumerable<SalesEvidenceLACoordinateResponseDto>>(coordinates);
+        }
+
         public async Task<SalesEvidenceLACoordinateResponseDto> CreateAsync(SalesEvidenceLACoordinateCreateDto dto)
         {
             var masterFileExists = await _repository.MasterFileExistsAsync(dto.MasterfileId);
@@ -303,6 +321,12 @@ namespace ValuationBackend.Services
         public async Task<IEnumerable<RentalEvidenceLACoordinateResponseDto>> GetByRentalEvidenceIdAsync(int rentalEvidenceId)
         {
             var coordinates = await _repository.GetByRentalEvidenceIdAsync(rentalEvidenceId);
+            return _mapper.Map<IEnumerable<RentalEvidenceLACoordinateResponseDto>>(coordinates);
+        }
+
+        public async Task<IEnumerable<RentalEvidenceLACoordinateResponseDto>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            var coordinates = await _repository.GetByMasterfileIdAsync(masterfileId);
             return _mapper.Map<IEnumerable<RentalEvidenceLACoordinateResponseDto>>(coordinates);
         }
 
