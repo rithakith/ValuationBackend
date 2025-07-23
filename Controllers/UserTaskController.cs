@@ -20,12 +20,18 @@ namespace ValuationBackend.Controllers
         {
             var userTasks = _context.UserTasks.Where(t => t.Username == request.Username).ToList();
 
-            var laAssigned = userTasks.Count(t => t.TaskType == "LA");
-            var laCompleted = userTasks.Count(t => t.TaskType == "LA" && t.IsCompleted);
-            var mrAssigned = userTasks.Count(t => t.TaskType == "MR");
-            var mrCompleted = userTasks.Count(t => t.TaskType == "MR" && t.IsCompleted);
-            var lmAssigned = userTasks.Count(t => t.TaskType == "LM");
-            var lmCompleted = userTasks.Count(t => t.TaskType == "LM" && t.IsCompleted);
+            // Debug log: print all userTasks for this user
+            Console.WriteLine($"UserTasks for {request.Username}: {string.Join(", ", userTasks.Select(t => $"{t.TaskType}:{t.IsCompleted}"))}");
+
+            var laAssigned = userTasks.Count(t => t.TaskType != null && t.TaskType.ToUpper() == "LA");
+            var laCompleted = userTasks.Count(t => t.TaskType != null && t.TaskType.ToUpper() == "LA" && t.IsCompleted);
+            var mrAssigned = userTasks.Count(t => t.TaskType != null && t.TaskType.ToUpper() == "MR");
+            var mrCompleted = userTasks.Count(t => t.TaskType != null && t.TaskType.ToUpper() == "MR" && t.IsCompleted);
+            var lmAssigned = userTasks.Count(t => t.TaskType != null && t.TaskType.ToUpper() == "LM");
+            var lmCompleted = userTasks.Count(t => t.TaskType != null && t.TaskType.ToUpper() == "LM" && t.IsCompleted);
+
+            // Debug log: print computed counts
+            Console.WriteLine($"LA: {laAssigned}, MR: {mrAssigned}, LM: {lmAssigned}, LA Done: {laCompleted}, MR Done: {mrCompleted}, LM Done: {lmCompleted}");
 
             return Ok(new UserTaskOverviewResponse
             {

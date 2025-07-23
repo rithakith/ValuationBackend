@@ -28,7 +28,8 @@ namespace ValuationBackend.Controllers
                 empEmail = user.EmpEmail,
                 empId = user.EmpId,
                 position = user.Position,
-                assignedDivision = user.AssignedDivision
+                assignedDivision = user.AssignedDivision,
+                profilePicture = user.ProfilePicture != null ? Convert.ToBase64String(user.ProfilePicture) : null
             });
         }
     }

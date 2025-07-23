@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ValuationBackend.Models;
+using ValuationBackend.Models.iteration2.RatingCards;
 
 namespace ValuationBackend.Data
 {

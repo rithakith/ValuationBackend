@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250721163317_MakeBuildingRatesFieldsRequired")]
+    partial class MakeBuildingRatesFieldsRequired
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,108 +62,6 @@ namespace ValuationBackend.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("LandAquisitionMasterFiles");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.AgricultureRatingCard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AccessType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("AssessmentNumber")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("CropType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("CultivatedArea")
-                        .HasColumnType("numeric");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("IrrigationType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocalAuthority")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocalAuthorityCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NewNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ObsoleteNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Occupier")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PropertySubCategory")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PropertyType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("RentPM")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("RoadName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SoilType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("SuggestedRate")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Terms")
-                        .HasColumnType("text");
-
-                    b.Property<string>("TopographyType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("TotalAcreage")
-                        .HasColumnType("numeric");
-
-                    b.Property<int?>("WardNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("WaterSource")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("YieldPerAcre")
-                        .HasColumnType("numeric");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.ToTable("AgricultureRatingCards");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.Asset", b =>
@@ -626,8 +527,6 @@ namespace ValuationBackend.Migrations
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<int>("ReportId")
-                        .HasColumnType("integer");
                     b.Property<int>("ReportId")
                         .HasColumnType("integer");
 
@@ -1120,123 +1019,6 @@ namespace ValuationBackend.Migrations
                     b.ToTable("MasterDataItems");
                 });
 
-            modelBuilder.Entity("ValuationBackend.Models.OfficesRatingCard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AccessType")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("Age")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("AssessmentNumber")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("BuildingSelection")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("CeilingHeight")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Condition")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Conveniences")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int?>("FloorNumber")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("FloorType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocalAuthority")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocalAuthorityCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NewNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ObsoleteNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Occupier")
-                        .HasColumnType("text");
-
-                    b.Property<string>("OfficeGrade")
-                        .HasColumnType("text");
-
-                    b.Property<string>("OfficeSuite")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ParkingSpace")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PropertySubCategory")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PropertyType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("RentPM")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("RoadName")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("SuggestedRate")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Terms")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("TotalArea")
-                        .HasColumnType("numeric");
-
-                    b.Property<decimal?>("UsableFloorArea")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("WallType")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("WardNumber")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.ToTable("OfficesRatingCards");
-                });
-
             modelBuilder.Entity("ValuationBackend.Models.PastValuationsLA", b =>
                 {
                     b.Property<int>("Id")
@@ -1648,225 +1430,6 @@ namespace ValuationBackend.Migrations
                     b.ToTable("SalesEvidencesLA", (string)null);
                 });
 
-            modelBuilder.Entity("ValuationBackend.Models.ShopsRatingCard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AccessType")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("Age")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("AssessmentNumber")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Condition")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Conveniences")
-                        .HasColumnType("text");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("DisplayArea")
-                        .HasColumnType("text");
-
-                    b.Property<string>("FloorType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("FrontageWidth")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("LocalAuthority")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocalAuthorityCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NewNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ObsoleteNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Occupier")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("ParkingSpace")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PropertySubCategory")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PropertyType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("RentPM")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("RoadName")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("ShopDepth")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("ShopGrade")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("SuggestedRate")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Terms")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("TotalArea")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("WallType")
-                        .HasColumnType("text");
-
-                    b.Property<int?>("WardNumber")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.ToTable("ShopsRatingCards");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.SpecialRatingCard", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("AccessType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("AnnualRevenue")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("AssessmentNumber")
-                        .HasColumnType("text");
-
-                    b.Property<int>("AssetId")
-                        .HasColumnType("integer");
-
-                    b.Property<int?>("Capacity")
-                        .HasColumnType("integer");
-
-                    b.Property<DateTime>("CreatedAt")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<DateTime?>("Date")
-                        .HasColumnType("timestamp with time zone");
-
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("FacilityType")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LicenseStatus")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocalAuthority")
-                        .HasColumnType("text");
-
-                    b.Property<string>("LocalAuthorityCode")
-                        .HasColumnType("text");
-
-                    b.Property<string>("NewNumber")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Notes")
-                        .HasColumnType("text");
-
-                    b.Property<string>("ObsoleteNumber")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Occupier")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("OperatingCosts")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("OperatingStatus")
-                        .HasColumnType("text");
-
-                    b.Property<string>("Owner")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("PropertySubCategory")
-                        .HasColumnType("text");
-
-                    b.Property<string>("PropertyType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("RentPM")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("RoadName")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SpecialCategory")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SpecialFeatures")
-                        .HasColumnType("text");
-
-                    b.Property<string>("SpecialPropertyType")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("SuggestedRate")
-                        .HasColumnType("numeric");
-
-                    b.Property<string>("Terms")
-                        .HasColumnType("text");
-
-                    b.Property<decimal?>("TotalArea")
-                        .HasColumnType("numeric");
-
-                    b.Property<int?>("WardNumber")
-                        .HasColumnType("integer");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AssetId");
-
-                    b.ToTable("SpecialRatingCards");
-                });
-
             modelBuilder.Entity("ValuationBackend.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -1962,15 +1525,172 @@ namespace ValuationBackend.Migrations
                     b.ToTable("UserTasks");
                 });
 
-            modelBuilder.Entity("ValuationBackend.Models.AgricultureRatingCard", b =>
+            modelBuilder.Entity("ValuationBackend.Models.iteration2.RatingCards.OfficesRatingCard", b =>
                 {
-                    b.HasOne("ValuationBackend.Models.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
 
-                    b.Navigation("Asset");
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccessType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int?>("Age")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("AssessmentNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<int>("AssetId")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("BuildingSelection")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<decimal?>("CeilingHeight")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Condition")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Conveniences")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("CreatedBy")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<DateTime?>("Date")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<int?>("FloorNumber")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("FloorType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("LocalAuthority")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("LocalAuthorityCode")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("NewNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasMaxLength(2000)
+                        .HasColumnType("character varying(2000)");
+
+                    b.Property<string>("ObsoleteNumber")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("Occupier")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("OfficeGrade")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("character varying(50)");
+
+                    b.Property<string>("OfficeSuite")
+                        .IsRequired()
+                        .HasMaxLength(1000)
+                        .HasColumnType("character varying(1000)");
+
+                    b.Property<string>("Owner")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("ParkingSpace")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<string>("PropertySubCategory")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("PropertyType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<decimal?>("RentPM")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("RoadName")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("character varying(200)");
+
+                    b.Property<decimal?>("SuggestedRate")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("Terms")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("character varying(500)");
+
+                    b.Property<decimal?>("TotalArea")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<DateTime?>("UpdatedAt")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("UpdatedBy")
+                        .HasColumnType("text");
+
+                    b.Property<decimal?>("UsableFloorArea")
+                        .HasColumnType("decimal(18,2)");
+
+                    b.Property<string>("WallType")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int?>("WardNumber")
+                        .HasColumnType("integer");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AssetId");
+
+                    b.ToTable("OfficesRatingCards");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.Asset", b =>
@@ -2094,17 +1814,6 @@ namespace ValuationBackend.Migrations
                     b.Navigation("Report");
                 });
 
-            modelBuilder.Entity("ValuationBackend.Models.OfficesRatingCard", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Asset");
-                });
-
             modelBuilder.Entity("ValuationBackend.Models.PastValuationsLA", b =>
                 {
                     b.HasOne("ValuationBackend.Models.Report", "Report")
@@ -2158,28 +1867,6 @@ namespace ValuationBackend.Migrations
                         .IsRequired();
 
                     b.Navigation("Report");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.ShopsRatingCard", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Asset");
-                });
-
-            modelBuilder.Entity("ValuationBackend.Models.SpecialRatingCard", b =>
-                {
-                    b.HasOne("ValuationBackend.Models.Asset", "Asset")
-                        .WithMany()
-                        .HasForeignKey("AssetId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Asset");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.UserTask", b =>
