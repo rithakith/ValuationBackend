@@ -6,6 +6,10 @@ namespace ValuationBackend.Models.DTOs
     {
         [Required]
         public string MasterFileRefNo { get; set; }
+
+        // NEW: Optional foreign key to LandMiscellaneousMasterFile
+        public int? LandMiscellaneousMasterFileId { get; set; }
+
         public string? AssessmentNo { get; set; }
         public string? Owner { get; set; }
         public string? Occupier { get; set; }
@@ -26,6 +30,10 @@ namespace ValuationBackend.Models.DTOs
         public int ReportId { get; set; }
         [Required]
         public string MasterFileRefNo { get; set; }
+
+        // NEW: Optional foreign key to LandMiscellaneousMasterFile
+        public int? LandMiscellaneousMasterFileId { get; set; }
+
         public string? AssessmentNo { get; set; }
         public string? Owner { get; set; }
         public string? Occupier { get; set; }
@@ -45,6 +53,13 @@ namespace ValuationBackend.Models.DTOs
         public int Id { get; set; }
         public int ReportId { get; set; }
         public string MasterFileRefNo { get; set; }
+
+        // NEW: Foreign key to LandMiscellaneousMasterFile
+        public int? LandMiscellaneousMasterFileId { get; set; }
+
+        // NEW: Navigation property for related master file data
+        public LandMiscellaneousMasterFileDto? LandMiscellaneousMasterFile { get; set; }
+
         public string? AssessmentNo { get; set; }
         public string? Owner { get; set; }
         public string? Occupier { get; set; }
@@ -57,5 +72,18 @@ namespace ValuationBackend.Models.DTOs
         public string? HeadOfTerms { get; set; }
         public string? Situation { get; set; }
         public string? Remarks { get; set; }
+    }
+
+    // NEW: DTO for LandMiscellaneousMasterFile navigation property
+    public class LandMiscellaneousMasterFileDto
+    {
+        public int Id { get; set; }
+        public int MasterFileNo { get; set; }
+        public string? MasterFileRefNo { get; set; }
+        public string? PlanType { get; set; }
+        public string? PlanNo { get; set; }
+        public string? RequestingAuthorityReferenceNo { get; set; }
+        public string? Status { get; set; }
+        public int Lots { get; set; }
     }
 }

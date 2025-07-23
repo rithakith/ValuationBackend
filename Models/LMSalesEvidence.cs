@@ -40,5 +40,11 @@ namespace ValuationBackend.Models
         public string? LandRegistryReferences { get; set; }
         public string? Situation { get; set; }
         public string? DescriptionOfProperty { get; set; }
+
+        // Foreign key to LandMiscellaneousMasterFile table
+        public int? LandMiscellaneousMasterFileId { get; set; }
+
+        [ForeignKey("LandMiscellaneousMasterFileId")]
+        public virtual LandMiscellaneousMasterFile? LandMiscellaneousMasterFile { get; set; }
     }
 }

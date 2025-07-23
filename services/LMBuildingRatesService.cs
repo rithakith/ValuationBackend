@@ -25,8 +25,14 @@ namespace ValuationBackend.Services
 
         public async Task<LMBuildingRatesResponseDto> GetByIdAsync(int id)
         {
-            var lmBuildingRate = await _repository.GetByIdAsync(id);
+            var lmBuildingRate = await _repository.GetByIdWithMasterFileAsync(id);
             return lmBuildingRate == null ? null : MapToResponseDto(lmBuildingRate);
+        }
+
+        public async Task<IEnumerable<LMBuildingRatesResponseDto>> GetByMasterFileIdAsync(int masterFileId)
+        {
+            var lmBuildingRates = await _repository.GetByMasterFileIdAsync(masterFileId);
+            return lmBuildingRates.Select(MapToResponseDto).ToList();
         }
 
         public async Task<LMBuildingRatesResponseDto> GetByReportIdAsync(int reportId)
@@ -63,7 +69,8 @@ namespace ValuationBackend.Services
                 Cost = dto.Cost,
                 Remarks = dto.Remarks,
                 LocationLatitude = dto.LocationLatitude,
-                LocationLongitude = dto.LocationLongitude
+                LocationLongitude = dto.LocationLongitude,
+                LandMiscellaneousMasterFileId = dto.LandMiscellaneousMasterFileId
             };
 
             lmBuildingRate = await _repository.CreateAsync(lmBuildingRate);
@@ -93,6 +100,7 @@ namespace ValuationBackend.Services
             existingLMBuildingRate.Remarks = dto.Remarks;
             existingLMBuildingRate.LocationLatitude = dto.LocationLatitude;
             existingLMBuildingRate.LocationLongitude = dto.LocationLongitude;
+            existingLMBuildingRate.LandMiscellaneousMasterFileId = dto.LandMiscellaneousMasterFileId;
 
             return await _repository.UpdateAsync(existingLMBuildingRate);
         }
@@ -119,7 +127,26 @@ namespace ValuationBackend.Services
                 Cost = lmBuildingRate.Cost,
                 Remarks = lmBuildingRate.Remarks,
                 LocationLatitude = lmBuildingRate.LocationLatitude,
-                LocationLongitude = lmBuildingRate.LocationLongitude
+                LocationLongitude = lmBuildingRate.LocationLongitude,
+                LandMiscellaneousMasterFileId = lmBuildingRate.LandMiscellaneousMasterFileId,
+                LandMiscellaneousMasterFile = lmBuildingRate.LandMiscellaneousMasterFile != null
+                    ? MapMasterFileToDto(lmBuildingRate.LandMiscellaneousMasterFile)
+                    : null
+            };
+        }
+
+        private LandMiscellaneousMasterFileDto MapMasterFileToDto(LandMiscellaneousMasterFile masterFile)
+        {
+            return new LandMiscellaneousMasterFileDto
+            {
+                Id = masterFile.Id,
+                MasterFileNo = masterFile.MasterFileNo,
+                MasterFileRefNo = masterFile.MasterFileRefNo,
+                PlanType = masterFile.PlanType,
+                PlanNo = masterFile.PlanNo,
+                RequestingAuthorityReferenceNo = masterFile.RequestingAuthorityReferenceNo,
+                Status = masterFile.Status,
+                Lots = masterFile.Lots
             };
         }
     }

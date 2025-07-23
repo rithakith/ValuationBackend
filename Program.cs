@@ -113,6 +113,16 @@ using (var scope = app.Services.CreateScope())
     try
     {
         var dbContext = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+
+        // Only reset database if explicitly requested (e.g., via environment variable)
+        var shouldResetDb = Environment.GetEnvironmentVariable("RESET_DATABASE")?.ToLower() == "true";
+
+        if (shouldResetDb)
+        {
+            Console.WriteLine("Resetting database...");
+            // Add database reset logic here if needed
+        }
+
         DbInitializer.Initialize(dbContext);
         Console.WriteLine("Database initialized successfully.");
     }

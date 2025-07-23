@@ -27,6 +27,21 @@ namespace ValuationBackend.Repositories
             return await _context.LMPastValuations.FindAsync(id);
         }
 
+        public async Task<LMPastValuation> GetByIdWithMasterFileAsync(int id)
+        {
+            return await _context.LMPastValuations
+                .Include(pv => pv.LandMiscellaneousMasterFile)
+                .FirstOrDefaultAsync(pv => pv.Id == id);
+        }
+
+        public async Task<IEnumerable<LMPastValuation>> GetByMasterFileIdAsync(int masterFileId)
+        {
+            return await _context.LMPastValuations
+                .Where(pv => pv.LandMiscellaneousMasterFileId == masterFileId)
+                .Include(pv => pv.LandMiscellaneousMasterFile)
+                .ToListAsync();
+        }
+
         public async Task<LMPastValuation> GetByReportIdAsync(int reportId)
         {
             return await _context.LMPastValuations

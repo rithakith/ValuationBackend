@@ -93,5 +93,13 @@ namespace ValuationBackend.Controllers
 
             return lmPastValuation;
         }
+
+        // GET: api/LMPastValuation/ByMasterFile/5
+        [HttpGet("ByMasterFile/{masterFileId}")]
+        public async Task<ActionResult<IEnumerable<LMPastValuationResponseDto>>> GetLMPastValuationsByMasterFileId(int masterFileId)
+        {
+            var pastValuations = await _lmPastValuationService.GetByMasterFileIdAsync(masterFileId);
+            return Ok(pastValuations);
+        }
     }
 }

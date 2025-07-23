@@ -17,6 +17,7 @@ namespace ValuationBackend.Models.DTOs
         public string? Remarks { get; set; }
         public string? LocationLongitude { get; set; }
         public string? LocationLatitude { get; set; }
+        public int? LandMiscellaneousMasterFileId { get; set; }
     }
 
     public class LMPastValuationUpdateDto
@@ -36,6 +37,7 @@ namespace ValuationBackend.Models.DTOs
         public string? Remarks { get; set; }
         public string? LocationLongitude { get; set; }
         public string? LocationLatitude { get; set; }
+        public int? LandMiscellaneousMasterFileId { get; set; }
     }
 
     public class LMPastValuationResponseDto
@@ -54,5 +56,7 @@ namespace ValuationBackend.Models.DTOs
         public string? Remarks { get; set; }
         public string? LocationLongitude { get; set; }
         public string? LocationLatitude { get; set; }
+        public int? LandMiscellaneousMasterFileId { get; set; }
+        public LandMiscellaneousMasterFileDto? LandMiscellaneousMasterFile { get; set; }
     }
 }
