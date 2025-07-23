@@ -7,6 +7,7 @@ public class LandAquisitionMasterFile
     public string PlanNo { get; set; } = string.Empty;
     public string RequestingAuthorityReferenceNo { get; set; } = string.Empty;
     public string Status { get; set; } = string.Empty;
+    public int Lots { get; set; }
 }
 
 public class LAQueryRequest

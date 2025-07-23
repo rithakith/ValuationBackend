@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ValuationBackend.Models;
+using ValuationBackend.Models.iteration2.RatingCards;
 
 namespace ValuationBackend.Data
 {
@@ -28,6 +29,13 @@ namespace ValuationBackend.Data
 
         public DbSet<LandAquisitionMasterFile> LandAquisitionMasterFiles { get; set; }
 
+        public DbSet<LALot> LALots { get; set; }
+
+        public DbSet<PastValuationsLACoordinate> PastValuationsLACoordinates { get; set; }
+        public DbSet<BuildingRatesLACoordinate> BuildingRatesLACoordinates { get; set; }
+        public DbSet<SalesEvidenceLACoordinate> SalesEvidenceLACoordinates { get; set; }
+        public DbSet<RentalEvidenceLACoordinate> RentalEvidenceLACoordinates { get; set; }
+
         public DbSet<Report> Reports { get; set; }
 
         public DbSet<InspectionReport> InspectionReports { get; set; }
@@ -55,9 +63,15 @@ namespace ValuationBackend.Data
 
         public DbSet<DomesticRatingCard> DomesticRatingCards { get; set; }
 
+        public DbSet<OfficesRatingCard> OfficesRatingCards { get; set; }
+
         public DbSet<Asset> Assets { get; set; }
 
         public DbSet<PropertyCategory> PropertyCategories { get; set; }
+
+
+        public DbSet<DecisionField> DecisionFields { get; set; }
+        public DbSet<PasswordReset> PasswordResets { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
