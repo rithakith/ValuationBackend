@@ -17,23 +17,32 @@ namespace ValuationBackend.Models
         public Report? Report { get; set; }
         
         [Required]
-        public string MasterFileId { get; set; } = string.Empty;
+        public int MasterFileId { get; set; }
         
-        public string? AssessmentNumber { get; set; }
+        [ForeignKey("MasterFileId")]
+        public LandAquisitionMasterFile? MasterFile { get; set; }
         
-        public string? Owner { get; set; }
+        [Required]
+        public string AssessmentNumber { get; set; } = string.Empty;
+        
+        [Required]
+        public string Owner { get; set; } = string.Empty;
         
         public string? ConstructedBy { get; set; }
         
-        public string? YearOfConstruction { get; set; }
+        [Required]
+        public string YearOfConstruction { get; set; } = string.Empty;
         
         public string? DescriptionOfProperty { get; set; }
         
-        public string? FloorAreaSQFT { get; set; }
+        [Required]
+        public string FloorAreaSQFT { get; set; } = string.Empty;
         
-        public string? RatePerSQFT { get; set; }
+        [Required]
+        public string RatePerSQFT { get; set; } = string.Empty;
         
-        public string? Cost { get; set; }
+        [Required]
+        public string Cost { get; set; } = string.Empty;
         
         public string? Remarks { get; set; }
         
