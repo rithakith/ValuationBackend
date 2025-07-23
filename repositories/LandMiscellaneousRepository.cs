@@ -150,5 +150,12 @@ namespace ValuationBackend.Repositories
 
             return await query.CountAsync();
         }
+
+        // NEW: Method for foreign key support
+        public async Task<LandMiscellaneousMasterFile?> GetByRefNoAsync(string refNo)
+        {
+            return await _context.LandMiscellaneousMasterFiles
+                .FirstOrDefaultAsync(m => m.MasterFileRefNo == refNo);
+        }
     }
 }

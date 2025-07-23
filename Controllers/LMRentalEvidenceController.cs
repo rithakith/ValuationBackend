@@ -93,5 +93,29 @@ namespace ValuationBackend.Controllers
 
             return lmRentalEvidence;
         }
+
+        // NEW: GET: api/LMRentalEvidence/ByMasterFile/123
+        [HttpGet("ByMasterFile/{masterFileId}")]
+        public async Task<ActionResult<IEnumerable<LMRentalEvidenceResponseDto>>> GetByMasterFileId(int masterFileId)
+        {
+            var evidences = await _lmRentalEvidenceService.GetByMasterFileIdAsync(masterFileId);
+            return Ok(evidences);
+        }
+
+        // NEW: GET: api/LMRentalEvidence/ByMasterFileRefNo/MF-2024-001
+        [HttpGet("ByMasterFileRefNo/{masterFileRefNo}")]
+        public async Task<ActionResult<IEnumerable<LMRentalEvidenceResponseDto>>> GetByMasterFileRefNo(string masterFileRefNo)
+        {
+            var evidences = await _lmRentalEvidenceService.GetByMasterFileRefNoAsync(masterFileRefNo);
+            return Ok(evidences);
+        }
+
+        // NEW: GET: api/LMRentalEvidence/WithMasterFileData
+        [HttpGet("WithMasterFileData")]
+        public async Task<ActionResult<IEnumerable<LMRentalEvidenceResponseDto>>> GetAllWithMasterFileData()
+        {
+            var evidences = await _lmRentalEvidenceService.GetAllWithMasterFileDataAsync();
+            return Ok(evidences);
+        }
     }
 }

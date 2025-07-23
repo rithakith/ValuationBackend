@@ -37,7 +37,7 @@ namespace ValuationBackend.Services
 
         public async Task<AssetNumberChange> CreateAssetNumberChangeAsync(AssetNumberChange assetNumberChange)
         {
-            // Set default values if not provided
+            // Set default values if not provided 
             assetNumberChange.DateOfChange = DateTime.UtcNow;
             if (assetNumberChange.ChangedDate == null)
             {

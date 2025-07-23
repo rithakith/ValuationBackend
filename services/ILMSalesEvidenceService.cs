@@ -8,6 +8,7 @@ namespace ValuationBackend.Services
     {
         Task<IEnumerable<LMSalesEvidenceResponseDto>> GetAllAsync();
         Task<LMSalesEvidenceResponseDto> GetByIdAsync(int id);
+        Task<IEnumerable<LMSalesEvidenceResponseDto>> GetByMasterFileIdAsync(int masterFileId);
         Task<LMSalesEvidenceResponseDto> GetByReportIdAsync(int reportId);
         Task<LMSalesEvidenceResponseDto> CreateAsync(LMSalesEvidenceCreateDto dto);
         Task<bool> UpdateAsync(int reportId, LMSalesEvidenceUpdateDto dto);

@@ -93,5 +93,13 @@ namespace ValuationBackend.Controllers
 
             return lmSalesEvidence;
         }
+
+        // GET: api/LMSalesEvidence/ByMasterFile/5
+        [HttpGet("ByMasterFile/{masterFileId}")]
+        public async Task<ActionResult<IEnumerable<LMSalesEvidenceResponseDto>>> GetLMSalesEvidencesByMasterFileId(int masterFileId)
+        {
+            var salesEvidences = await _lmSalesEvidenceService.GetByMasterFileIdAsync(masterFileId);
+            return Ok(salesEvidences);
+        }
     }
 }

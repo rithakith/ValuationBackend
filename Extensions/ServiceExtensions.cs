@@ -15,6 +15,7 @@ namespace ValuationBackend.Extensions
             services.AddScoped<IInspectionReportService, InspectionReportService>();
             services.AddScoped<ILandMiscellaneousService, LandMiscellaneousService>();
             services.AddScoped<ILMBuildingRatesService, LMBuildingRatesService>();
+            services.AddScoped<ILMPastValuationService, LMPastValuationService>();
             services.AddScoped<IDomesticRatingCardService, DomesticRatingCardService>();
             services.AddScoped<IOfficesRatingCardService, OfficesRatingCardService>();
             services.AddScoped<ILMRentalEvidenceService, LMRentalEvidenceService>();
@@ -24,6 +25,11 @@ namespace ValuationBackend.Extensions
             services.AddScoped<IAssetDivisionService, AssetDivisionService>();
             services.AddScoped<IReconciliationService, ReconciliationService>();
             services.AddScoped<ILAMasterfileService, LAMasterfileService>();
+            services.AddScoped<ILALotService, LALotService>();
+            services.AddScoped<IPastValuationsLACoordinateService, PastValuationsLACoordinateService>();
+            services.AddScoped<IBuildingRatesLACoordinateService, BuildingRatesLACoordinateService>();
+            services.AddScoped<ISalesEvidenceLACoordinateService, SalesEvidenceLACoordinateService>();
+            services.AddScoped<IRentalEvidenceLACoordinateService, RentalEvidenceLACoordinateService>();
             services.AddScoped<IRequestTypeService, RequestTypeService>();
             services.AddScoped<IRequestService, RequestService>();
             services.AddScoped<IAssetService, AssetService>();

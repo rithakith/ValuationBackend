@@ -33,6 +33,36 @@ namespace ValuationBackend.Repositories
                 .FirstOrDefaultAsync(re => re.ReportId == reportId);
         }
 
+        // NEW: Methods for foreign key relationship
+        public async Task<IEnumerable<LMRentalEvidence>> GetByMasterFileIdAsync(int masterFileId)
+        {
+            return await _context.LMRentalEvidences
+                .Include(e => e.LandMiscellaneousMasterFile)
+                .Where(e => e.LandMiscellaneousMasterFileId == masterFileId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<LMRentalEvidence>> GetByMasterFileRefNoAsync(string masterFileRefNo)
+        {
+            return await _context.LMRentalEvidences
+                .Include(e => e.LandMiscellaneousMasterFile)
+                .Where(e => e.MasterFileRefNo == masterFileRefNo)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<LMRentalEvidence>> GetAllWithMasterFileDataAsync()
+        {
+            return await _context.LMRentalEvidences
+                .Include(e => e.LandMiscellaneousMasterFile)
+                .ToListAsync();
+        }
+
+        public async Task<LandMiscellaneousMasterFile?> GetMasterFileByRefNoAsync(string refNo)
+        {
+            return await _context.LandMiscellaneousMasterFiles
+                .FirstOrDefaultAsync(m => m.MasterFileRefNo == refNo);
+        }
+
         public async Task<Report> CreateReportAsync(Report report)
         {
             report.Timestamp = DateTime.UtcNow;

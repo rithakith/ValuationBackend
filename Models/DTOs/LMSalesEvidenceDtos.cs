@@ -26,6 +26,7 @@ namespace ValuationBackend.Models.DTOs
         public string? LandRegistryReferences { get; set; }
         public string? Situation { get; set; }
         public string? DescriptionOfProperty { get; set; }
+        public int? LandMiscellaneousMasterFileId { get; set; }
     }
 
     public class LMSalesEvidenceUpdateDto
@@ -54,6 +55,7 @@ namespace ValuationBackend.Models.DTOs
         public string? LandRegistryReferences { get; set; }
         public string? Situation { get; set; }
         public string? DescriptionOfProperty { get; set; }
+        public int? LandMiscellaneousMasterFileId { get; set; }
     }
 
     public class LMSalesEvidenceResponseDto
@@ -81,5 +83,7 @@ namespace ValuationBackend.Models.DTOs
         public string? LandRegistryReferences { get; set; }
         public string? Situation { get; set; }
         public string? DescriptionOfProperty { get; set; }
+        public int? LandMiscellaneousMasterFileId { get; set; }
+        public LandMiscellaneousMasterFileDto? LandMiscellaneousMasterFile { get; set; }
     }
 }

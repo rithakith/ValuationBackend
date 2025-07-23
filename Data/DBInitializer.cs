@@ -1,6 +1,7 @@
 using System.Security.Cryptography;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using ValuationBackend.Models;
 
 namespace ValuationBackend.Data
@@ -31,7 +32,7 @@ namespace ValuationBackend.Data
                 // Update UserTasks with correct User IDs
                 UpdateUserTaskUserIds(context);
 
-                // Remove UserTasks that are not LM (Land Miscellaneous)
+                // Remove UserTasks that are not LM (Land Miscellaneous) - COMMENTED OUT to keep LA and MR tasks
                 // RemoveNonLMUserTasks(context);
 
                 // Initialize Master Data
@@ -1136,18 +1137,31 @@ namespace ValuationBackend.Data
 
         private static void InitializeUserTasks(AppDbContext context)
         {
-            // Calculate expected task count: 12 LA tasks + number of LM records
-            var expectedTaskCount = 12 + context.LandMiscellaneousMasterFiles.Count();
+            // Calculate expected task count: 12 LA/MR tasks + number of LM records  
+            var expectedLmTaskCount = context.LandMiscellaneousMasterFiles.Count();
+            var expectedNonLmTaskCount = 12;
+            var currentLmTaskCount = context.UserTasks.Count(t => t.TaskType == "LM");
+            var currentNonLmTaskCount = context.UserTasks.Count(t => t.TaskType != "LM");
 
-            // Check if we already have enough tasks
-            if (context.UserTasks.Count() >= expectedTaskCount)
+            // Check if we have sufficient LM tasks - only reseed LM tasks if needed
+            bool needLmTasks = currentLmTaskCount < expectedLmTaskCount;
+            bool needNonLmTasks = currentNonLmTaskCount < expectedNonLmTaskCount;
+
+            if (!needLmTasks && !needNonLmTasks)
                 return;
 
-            // Remove all existing user tasks to ensure clean seeding
-            if (context.UserTasks.Any())
+            // Only remove non-LM tasks if we need to reseed them
+            if (needNonLmTasks && currentNonLmTaskCount > 0)
             {
-                context.UserTasks.RemoveRange(context.UserTasks);
+                var nonLmTasks = context.UserTasks.Where(t => t.TaskType != "LM").ToList();
+                Console.WriteLine($"Removing {nonLmTasks.Count} UserTask entries with TaskType other than 'LM'...");
+                foreach (var task in nonLmTasks)
+                {
+                    Console.WriteLine($"Removing UserTask: Username={task.Username}, TaskType={task.TaskType}, Description={task.WorkItemDescription}");
+                }
+                context.UserTasks.RemoveRange(nonLmTasks);
                 context.SaveChanges();
+                Console.WriteLine("Non-LM UserTasks removed successfully.");
             }
 
             Console.WriteLine("Seeding user tasks...");
@@ -1188,57 +1202,92 @@ namespace ValuationBackend.Data
                 );
             }
 
-            // Non-LM tasks (LA and MR tasks without referencing old LandMiscellaneous IDs)
-            // Jalina's tasks
-            AddTask("Jalina", "LA", true, "20250105", landAcquisitionId: 1, description: "Land acquisition survey for Highway Project", referenceNumber: "LA-2025-001");
-            AddTask("Jalina", "MR", true, "20250115", requestId: 1, description: "Mass rating assessment - Colombo MC", referenceNumber: "MR-2025-001");
-            AddTask("Jalina", "LA", true, "20250301", landAcquisitionId: 2, description: "Land acquisition for Bridge Project", referenceNumber: "LA-2025-002");
-
-            // Akith's tasks
-            AddTask("Akith", "MR", true, "20250120", requestId: 2, description: "Rating assessment - Galle MC", referenceNumber: "MR-2025-002");
-            AddTask("Akith", "LA", false, "20250225", landAcquisitionId: 3, description: "Land acquisition survey", referenceNumber: "LA-2025-003");
-
-            // Dulmini's tasks
-            AddTask("Dulmini", "LA", true, "20250110", landAcquisitionId: 4, description: "Land acquisition documentation", referenceNumber: "LA-2025-004");
-            AddTask("Dulmini", "MR", true, "20250112", requestId: 3, description: "Rating building assessment", referenceNumber: "MR-2025-003");
-            AddTask("Dulmini", "MR", false, "20250302", requestId: 1, description: "Follow-up rating assessment", referenceNumber: "MR-2025-004");
-
-            // Vishwa's tasks
-            AddTask("Vishwa", "LA", true, "20250101", landAcquisitionId: 5, description: "Land acquisition initial survey", referenceNumber: "LA-2025-005");
-            AddTask("Vishwa", "LA", true, "20250215", landAcquisitionId: 6, description: "Land acquisition follow-up", referenceNumber: "LA-2025-006");
-            AddTask("Vishwa", "MR", true, "20250318", requestId: 2, description: "Additional rating assessment", referenceNumber: "MR-2025-005");
-
-            // Rithara's tasks
-            AddTask("Rithara", "MR", true, "20250118", requestId: 3, description: "Building rating review", referenceNumber: "MR-2025-006");
-            AddTask("Rithara", "LA", false, "20250311", landAcquisitionId: 7, description: "Land acquisition assessment", referenceNumber: "LA-2025-007");
-
-            // LM tasks for all current land miscellaneous records - randomly distributed
-            var users = new[] { "Jalina", "Akith", "Dulmini", "Vishwa", "Rithara" };
-            var planTypes = new[] { "PP", "Cadaster", "FVP" };
-            var random = new Random(42); // Fixed seed for consistent results
-
-            // Get all actual LandMiscellaneous records from database to use their real IDs
-            var landMiscRecords = context.LandMiscellaneousMasterFiles.OrderBy(lm => lm.MasterFileNo).ToList();
-
-            // Create tasks for each actual LandMiscellaneous record
-            for (int i = 0; i < landMiscRecords.Count; i++)
+            // Add non-LM tasks only if needed
+            if (needNonLmTasks)
             {
-                var record = landMiscRecords[i];
-                var randomUser = users[random.Next(users.Length)];
-                var randomPlanType = planTypes[random.Next(planTypes.Length)];
-                var isCompleted = random.Next(100) < 30; // 30% chance of being completed
-                var randomDays = random.Next(1, 120); // Random date within last 120 days
-                var assignedDate = DateTime.Today.AddDays(-randomDays).ToString("yyyyMMdd");
+                // Non-LM tasks (LA and MR tasks without referencing old LandMiscellaneous IDs)
+                // Jalina's tasks
+                AddTask("Jalina", "LA", true, "20250105", landAcquisitionId: 1, description: "Land acquisition survey for Highway Project", referenceNumber: "LA-2025-001");
+                AddTask("Jalina", "MR", true, "20250115", requestId: 1, description: "Mass rating assessment - Colombo MC", referenceNumber: "MR-2025-001");
+                AddTask("Jalina", "LA", true, "20250301", landAcquisitionId: 2, description: "Land acquisition for Bridge Project", referenceNumber: "LA-2025-002");
 
-                AddTask(randomUser, "LM", isCompleted, assignedDate,
-                    landMiscellaneousId: record.Id, // Use the actual database ID
-                    description: $"{randomPlanType} plan verification for {record.MasterFileNo}",
-                    referenceNumber: $"LM-2025-{(i + 1):D3}");
+                // Akith's tasks
+                AddTask("Akith", "MR", true, "20250120", requestId: 2, description: "Rating assessment - Galle MC", referenceNumber: "MR-2025-002");
+                AddTask("Akith", "LA", false, "20250225", landAcquisitionId: 3, description: "Land acquisition survey", referenceNumber: "LA-2025-003");
+
+                // Dulmini's tasks
+                AddTask("Dulmini", "LA", true, "20250110", landAcquisitionId: 4, description: "Land acquisition documentation", referenceNumber: "LA-2025-004");
+                AddTask("Dulmini", "MR", true, "20250112", requestId: 3, description: "Rating building assessment", referenceNumber: "MR-2025-003");
+                AddTask("Dulmini", "MR", false, "20250302", requestId: 1, description: "Follow-up rating assessment", referenceNumber: "MR-2025-004");
+
+                // Vishwa's tasks
+                AddTask("Vishwa", "LA", true, "20250101", landAcquisitionId: 5, description: "Land acquisition initial survey", referenceNumber: "LA-2025-005");
+                AddTask("Vishwa", "LA", true, "20250215", landAcquisitionId: 6, description: "Land acquisition follow-up", referenceNumber: "LA-2025-006");
+                AddTask("Vishwa", "MR", true, "20250318", requestId: 2, description: "Additional rating assessment", referenceNumber: "MR-2025-005");
+
+                // Rithara's tasks
+                AddTask("Rithara", "MR", true, "20250118", requestId: 3, description: "Building rating review", referenceNumber: "MR-2025-006");
+                AddTask("Rithara", "LA", false, "20250311", landAcquisitionId: 7, description: "Land acquisition assessment", referenceNumber: "LA-2025-007");
+
+                // Additional LA tasks for remaining Land Acquisition Master Files (IDs 8-22)
+                // Distribute among all 5 users
+                AddTask("Jalina", "LA", true, "20250315", landAcquisitionId: 8, description: "Land acquisition survey for Metro Line", referenceNumber: "LA-2025-008");
+                AddTask("Akith", "LA", false, "20250320", landAcquisitionId: 9, description: "Land acquisition for School Development", referenceNumber: "LA-2025-009");
+                AddTask("Dulmini", "LA", true, "20250325", landAcquisitionId: 10, description: "Land acquisition documentation review", referenceNumber: "LA-2025-010");
+                AddTask("Vishwa", "LA", false, "20250330", landAcquisitionId: 11, description: "Land acquisition field verification", referenceNumber: "LA-2025-011");
+                AddTask("Rithara", "LA", true, "20250405", landAcquisitionId: 12, description: "Land acquisition boundary survey", referenceNumber: "LA-2025-012");
+
+                AddTask("Jalina", "LA", false, "20250410", landAcquisitionId: 13, description: "Land acquisition for Hospital Extension", referenceNumber: "LA-2025-013");
+                AddTask("Akith", "LA", true, "20250415", landAcquisitionId: 14, description: "Land acquisition compensation assessment", referenceNumber: "LA-2025-014");
+                AddTask("Dulmini", "LA", false, "20250420", landAcquisitionId: 15, description: "Land acquisition legal documentation", referenceNumber: "LA-2025-015");
+                AddTask("Vishwa", "LA", true, "20250425", landAcquisitionId: 16, description: "Land acquisition site inspection", referenceNumber: "LA-2025-016");
+                AddTask("Rithara", "LA", false, "20250430", landAcquisitionId: 17, description: "Land acquisition valuation report", referenceNumber: "LA-2025-017");
+
+                AddTask("Jalina", "LA", true, "20250505", landAcquisitionId: 18, description: "Land acquisition for Road Widening", referenceNumber: "LA-2025-018");
+                AddTask("Akith", "LA", false, "20250510", landAcquisitionId: 19, description: "Land acquisition preliminary survey", referenceNumber: "LA-2025-019");
+                AddTask("Dulmini", "LA", true, "20250515", landAcquisitionId: 20, description: "Land acquisition title verification", referenceNumber: "LA-2025-020");
+                AddTask("Vishwa", "LA", false, "20250520", landAcquisitionId: 21, description: "Land acquisition environmental assessment", referenceNumber: "LA-2025-021");
+                AddTask("Rithara", "LA", true, "20250525", landAcquisitionId: 22, description: "Land acquisition final documentation", referenceNumber: "LA-2025-022");
             }
 
-            context.UserTasks.AddRange(tasks);
-            context.SaveChanges();
-            Console.WriteLine("User tasks seeded.");
+            // Add LM tasks only if needed
+            if (needLmTasks)
+            {
+                // LM tasks for all current land miscellaneous records - randomly distributed
+                var users = new[] { "Jalina", "Akith", "Dulmini", "Vishwa", "Rithara" };
+                var planTypes = new[] { "PP", "Cadaster", "FVP" };
+                var random = new Random(42); // Fixed seed for consistent results
+
+                // Get all actual LandMiscellaneous records from database to use their real IDs
+                var landMiscRecords = context.LandMiscellaneousMasterFiles.OrderBy(lm => lm.MasterFileNo).ToList();
+
+                // Create tasks for each actual LandMiscellaneous record
+                for (int i = 0; i < landMiscRecords.Count; i++)
+                {
+                    var record = landMiscRecords[i];
+                    var randomUser = users[random.Next(users.Length)];
+                    var randomPlanType = planTypes[random.Next(planTypes.Length)];
+                    var isCompleted = random.Next(100) < 30; // 30% chance of being completed
+                    var randomDays = random.Next(1, 120); // Random date within last 120 days
+                    var assignedDate = DateTime.Today.AddDays(-randomDays).ToString("yyyyMMdd");
+
+                    AddTask(randomUser, "LM", isCompleted, assignedDate,
+                        landMiscellaneousId: record.Id, // Use the actual database ID
+                        description: $"{randomPlanType} plan verification for {record.MasterFileNo}",
+                        referenceNumber: $"LM-2025-{(i + 1):D3}");
+                }
+            }
+
+            if (tasks.Any())
+            {
+                context.UserTasks.AddRange(tasks);
+                context.SaveChanges();
+                Console.WriteLine($"User tasks seeded. Added {tasks.Count} tasks (LM: {tasks.Count(t => t.TaskType == "LM")}, Non-LM: {tasks.Count(t => t.TaskType != "LM")}).");
+            }
+            else
+            {
+                Console.WriteLine("No new tasks needed - all UserTasks are already properly seeded.");
+            }
         }
 
         private static void UpdateUserTaskAssignments(AppDbContext context)
@@ -1483,12 +1532,9 @@ namespace ValuationBackend.Data
 
         private static void InitializeRequests(AppDbContext context)
         {
-            // Clear existing data to allow reseeding
+            // Only seed if no requests exist
             if (context.Requests.Any())
-            {
-                context.Requests.RemoveRange(context.Requests);
-                context.SaveChanges();
-            }
+                return;
 
             Console.WriteLine("Seeding requests...");
 
@@ -1664,12 +1710,9 @@ namespace ValuationBackend.Data
 
         private static void InitializeAssets(AppDbContext context)
         {
-            // Clear existing data to allow reseeding
+            // Only seed if no assets exist
             if (context.Assets.Any())
-            {
-                context.Assets.RemoveRange(context.Assets);
-                context.SaveChanges();
-            }
+                return;
 
             Console.WriteLine("Seeding assets...");
 
@@ -1913,5 +1956,7 @@ namespace ValuationBackend.Data
             context.SaveChanges();
             Console.WriteLine("Reconciliations seeded.");
         }
+        
+        
     }
 }
