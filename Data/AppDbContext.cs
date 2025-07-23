@@ -55,6 +55,14 @@ namespace ValuationBackend.Data
 
         public DbSet<DomesticRatingCard> DomesticRatingCards { get; set; }
 
+        public DbSet<OfficesRatingCard> OfficesRatingCards { get; set; }
+
+        public DbSet<ShopsRatingCard> ShopsRatingCards { get; set; }
+
+        public DbSet<AgricultureRatingCard> AgricultureRatingCards { get; set; }
+
+        public DbSet<SpecialRatingCard> SpecialRatingCards { get; set; }
+
         public DbSet<Asset> Assets { get; set; }
 
         public DbSet<PropertyCategory> PropertyCategories { get; set; }

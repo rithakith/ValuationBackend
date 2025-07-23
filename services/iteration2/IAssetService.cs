@@ -16,5 +16,7 @@ namespace ValuationBackend.Services
         Asset UpdateAsset(Asset asset);
         bool DeleteAsset(int id);
         bool AssetExists(int id);
+        List<Asset> SearchAssets(int requestId, PropertyType requestType, string query);
+        List<Asset> SearchAllAssets(string query);
     }
 }
