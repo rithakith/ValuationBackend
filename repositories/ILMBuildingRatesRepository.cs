@@ -8,6 +8,8 @@ namespace ValuationBackend.Repositories
     {
         Task<IEnumerable<LMBuildingRates>> GetAllAsync();
         Task<LMBuildingRates> GetByIdAsync(int id);
+        Task<LMBuildingRates> GetByIdWithMasterFileAsync(int id);
+        Task<IEnumerable<LMBuildingRates>> GetByMasterFileIdAsync(int masterFileId);
         Task<LMBuildingRates> GetByReportIdAsync(int reportId);
         Task<Report> CreateReportAsync(Report report);
         Task<LMBuildingRates> CreateAsync(LMBuildingRates lmBuildingRate);

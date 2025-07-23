@@ -14,10 +14,16 @@ namespace ValuationBackend.Models
         public int ReportId { get; set; }
 
         [ForeignKey("ReportId")]
-        public virtual Report Report { get; set; }
+        public virtual required Report Report { get; set; }
 
         [Required]
-        public string MasterFileRefNo { get; set; }
+        public required string MasterFileRefNo { get; set; }
+
+        // NEW: Add foreign key to LandMiscellaneousMasterFile
+        public int? LandMiscellaneousMasterFileId { get; set; }
+
+        [ForeignKey("LandMiscellaneousMasterFileId")]
+        public virtual LandMiscellaneousMasterFile? LandMiscellaneousMasterFile { get; set; }
 
         public string? AssessmentNo { get; set; }
         public string? Owner { get; set; }

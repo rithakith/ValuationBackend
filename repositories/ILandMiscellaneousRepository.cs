@@ -13,5 +13,8 @@ namespace ValuationBackend.Repositories
 
         Task<List<LandMiscellaneousMasterFile>> SearchAsync(string searchTerm, int pageNumber, int pageSize, string sortBy = "", int? assignedToUserId = null);
         Task<int> GetSearchCountAsync(string searchTerm, int? assignedToUserId = null);
+
+        // NEW: Method for foreign key support
+        Task<LandMiscellaneousMasterFile?> GetByRefNoAsync(string refNo);
     }
 }

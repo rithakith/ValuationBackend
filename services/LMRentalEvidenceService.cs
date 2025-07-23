@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ValuationBackend.Models;
 using ValuationBackend.Models.DTOs;
 using ValuationBackend.Repositories;
@@ -11,10 +12,12 @@ namespace ValuationBackend.Services
     public class LMRentalEvidenceService : ILMRentalEvidenceService
     {
         private readonly ILMRentalEvidenceRepository _repository;
+        private readonly ILandMiscellaneousRepository _masterFileRepository;
 
-        public LMRentalEvidenceService(ILMRentalEvidenceRepository repository)
+        public LMRentalEvidenceService(ILMRentalEvidenceRepository repository, ILandMiscellaneousRepository masterFileRepository)
         {
             _repository = repository;
+            _masterFileRepository = masterFileRepository;
         }
 
         public async Task<IEnumerable<LMRentalEvidenceResponseDto>> GetAllAsync()
@@ -23,16 +26,35 @@ namespace ValuationBackend.Services
             return lmRentalEvidences.Select(MapToResponseDto).ToList();
         }
 
-        public async Task<LMRentalEvidenceResponseDto> GetByIdAsync(int id)
+        public async Task<LMRentalEvidenceResponseDto?> GetByIdAsync(int id)
         {
             var lmRentalEvidence = await _repository.GetByIdAsync(id);
             return lmRentalEvidence == null ? null : MapToResponseDto(lmRentalEvidence);
         }
 
-        public async Task<LMRentalEvidenceResponseDto> GetByReportIdAsync(int reportId)
+        public async Task<LMRentalEvidenceResponseDto?> GetByReportIdAsync(int reportId)
         {
             var lmRentalEvidence = await _repository.GetByReportIdAsync(reportId);
             return lmRentalEvidence == null ? null : MapToResponseDto(lmRentalEvidence);
+        }
+
+        // NEW: Methods for foreign key relationship
+        public async Task<IEnumerable<LMRentalEvidenceResponseDto>> GetByMasterFileIdAsync(int masterFileId)
+        {
+            var evidences = await _repository.GetByMasterFileIdAsync(masterFileId);
+            return evidences.Select(MapToResponseDto).ToList();
+        }
+
+        public async Task<IEnumerable<LMRentalEvidenceResponseDto>> GetByMasterFileRefNoAsync(string masterFileRefNo)
+        {
+            var evidences = await _repository.GetByMasterFileRefNoAsync(masterFileRefNo);
+            return evidences.Select(MapToResponseDto).ToList();
+        }
+
+        public async Task<IEnumerable<LMRentalEvidenceResponseDto>> GetAllWithMasterFileDataAsync()
+        {
+            var evidences = await _repository.GetAllWithMasterFileDataAsync();
+            return evidences.Select(MapToResponseDto).ToList();
         }
 
         public async Task<LMRentalEvidenceResponseDto> CreateAsync(LMRentalEvidenceCreateDto dto)
@@ -48,11 +70,12 @@ namespace ValuationBackend.Services
             // Add the report first
             report = await _repository.CreateReportAsync(report);
 
-            // Create the LM rental evidence entity from the DTO
-            var lmRentalEvidence = new LMRentalEvidence
+            var entity = new LMRentalEvidence
             {
                 ReportId = report.ReportId,
+                Report = report,
                 MasterFileRefNo = dto.MasterFileRefNo,
+                LandMiscellaneousMasterFileId = dto.LandMiscellaneousMasterFileId,
                 AssessmentNo = dto.AssessmentNo,
                 Owner = dto.Owner,
                 Occupier = dto.Occupier,
@@ -67,8 +90,18 @@ namespace ValuationBackend.Services
                 Remarks = dto.Remarks
             };
 
-            lmRentalEvidence = await _repository.CreateAsync(lmRentalEvidence);
-            return MapToResponseDto(lmRentalEvidence);
+            // Auto-populate foreign key if not provided but string reference exists
+            if (!entity.LandMiscellaneousMasterFileId.HasValue && !string.IsNullOrEmpty(entity.MasterFileRefNo))
+            {
+                var masterFile = await _masterFileRepository.GetByRefNoAsync(entity.MasterFileRefNo);
+                if (masterFile != null)
+                {
+                    entity.LandMiscellaneousMasterFileId = masterFile.Id;
+                }
+            }
+
+            var createdEntity = await _repository.CreateAsync(entity);
+            return MapToResponseDto(createdEntity);
         }
 
         public async Task<bool> UpdateAsync(int reportId, LMRentalEvidenceUpdateDto dto)
@@ -83,6 +116,7 @@ namespace ValuationBackend.Services
 
             // Update existing LM rental evidence with data from DTO
             existingLMRentalEvidence.MasterFileRefNo = dto.MasterFileRefNo;
+            existingLMRentalEvidence.LandMiscellaneousMasterFileId = dto.LandMiscellaneousMasterFileId;
             existingLMRentalEvidence.AssessmentNo = dto.AssessmentNo;
             existingLMRentalEvidence.Owner = dto.Owner;
             existingLMRentalEvidence.Occupier = dto.Occupier;
@@ -95,6 +129,16 @@ namespace ValuationBackend.Services
             existingLMRentalEvidence.HeadOfTerms = dto.HeadOfTerms;
             existingLMRentalEvidence.Situation = dto.Situation;
             existingLMRentalEvidence.Remarks = dto.Remarks;
+
+            // Auto-populate foreign key if not provided but string reference exists
+            if (!existingLMRentalEvidence.LandMiscellaneousMasterFileId.HasValue && !string.IsNullOrEmpty(existingLMRentalEvidence.MasterFileRefNo))
+            {
+                var masterFile = await _masterFileRepository.GetByRefNoAsync(existingLMRentalEvidence.MasterFileRefNo);
+                if (masterFile != null)
+                {
+                    existingLMRentalEvidence.LandMiscellaneousMasterFileId = masterFile.Id;
+                }
+            }
 
             return await _repository.UpdateAsync(existingLMRentalEvidence);
         }
@@ -111,6 +155,8 @@ namespace ValuationBackend.Services
                 Id = lmRentalEvidence.Id,
                 ReportId = lmRentalEvidence.ReportId,
                 MasterFileRefNo = lmRentalEvidence.MasterFileRefNo,
+                LandMiscellaneousMasterFileId = lmRentalEvidence.LandMiscellaneousMasterFileId,
+                LandMiscellaneousMasterFile = lmRentalEvidence.LandMiscellaneousMasterFile != null ? MapMasterFileToDto(lmRentalEvidence.LandMiscellaneousMasterFile) : null,
                 AssessmentNo = lmRentalEvidence.AssessmentNo,
                 Owner = lmRentalEvidence.Owner,
                 Occupier = lmRentalEvidence.Occupier,
@@ -123,6 +169,21 @@ namespace ValuationBackend.Services
                 HeadOfTerms = lmRentalEvidence.HeadOfTerms,
                 Situation = lmRentalEvidence.Situation,
                 Remarks = lmRentalEvidence.Remarks
+            };
+        }
+
+        private LandMiscellaneousMasterFileDto MapMasterFileToDto(LandMiscellaneousMasterFile masterFile)
+        {
+            return new LandMiscellaneousMasterFileDto
+            {
+                Id = masterFile.Id,
+                MasterFileNo = masterFile.MasterFileNo,
+                MasterFileRefNo = masterFile.MasterFileRefNo,
+                PlanType = masterFile.PlanType,
+                PlanNo = masterFile.PlanNo,
+                RequestingAuthorityReferenceNo = masterFile.RequestingAuthorityReferenceNo,
+                Status = masterFile.Status,
+                Lots = masterFile.Lots
             };
         }
     }

@@ -27,6 +27,21 @@ namespace ValuationBackend.Repositories
             return await _context.LMBuildingRates.FindAsync(id);
         }
 
+        public async Task<LMBuildingRates> GetByIdWithMasterFileAsync(int id)
+        {
+            return await _context.LMBuildingRates
+                .Include(br => br.LandMiscellaneousMasterFile)
+                .FirstOrDefaultAsync(br => br.Id == id);
+        }
+
+        public async Task<IEnumerable<LMBuildingRates>> GetByMasterFileIdAsync(int masterFileId)
+        {
+            return await _context.LMBuildingRates
+                .Where(br => br.LandMiscellaneousMasterFileId == masterFileId)
+                .Include(br => br.LandMiscellaneousMasterFile)
+                .ToListAsync();
+        }
+
         public async Task<LMBuildingRates> GetByReportIdAsync(int reportId)
         {
             return await _context.LMBuildingRates
