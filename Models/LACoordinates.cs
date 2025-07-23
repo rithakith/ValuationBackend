@@ -9,12 +9,18 @@ namespace ValuationBackend.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } // Primary Key (auto increment)
 
-        // Foreign key to PastValuationsLA table
-        [Required]
-        public int PastValuationId { get; set; }
+        // Foreign key to PastValuationsLA table (nullable to allow creation without evidence)
+        public int? PastValuationId { get; set; }
 
         [ForeignKey("PastValuationId")]
         public virtual PastValuationsLA? PastValuation { get; set; }
+
+        // Foreign key to LandAquisitionMasterFile table
+        [Required]
+        public int MasterfileId { get; set; }
+
+        [ForeignKey("MasterfileId")]
+        public virtual LandAquisitionMasterFile? Masterfile { get; set; }
 
         // Map coordinates from frontend (stored as JSON string)
         [Required]
@@ -31,12 +37,18 @@ namespace ValuationBackend.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } // Primary Key (auto increment)
 
-        // Foreign key to BuildingRatesLA table
-        [Required]
-        public int BuildingRateId { get; set; }
+        // Foreign key to BuildingRatesLA table (nullable to allow creation without evidence)
+        public int? BuildingRateId { get; set; }
 
         [ForeignKey("BuildingRateId")]
         public virtual BuildingRatesLA? BuildingRate { get; set; }
+
+        // Foreign key to LandAquisitionMasterFile table
+        [Required]
+        public int MasterfileId { get; set; }
+
+        [ForeignKey("MasterfileId")]
+        public virtual LandAquisitionMasterFile? Masterfile { get; set; }
 
         // Map coordinates from frontend (stored as JSON string)
         [Required]
@@ -53,12 +65,18 @@ namespace ValuationBackend.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } // Primary Key (auto increment)
 
-        // Foreign key to SalesEvidenceLA table
-        [Required]
-        public int SalesEvidenceId { get; set; }
+        // Foreign key to SalesEvidenceLA table (nullable to allow creation without evidence)
+        public int? SalesEvidenceId { get; set; }
 
         [ForeignKey("SalesEvidenceId")]
         public virtual SalesEvidenceLA? SalesEvidence { get; set; }
+
+        // Foreign key to LandAquisitionMasterFile table
+        [Required]
+        public int MasterfileId { get; set; }
+
+        [ForeignKey("MasterfileId")]
+        public virtual LandAquisitionMasterFile? Masterfile { get; set; }
 
         // Map coordinates from frontend (stored as JSON string)
         [Required]
@@ -75,12 +93,18 @@ namespace ValuationBackend.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; } // Primary Key (auto increment)
 
-        // Foreign key to RentalEvidenceLA table
-        [Required]
-        public int RentalEvidenceId { get; set; }
+        // Foreign key to RentalEvidenceLA table (nullable to allow creation without evidence)
+        public int? RentalEvidenceId { get; set; }
 
         [ForeignKey("RentalEvidenceId")]
         public virtual RentalEvidenceLA? RentalEvidence { get; set; }
+
+        // Foreign key to LandAquisitionMasterFile table
+        [Required]
+        public int MasterfileId { get; set; }
+
+        [ForeignKey("MasterfileId")]
+        public virtual LandAquisitionMasterFile? Masterfile { get; set; }
 
         // Map coordinates from frontend (stored as JSON string)
         [Required]

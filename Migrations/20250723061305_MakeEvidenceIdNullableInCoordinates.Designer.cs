@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using ValuationBackend.Data;
@@ -11,9 +12,11 @@ using ValuationBackend.Data;
 namespace ValuationBackend.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250723061305_MakeEvidenceIdNullableInCoordinates")]
+    partial class MakeEvidenceIdNullableInCoordinates
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -827,9 +830,6 @@ namespace ValuationBackend.Migrations
                     b.Property<string>("FloorArea")
                         .HasColumnType("text");
 
-                    b.Property<int?>("LandMiscellaneousMasterFileId")
-                        .HasColumnType("integer");
-
                     b.Property<string>("LocationLatitude")
                         .HasColumnType("text");
 
@@ -857,9 +857,6 @@ namespace ValuationBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LandMiscellaneousMasterFileId")
-                        .HasDatabaseName("IX_LMBuildingRates_LandMiscellaneousMasterFileId");
-
                     b.HasIndex("ReportId");
 
                     b.ToTable("LMBuildingRates");
@@ -881,9 +878,6 @@ namespace ValuationBackend.Migrations
 
                     b.Property<string>("FileNo_GnDivision")
                         .HasColumnType("text");
-
-                    b.Property<int?>("LandMiscellaneousMasterFileId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("LocationLatitude")
                         .HasColumnType("text");
@@ -918,9 +912,6 @@ namespace ValuationBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LandMiscellaneousMasterFileId")
-                        .HasDatabaseName("IX_LMPastValuation_LandMiscellaneousMasterFileId");
-
                     b.HasIndex("ReportId");
 
                     b.ToTable("LMPastValuations");
@@ -945,9 +936,6 @@ namespace ValuationBackend.Migrations
 
                     b.Property<string>("HeadOfTerms")
                         .HasColumnType("text");
-
-                    b.Property<int?>("LandMiscellaneousMasterFileId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("LocationLatitude")
                         .HasColumnType("text");
@@ -982,9 +970,6 @@ namespace ValuationBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LandMiscellaneousMasterFileId")
-                        .HasDatabaseName("IX_LMRentalEvidence_LandMiscellaneousMasterFileId");
-
                     b.HasIndex("ReportId");
 
                     b.ToTable("LMRentalEvidences");
@@ -1015,9 +1000,6 @@ namespace ValuationBackend.Migrations
 
                     b.Property<string>("Extent")
                         .HasColumnType("text");
-
-                    b.Property<int?>("LandMiscellaneousMasterFileId")
-                        .HasColumnType("integer");
 
                     b.Property<string>("LandRegistryReferences")
                         .HasColumnType("text");
@@ -1070,9 +1052,6 @@ namespace ValuationBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("LandMiscellaneousMasterFileId")
-                        .HasDatabaseName("IX_LMSalesEvidence_LandMiscellaneousMasterFileId");
-
                     b.HasIndex("ReportId");
 
                     b.ToTable("LMSalesEvidences");
@@ -1091,9 +1070,6 @@ namespace ValuationBackend.Migrations
 
                     b.Property<int>("MasterFileNo")
                         .HasColumnType("integer");
-
-                    b.Property<string>("MasterFileRefNo")
-                        .HasColumnType("text");
 
                     b.Property<string>("PlanNo")
                         .HasColumnType("text");
@@ -2051,72 +2027,44 @@ namespace ValuationBackend.Migrations
 
             modelBuilder.Entity("ValuationBackend.Models.LMBuildingRates", b =>
                 {
-                    b.HasOne("ValuationBackend.Models.LandMiscellaneousMasterFile", "LandMiscellaneousMasterFile")
-                        .WithMany()
-                        .HasForeignKey("LandMiscellaneousMasterFileId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("LandMiscellaneousMasterFile");
 
                     b.Navigation("Report");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.LMPastValuation", b =>
                 {
-                    b.HasOne("ValuationBackend.Models.LandMiscellaneousMasterFile", "LandMiscellaneousMasterFile")
-                        .WithMany()
-                        .HasForeignKey("LandMiscellaneousMasterFileId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("LandMiscellaneousMasterFile");
 
                     b.Navigation("Report");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.LMRentalEvidence", b =>
                 {
-                    b.HasOne("ValuationBackend.Models.LandMiscellaneousMasterFile", "LandMiscellaneousMasterFile")
-                        .WithMany()
-                        .HasForeignKey("LandMiscellaneousMasterFileId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("LandMiscellaneousMasterFile");
 
                     b.Navigation("Report");
                 });
 
             modelBuilder.Entity("ValuationBackend.Models.LMSalesEvidence", b =>
                 {
-                    b.HasOne("ValuationBackend.Models.LandMiscellaneousMasterFile", "LandMiscellaneousMasterFile")
-                        .WithMany()
-                        .HasForeignKey("LandMiscellaneousMasterFileId")
-                        .OnDelete(DeleteBehavior.SetNull);
-
                     b.HasOne("ValuationBackend.Models.Report", "Report")
                         .WithMany()
                         .HasForeignKey("ReportId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("LandMiscellaneousMasterFile");
 
                     b.Navigation("Report");
                 });

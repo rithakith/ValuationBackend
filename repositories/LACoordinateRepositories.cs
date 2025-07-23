@@ -21,6 +21,7 @@ namespace ValuationBackend.Repositories
         {
             return await _context.PastValuationsLACoordinates
                 .Include(c => c.PastValuation)
+                .Include(c => c.Masterfile)
                 .ToListAsync();
         }
 
@@ -28,6 +29,7 @@ namespace ValuationBackend.Repositories
         {
             return await _context.PastValuationsLACoordinates
                 .Include(c => c.PastValuation)
+                .Include(c => c.Masterfile)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
@@ -35,7 +37,17 @@ namespace ValuationBackend.Repositories
         {
             return await _context.PastValuationsLACoordinates
                 .Include(c => c.PastValuation)
+                .Include(c => c.Masterfile)
                 .Where(c => c.PastValuationId == pastValuationId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<PastValuationsLACoordinate>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            return await _context.PastValuationsLACoordinates
+                .Include(c => c.PastValuation)
+                .Include(c => c.Masterfile)
+                .Where(c => c.MasterfileId == masterfileId)
                 .ToListAsync();
         }
 
@@ -89,6 +101,11 @@ namespace ValuationBackend.Repositories
         {
             return await _context.PastValuationsLA.AnyAsync(p => p.Id == pastValuationId);
         }
+
+        public async Task<bool> MasterFileExistsAsync(int masterFileId)
+        {
+            return await _context.LandAquisitionMasterFiles.AnyAsync(m => m.Id == masterFileId);
+        }
     }
 
     // BuildingRatesLA Coordinate Repository
@@ -105,6 +122,7 @@ namespace ValuationBackend.Repositories
         {
             return await _context.BuildingRatesLACoordinates
                 .Include(c => c.BuildingRate)
+                .Include(c => c.Masterfile)
                 .ToListAsync();
         }
 
@@ -112,6 +130,7 @@ namespace ValuationBackend.Repositories
         {
             return await _context.BuildingRatesLACoordinates
                 .Include(c => c.BuildingRate)
+                .Include(c => c.Masterfile)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
@@ -119,7 +138,17 @@ namespace ValuationBackend.Repositories
         {
             return await _context.BuildingRatesLACoordinates
                 .Include(c => c.BuildingRate)
+                .Include(c => c.Masterfile)
                 .Where(c => c.BuildingRateId == buildingRateId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<BuildingRatesLACoordinate>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            return await _context.BuildingRatesLACoordinates
+                .Include(c => c.BuildingRate)
+                .Include(c => c.Masterfile)
+                .Where(c => c.MasterfileId == masterfileId)
                 .ToListAsync();
         }
 
@@ -173,6 +202,11 @@ namespace ValuationBackend.Repositories
         {
             return await _context.BuildingRatesLA.AnyAsync(b => b.Id == buildingRateId);
         }
+
+        public async Task<bool> MasterFileExistsAsync(int masterFileId)
+        {
+            return await _context.LandAquisitionMasterFiles.AnyAsync(m => m.Id == masterFileId);
+        }
     }
 
     // SalesEvidenceLA Coordinate Repository
@@ -189,6 +223,7 @@ namespace ValuationBackend.Repositories
         {
             return await _context.SalesEvidenceLACoordinates
                 .Include(c => c.SalesEvidence)
+                .Include(c => c.Masterfile)
                 .ToListAsync();
         }
 
@@ -196,6 +231,7 @@ namespace ValuationBackend.Repositories
         {
             return await _context.SalesEvidenceLACoordinates
                 .Include(c => c.SalesEvidence)
+                .Include(c => c.Masterfile)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
@@ -203,7 +239,17 @@ namespace ValuationBackend.Repositories
         {
             return await _context.SalesEvidenceLACoordinates
                 .Include(c => c.SalesEvidence)
+                .Include(c => c.Masterfile)
                 .Where(c => c.SalesEvidenceId == salesEvidenceId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<SalesEvidenceLACoordinate>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            return await _context.SalesEvidenceLACoordinates
+                .Include(c => c.SalesEvidence)
+                .Include(c => c.Masterfile)
+                .Where(c => c.MasterfileId == masterfileId)
                 .ToListAsync();
         }
 
@@ -257,6 +303,11 @@ namespace ValuationBackend.Repositories
         {
             return await _context.SalesEvidencesLA.AnyAsync(s => s.Id == salesEvidenceId);
         }
+
+        public async Task<bool> MasterFileExistsAsync(int masterFileId)
+        {
+            return await _context.LandAquisitionMasterFiles.AnyAsync(m => m.Id == masterFileId);
+        }
     }
 
     // RentalEvidenceLA Coordinate Repository
@@ -273,6 +324,7 @@ namespace ValuationBackend.Repositories
         {
             return await _context.RentalEvidenceLACoordinates
                 .Include(c => c.RentalEvidence)
+                .Include(c => c.Masterfile)
                 .ToListAsync();
         }
 
@@ -280,6 +332,7 @@ namespace ValuationBackend.Repositories
         {
             return await _context.RentalEvidenceLACoordinates
                 .Include(c => c.RentalEvidence)
+                .Include(c => c.Masterfile)
                 .FirstOrDefaultAsync(c => c.Id == id);
         }
 
@@ -287,7 +340,17 @@ namespace ValuationBackend.Repositories
         {
             return await _context.RentalEvidenceLACoordinates
                 .Include(c => c.RentalEvidence)
+                .Include(c => c.Masterfile)
                 .Where(c => c.RentalEvidenceId == rentalEvidenceId)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<RentalEvidenceLACoordinate>> GetByMasterfileIdAsync(int masterfileId)
+        {
+            return await _context.RentalEvidenceLACoordinates
+                .Include(c => c.RentalEvidence)
+                .Include(c => c.Masterfile)
+                .Where(c => c.MasterfileId == masterfileId)
                 .ToListAsync();
         }
 
@@ -340,6 +403,11 @@ namespace ValuationBackend.Repositories
         public async Task<bool> RentalEvidenceExistsAsync(int rentalEvidenceId)
         {
             return await _context.RentalEvidencesLA.AnyAsync(r => r.Id == rentalEvidenceId);
+        }
+
+        public async Task<bool> MasterFileExistsAsync(int masterFileId)
+        {
+            return await _context.LandAquisitionMasterFiles.AnyAsync(m => m.Id == masterFileId);
         }
     }
 }
