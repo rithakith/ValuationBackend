@@ -1,6 +1,6 @@
 using AutoMapper;
-using ValuationBackend.Models.iteration2.DTOs;
-using ValuationBackend.Models.iteration2.RatingCards;
+using ValuationBackend.Models.DTOs;
+using ValuationBackend.Models;
 
 namespace ValuationBackend.Profiles
 {
@@ -15,9 +15,6 @@ namespace ValuationBackend.Profiles
             CreateMap<CreateOfficesRatingCardDto, OfficesRatingCard>()
                 .ForMember(dest => dest.Id, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
-                .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore())
                 .ForMember(dest => dest.Asset, opt => opt.Ignore());
 
             // Update DTO to Entity
@@ -28,9 +25,6 @@ namespace ValuationBackend.Profiles
                 .ForMember(dest => dest.Owner, opt => opt.Ignore())
                 .ForMember(dest => dest.Description, opt => opt.Ignore())
                 .ForMember(dest => dest.CreatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.UpdatedAt, opt => opt.Ignore())
-                .ForMember(dest => dest.CreatedBy, opt => opt.Ignore())
-                .ForMember(dest => dest.UpdatedBy, opt => opt.Ignore())
                 .ForMember(dest => dest.Asset, opt => opt.Ignore())
                 .ForAllMembers(opts => opts.Condition((src, dest, srcMember) => srcMember != null));
         }

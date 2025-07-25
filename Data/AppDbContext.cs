@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using ValuationBackend.Models;
-using ValuationBackend.Models.iteration2.RatingCards;
+using ValuationBackend.Models.iteration2;
 
 namespace ValuationBackend.Data
 {
@@ -75,6 +75,7 @@ namespace ValuationBackend.Data
 
         public DbSet<PropertyCategory> PropertyCategories { get; set; }
 
+        public DbSet<I2RentalEvidence> I2RentalEvidences { get; set; }
 
         public DbSet<DecisionField> DecisionFields { get; set; }
         public DbSet<PasswordReset> PasswordResets { get; set; }
@@ -135,6 +136,17 @@ namespace ValuationBackend.Data
             modelBuilder.Entity<LMSalesEvidence>()
                 .HasIndex(lm => lm.LandMiscellaneousMasterFileId)
                 .HasDatabaseName("IX_LMSalesEvidence_LandMiscellaneousMasterFileId");
+
+            // Configure I2RentalEvidence relationships
+            modelBuilder.Entity<I2RentalEvidence>()
+                .HasOne(i2 => i2.Asset)
+                .WithMany()
+                .HasForeignKey(i2 => i2.AssetId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            modelBuilder.Entity<I2RentalEvidence>()
+                .HasIndex(i2 => i2.AssetId)
+                .HasDatabaseName("IX_I2RentalEvidence_AssetId");
         }
     }
 }

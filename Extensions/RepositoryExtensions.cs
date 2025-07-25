@@ -34,6 +34,7 @@ namespace ValuationBackend.Extensions
             services.AddScoped<IRequestRepository, RequestRepository>();
             services.AddScoped<IAssetRepository, AssetRepository>();
             services.AddScoped<IAuthRepository, AuthRepository>();
+            services.AddScoped<II2RentalEvidenceRepository, I2RentalEvidenceRepository>();
 
 
             return services;
